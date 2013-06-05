@@ -25,6 +25,18 @@ define(function(){
 		$('#join').click(function() {
 			wi.onJoin();
 		});
+
+		$('#login').click(function() {
+			name = $('#loginname').val();
+			console.log('login name: ', name)
+			if (name != '') {
+
+				wi.socket.emit('join', {name: name});
+			} else {
+				alert('Please enter a name to continue.')
+			}
+		});
+
 		
 		// Animation test button:	
 		$('#animtest').click(function() {
@@ -39,7 +51,12 @@ define(function(){
 		});
 		
 		// General button roll-over sound:
-		$(document).on('mouseover', '.button', function() {
+		$(document).on('mouseenter', '.button:not(.disabled)', function() {
+			sound.play('cv2_menu_tick');
+		});
+
+		// Commands roll-over sound:
+		$(document).on('mouseenter', '#commands li:not(.disabled)', function() {
 			sound.play('menu_tick');
 		});
 		
@@ -50,8 +67,9 @@ define(function(){
 			// Send player Ready event to SERVER:
 			wi.socket.emit('playerReady', {playerID: wi.client.getMyID()});
 			
-			output.disableCommands();
-			
+			//output.disableCommands();
+			output.hidePanels('commands');
+			//output.showPanels('output');
 			
 		});
 		
@@ -76,7 +94,6 @@ define(function(){
 				wi.socket.emit('removeCommand', {command: currentCommand});
 			} else {
 				// Break out if no more commands are available:
-				console.log('input call to get commands available. My ID: ' + wi.client.getMyID());
 				if (game.getCommandsAvailable(wi.client.getMyID()) <= 0)
 					return;
 				
@@ -86,6 +103,9 @@ define(function(){
 				// Update DOM:
 				$(this).addClass('chosen');
 			}
+
+			sound.play('damage_poison');
+
 		});
 		
 		$(document).on('mouseover', '#commands:not(.commandschosen) li', function() {
@@ -102,19 +122,16 @@ define(function(){
 	WindowInput.prototype = {
 	
 		onJoin: function() {
+
+			console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
+
 			if (!this.client.getMyID()) {
-				smoke.prompt("Enter your name: ", function(name) {
-					if (name) {
-						
-						//console.log('name received: ' + name);
-						//console.log('socket: ', wi.socket);
-						
-						wi.socket.emit('join', {name: name});
-						$('#join').hide();
-					} else {
-						smoke.signal('Sorry, name required!');
-					}
-				});
+				
+				console.log('hide welcome show login...');
+
+				output.hidePanels('welcome');
+				output.showPanels('login');
+
 			}
 		},
 		

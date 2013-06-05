@@ -31,8 +31,7 @@ require(
 	"client",
 	"jquery",
 	"gsap",
-	"soundjs",
-	"helpers"
+	"soundjs"
 	],
 	function(Game, SocketIO, CombatAnimation, Input, Output, Sound, Client, $, GSAP, SoundJS){
 		
@@ -51,10 +50,10 @@ require(
 		sound = new Sound(SoundJS),
 		animator = new CombatAnimation(game, $, GSAP),
 		client = new Client(game, socket, output, sound, animator),
-		input = new Input(game, client, output, sound, socket, $),
+		input = new Input(game, client, output, sound, socket, $);
 		
 		//game.sayHello();
 		
-		output.hidePanels(["commands","vitals"]);
+		//output.hidePanels(["commands","vitals"]);
 	}
 );

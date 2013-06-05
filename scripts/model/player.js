@@ -92,7 +92,7 @@ define(function(){
 	
 			// Loop through the commandQueue to find a match on the name
 			for (var i = 0; i < this.commandQueue.length; i++) {
-				if (this.commandQueue[i].actionname == data.command.actionname) {
+				if (this.commandQueue[i].actionname == command.actionname) {
 					index = i; break;
 				}
 			}

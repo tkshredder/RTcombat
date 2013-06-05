@@ -73,6 +73,7 @@ define(function(){
 		loadAudio: function() {
 			this.loadDQ4Assets();
 			this.loadCV2Assets();
+			this.loadMiscAssets();
 		},
 		
 		loadDQ4Assets: function() {
@@ -89,10 +90,14 @@ define(function(){
 		},
 		
 		loadCV2Assets: function() {
-			createjs.Sound.registerSound({id:"menu_tick", src:"audio/cv2/menu_tick.mp3"});
+			createjs.Sound.registerSound({id:"cv2_menu_tick", src:"audio/cv2/menu_tick.mp3"});
 			createjs.Sound.registerSound({id:"damage_poison", src:"audio/cv2/menu_tick.mp3"});
 			createjs.Sound.registerSound({id:"damage_whip", src:"audio/cv2/damage_whip.mp3"});
 			createjs.Sound.registerSound({id:"damage_explosion", src:"audio/cv2/damage_explosion.mp3"});
+		},
+
+		loadMiscAssets: function() {
+			createjs.Sound.registerSound({id:"menu_tick", src:"audio/misc/menu_tick.mp3"});
 		}
 		
 

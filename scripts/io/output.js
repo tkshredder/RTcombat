@@ -36,7 +36,7 @@ define(function(){
 			$('#remainingtime').html(game.getRemainingTime());
 			
 			// start a timer here as well?
-			setTimeout(function() { wo.update(); }, 100);
+			//setTimeout(function() { wo.update(); }, 100);
 			
 			
 		},
@@ -58,7 +58,9 @@ define(function(){
 		},
 		
 		displayTurnWaitingMessage: function () {
-			$('#output').html('Waiting on other player to finish...');
+			$('#center_panel').removeClass('hidden')
+			$('#center_headline').html('Actions Confirmed');
+			$('#center_output').html('Preparing for attack!');
 		},
 		
 		activateExecutionButton: function (playerID) {
@@ -108,23 +110,43 @@ define(function(){
 		},
 		
 		showCommands: function () {
-			$('#commands_panel').show();
+			$('#commands_panel').removeClass('hidden');
 		},
 
 		hideCommands: function () {
-			$('#commands_panel').hide();
+			$('#commands_panel').addClass('hidden');
 		},
 		showVitals: function () {
-			$('#vitals').show();
+			$('#vitals').removeClass('hidden');
 		},
 
 		hideVitals: function () {
-			$('#vitals').hide();
+			$('#vitals').addClass('hidden');
 		},
 		
 		hidePanels: function (list) {
+			
+			// Add support for a single string passed in:
+			if (typeof(list) === 'string') {
+				oldval = list;
+				list = [oldval];
+			}
+			
 			for (var key in list) {
-				$("#"+list[key]+"_panel").hide();
+				$("#"+list[key]+"_panel").addClass('hidden');
+			}
+		},
+
+		showPanels: function (list) {
+			
+			// Add support for a single string passed in:
+			if (typeof(list) === 'string') {
+				oldval = list;
+				list = [oldval];
+			}
+
+			for (var key in list) {
+				$("#"+list[key]+"_panel").removeClass('hidden');
 			}
 		},
 		
@@ -152,7 +174,6 @@ define(function(){
 		},
 		
 		updateCommandsAvailable: function (playerID) {
-			console.log('----- update commands available');
 			$("#commandsAvailable").html(game.getCommandsAvailable(playerID));
 		}
 	}

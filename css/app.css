@@ -10,7 +10,17 @@ body {	background:#000; }
 .vitals.opponent { background: #E47C6D; }
 #vitals_panel h3 { margin: 0; }
 #hud { width: 1000px; margin: 0 auto; height: 70px; background: #36C; padding: 30px; display: none;}
-#screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0;}
+
+#horizon {
+/*background-color: #0ff;*/
+text-align: center; position: absolute;top: 50%; left: 0px; width: 100%; height: 1px; overflow: visible; visibility: visible; display: block;
+}
+#horizon .centerpanel { background: rgba(51,51,51,0.6); position: absolute; margin-left: -330px;  width: 660px; height: 160px; top: -110px; left: 50%; box-shadow: 10px 10px 5px rgba(0,0,0,0.6); z-index: 10000}
+#horizon .centerpanel input { background: #333; color: #FFF;border: 1px solid #FFF; padding: 10px; font-family: 'IM Fell DW Pica SC', serif;font-size: 20px;text-transform: uppercase; text-align: center;}
+
+
+
+#screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
 .panel { padding: 30px 10px 30px 30px; border: 5px solid #FFF; }
 h1, h2 { margin: 0; }
 ul { padding: 0; }
@@ -25,9 +35,11 @@ li.disabled { cursor: default !important; }
 .order { position: absolute; right: 0; top: 0; }
 
 .button { cursor: pointer; background: rgb(211, 240, 2); padding: 10px; margin: 10px 0; color: #333; font-weight: bold; font-size: 20px; border: 4px outset; transition: all 0.2s }
-.button:hover { border: 4px outset; background: rgb(232, 252, 20); box-shadow: 0px 0px 10px #fff; }
+.button:not(.disabled):hover { border: 4px outset; background: rgb(232, 252, 20); box-shadow: 0px 0px 10px #fff; }
 .button.disabled { background: #555; color: #AAA; cursor: default; }
 .button.bigcentered { display: block; width: 200px; margin: 0 auto; padding: 10px 10px 2px; text-align: center; font-size: 52px; line-height: 32px; text-shadow: 2px 2px #DEDEDE; }
+#join.button.bigcentered { margin: 20px auto; padding: 10px 10px 17px;}
+
 
 .newest { display: none; }
 .command { display: none; }
@@ -44,6 +56,7 @@ li.disabled { cursor: default !important; }
 footer { padding-top: 40px; font-size: 22px; clear: both; margin: 0 auto; width: 640px; text-align: center; opacity: 0.7 }
 footer a { color: yellow; }
 
+#active_character { position: absolute; z-index: 1000;}
 .character { position: absolute; left: 10px; z-index:999;}
 .character_shaman { background:url(../images/character_shaman_608x900.png) no-repeat; width: 608px; height: 900px; }
 .character_centipede { background:url(../images/character_centipede_600x923.png) no-repeat; width: 600px; height: 923px; }

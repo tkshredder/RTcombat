@@ -40,13 +40,21 @@ define(
 			game.playerReady(data);
 			
 			// Update DOM, if applicable:
-			if (data.playerID == this.myID) {
+			if (data.playerID == c.myID) {
+
+
 				if (game.waitingOnPlayers()) {
 					output.displayTurnWaitingMessage();
 				}
 				// Hide my commands -- because I'm done.
 				output.hideCommands();
 			}
+
+			if (game.waitingOnPlayers() == false) {
+				output.hidePanels('center');
+				output.showPanels('output');
+			}
+
 		});
 		
 		socket.on('addCommand', function(data) {
@@ -61,6 +69,7 @@ define(
 				output.activateExecutionButton(c.myID);
 				//output.disableCommandRolloverUpdate();
 				output.updateCommandOrder(c.myID);
+				output.updateCommandsAvailable(c.myID);
 			}
 		});
 		
@@ -157,15 +166,12 @@ define(
 			game.startGame(data.name);
 			
 			// Update DOM:
+			output.hidePanels(["welcome","login"]);
 			output.setNames({myID: c.myID, opponentID: c.opponentID});
 			output.updateCommandsAvailable(c.myID);
 			output.setBoatBG(game.getTeamID(c.myID));
 
 		});
-		
-		
-		
-		
 		
 		// Event: playerTurn
 		// Description: Fires when its the player's turn

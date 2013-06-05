@@ -219,7 +219,8 @@ define(
 					this.masterCommandQueue.splice(index,1);
 					
 					// Update the player model that it's using this command:
-					this.players[data.playerID].removeCommand(data.command);
+					console.log(' --- (game.js) remove command for player ' + data.command.playerID)
+					this.players[data.command.playerID].removeCommand(data.command);
 				} else {
 					console.log('Command not found! Can not remove.');
 				}

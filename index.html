@@ -16,6 +16,25 @@
 </head>
 
 <body>
+
+	<div id="horizon">
+		<div id="welcome_panel" class="centerpanel panel">
+			<h1 id="welcome_headline">Welcome to Real Time Sea Combat, Matey!</h1>
+			<div id="welcome_output">Click the Join button below to get started.</div>
+			<a class="button bigcentered" id="join">Join</a>
+		</div>
+		<div id="login_panel" class="centerpanel panel hidden">
+			<h1>Enter your name</h1>
+			<input id="loginname">
+			<a class="button" id="login">Login</a>
+		</div>
+		<div id="center_panel" class="centerpanel panel hidden">
+			<h1 id="center_headline"></h1>
+			<div id="center_output"></div>
+		</div>
+
+	</div>
+
 <div id="outer">
 	<div id="header">REAL-TIME BATTLE DEMO</div>
   	
@@ -24,13 +43,11 @@
 	
 	<div id="screen">
 		
-		<div id="output_panel" class="panel">
-			<h1 id="output_headline">Welcome to Real Time Sea Combat, Matey!</h1>
-			<div id="output">Click the Join button below to get started.</div>
+		<div id="output_panel" class="panel hidden">
+			<h1 id="output_headline"></h1>
+			<div id="output"></div>
 			<span id="action_name" class="result_text"></span>
 			<span id="action_results" class="result_text"></span>
-			
-			<a class="button" id="join">Join</a>
 		</div>
 				
 		<div id="animationtest_panel" class="panel hidden">
@@ -50,7 +67,7 @@
 			</div>
 		</div>
 		
-		<div id="commands_panel" class="panel">
+		<div id="commands_panel" class="panel hidden">
 			<h1>Choose <span id="commandsAvailable">#</span> Actions<br>
 			Time: <span id="remainingtime"></span>
 			</h1>
@@ -58,7 +75,7 @@
 			<a class="button disabled bigcentered" id="execute">GO!</a>
 		</div>
 		
-		<div id="vitals_panel" class="panel">
+		<div id="vitals_panel" class="panel hidden">
 			<div class="vitals myinfo">
 				<h3><span id="myname"></span> HEALTH <span id="myhealth">0</span></h3>
 			</div>
@@ -74,10 +91,6 @@
 	
 	
 	<div id="hud">
-		<div id="buttons">
-			<a class="button" id="join">Join</a>
-		</div>
-	
 		<div id="info">
 			<span class="info-row"><span id="player-count">0</span> players.</span>
 			<span class="info-row"><span id="observer-count">0</span> observers.</span>
