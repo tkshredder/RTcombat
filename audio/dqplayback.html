@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Allo Audio</title>
+<script src="http://code.createjs.com/soundjs-0.4.1.min.js"></script>
+<script>
+createjs.Sound.registerSound({id:"attack_critical", src:"dq4/attack_critical.mp3"});
+createjs.Sound.registerSound({id:"attack_damage", src:"dq4/attack_damage.mp3"});
+createjs.Sound.registerSound({id:"attack_dodge", src:"dq4/attack_dodge.mp3"});
+createjs.Sound.registerSound({id:"attack_melee", src:"dq4/attack_melee.mp3"});
+createjs.Sound.registerSound({id:"attack_melee2", src:"dq4/attack_melee2.mp3"});
+createjs.Sound.registerSound({id:"magic_cast", src:"dq4/magic_cast.mp3"});
+
+createjs.Sound.addEventListener("fileload", handleFileLoad);
+
+function handleFileLoad(event) {
+	// A sound has been preloaded.
+	console.log("Preloaded:", event.id, event.src);
+}
+function playSound(id) {
+	createjs.Sound.play(id);
+}
+
+</script>
+<style>
+* { font-family:Verdana, Geneva, sans-serif; font-size: 10px; }
+a { display: block; padding: 10px; background:#03C; color: white; font-weight:bold; width: 250px; cursor: pointer;margin-bottom: 20px;}
+</style>
+</head>
+
+<body>
+
+<div id="filelist">
+<a onClick='playSound("attack_critical")' >attack_critical</a>
+<a onClick='playSound("attack_damage")' >attack_damage</a>
+<a onClick='playSound("attack_dodge")' >attack_dodge</a>
+<a onClick='playSound("attack_melee")' >attack_melee</a>
+<a onClick='playSound("attack_melee2")' >attack_melee2</a>
+<a onClick='playSound("magic_cast")' >magic_cast</a>
+</body>
+</html>

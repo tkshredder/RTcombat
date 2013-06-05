@@ -1,0 +1,67 @@
+html, body { margin: 0; height: 100%; font-family: 'IM Fell DW Pica SC', serif; color: #fff; }
+body {	background:#000; }
+#logo { margin: 10px auto; width: 500px; height: 30px; color: white; text-align: center; /*background: url(../images/header_logo.png) no-repeat;*/ }
+#logo .right { float: right; padding-top: 7px;}
+#header { position:absolute; top: 0; left: 0; z-index:10000; background:rgba(0,0,0,0.5); padding: 5px;}
+#outer { position: relative; }
+#vitals_panel { }
+.vitals { padding: 10px; }
+.vitals.myinfo { background: #99BB68; }
+.vitals.opponent { background: #E47C6D; }
+#vitals_panel h3 { margin: 0; }
+#hud { width: 1000px; margin: 0 auto; height: 70px; background: #36C; padding: 30px; display: none;}
+#screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0;}
+.panel { padding: 30px 10px 30px 30px; border: 5px solid #FFF; }
+h1, h2 { margin: 0; }
+ul { padding: 0; }
+li { list-style:none; display: inline-block; background: #039; padding: 20px; width: 350px; margin: 0 20px 20px 0 ; cursor: pointer; position: relative; border: 3px solid #039;}
+li.chosen { background: #0A4; border: 3px solid #0FF; }
+li:hover:not(.chosen) { background: #06F; border: 3px solid #0FF;}
+li.disabled { cursor: default !important; }
+.name { font-weight: bold; color: #0F0; font-size: 24px; display: block; margin: 0;}
+.type { display: inline-block; margin-right: 15px; text-transform: uppercase; color: #FC0; font-weight: bold;}
+.effect { display: inline-block; margin-right: 15px; }
+.successRate { color: #FF9; font-weight: bold; float: right;}
+.order { position: absolute; right: 0; top: 0; }
+
+.button { cursor: pointer; background: rgb(211, 240, 2); padding: 10px; margin: 10px 0; color: #333; font-weight: bold; font-size: 20px; border: 4px outset; transition: all 0.2s }
+.button:hover { border: 4px outset; background: rgb(232, 252, 20); box-shadow: 0px 0px 10px #fff; }
+.button.disabled { background: #555; color: #AAA; cursor: default; }
+.button.bigcentered { display: block; width: 200px; margin: 0 auto; padding: 10px 10px 2px; text-align: center; font-size: 52px; line-height: 32px; text-shadow: 2px 2px #DEDEDE; }
+
+.newest { display: none; }
+.command { display: none; }
+
+.stat { font-size: 24px; display: block; font-weight: bold;}
+.amount { display: inline-block; float: right; }
+.hidden { display: none; }
+.info-row { display: block; }
+
+#output { font-size: 23px; }
+#output_panel p { margin: 2px 0; }
+#buttons { float: left; }
+#info { float: right; width: 200px; font-size: 16px; color: white; }
+footer { padding-top: 40px; font-size: 22px; clear: both; margin: 0 auto; width: 640px; text-align: center; opacity: 0.7 }
+footer a { color: yellow; }
+
+.character { position: absolute; left: 10px; z-index:999;}
+.character_shaman { background:url(../images/character_shaman_608x900.png) no-repeat; width: 608px; height: 900px; }
+.character_centipede { background:url(../images/character_centipede_600x923.png) no-repeat; width: 600px; height: 923px; }
+.character_skeleshark { background:url(../images/character_skeleshark_717x900.png) no-repeat; width: 717px; height: 900px; }
+.character_drowarcher { background:url(../images/character_drowarcher_550x900.png) no-repeat; width: 550px; height: 900px; }
+.character_tentacles { background:url(../images/character_tentacles_752x900.png) no-repeat; width: 752px; height: 900px; }
+.character_deadsoldier { background:url(../images/character_deadsoldier_667x900.png) no-repeat; width: 667px; height: 900px; }
+
+.boatbg_1 { position: absolute; left: 0; top: 0; background:url(../images/boat_bg1_608x1052.png) no-repeat; width: 608px; height: 1052px; z-index: -10;}
+.boatbg_2 { position: absolute; left: 0; top: 0; background:url(../images/boat_bg2_472x1000.png) no-repeat; width: 472px; height: 1000px; z-index: -10; }
+
+.shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); filter: url(images/shadow.svg#drop-shadow); }
+#boat_bg { -webkit-transition:-webkit-filter 0.4s ease-in-out; }
+
+/*#output_panel { position: absolute; right: 0; top: 0; width: 50%; border: 3px solid #FFF; padding: 20px}*/
+
+.result_text { display: block; font-size: 40px; }
+#action_results { margin-top: 40px; }
+.character_name, .action_name { text-transform:uppercase; }
+.action_name { color: #F8FEC7; }
+.darken {	-webkit-filter: brightness(0.6); }
