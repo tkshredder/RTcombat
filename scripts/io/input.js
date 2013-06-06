@@ -37,7 +37,23 @@ define(function(){
 			}
 		});
 
-		
+		// Chat button
+		$('#chat').submit(function(e) { 
+			
+			e.preventDefault(); // Prevent form from submitting
+			
+			myMessage = $('#chatinput').val();
+			
+			// TO DO:
+			// scrub the message to protect against injection attacks
+
+			if (myMessage != '') {
+				wi.socket.emit('sendchat', {message:myMessage, playerID:wi.client.getMyID()});
+				$('#chatinput').val('');
+			}
+			
+		});
+
 		// Animation test button:	
 		$('#animtest').click(function() {
 			var testCommand = {};
@@ -51,7 +67,7 @@ define(function(){
 		});
 		
 		// General button roll-over sound:
-		$(document).on('mouseenter', '.button:not(.disabled)', function() {
+		$(document).on('mouseenter', '.button:not(.disabled):not(.submit)', function() {
 			sound.play('cv2_menu_tick');
 		});
 

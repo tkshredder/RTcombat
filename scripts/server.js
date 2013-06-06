@@ -82,6 +82,14 @@ requirejs(
 			socket.emit('start', {
 				state: game.save()
 			});
+
+			socket.on('sendchat', function(data) {
+				console.log('Event: sendchat', data);
+
+				// Don't need to save the chat on the server...
+				io.sockets.emit('sendchat', data);
+
+			});
 			
 			socket.on('playerReady', function(data) {
 				console.log('Event: playerReady', data);

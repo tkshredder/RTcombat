@@ -57,6 +57,14 @@ define(
 
 		});
 		
+		socket.on('sendchat', function(data) {
+			
+			console.log('Event: sendchat for player', data); 
+			
+			output.addChatMessage(data);
+			
+		});
+
 		socket.on('addCommand', function(data) {
 			
 			console.log('Event: addCommand for player', data.playerID, data.command); 

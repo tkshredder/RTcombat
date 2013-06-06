@@ -40,6 +40,10 @@ define(function(){
 			
 			
 		},
+
+		addChatMessage: function (data) {
+			$("#chatlog").append('<span class="chatmessage"><span class="playername player' + data.playerID + '">' + game.getPlayerName(data.playerID) + '</span> ' + data.message + '</span>');
+		},
 		
 		displayWaitingMessage: function (isMe) {
 			if (isMe) {

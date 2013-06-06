@@ -16,8 +16,8 @@ body {	background:#000; }
 text-align: center; position: absolute;top: 50%; left: 0px; width: 100%; height: 1px; overflow: visible; visibility: visible; display: block;
 }
 #horizon .centerpanel { background: rgba(51,51,51,0.6); position: absolute; margin-left: -330px;  width: 660px; height: 160px; top: -110px; left: 50%; box-shadow: 10px 10px 5px rgba(0,0,0,0.6); z-index: 10000}
-#horizon .centerpanel input { background: #333; color: #FFF;border: 1px solid #FFF; padding: 10px; font-family: 'IM Fell DW Pica SC', serif;font-size: 20px;text-transform: uppercase; text-align: center;}
-
+input.dark { background: #333; color: #FFF;border: 1px solid #FFF; padding: 10px; font-family: 'IM Fell DW Pica SC', serif;font-size: 20px;text-transform: uppercase; text-align: center;}
+input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 14px; width: 300px; text-align: left}
 
 
 #screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
@@ -65,10 +65,15 @@ footer a { color: yellow; }
 .character_tentacles { background:url(../images/character_tentacles_752x900.png) no-repeat; width: 752px; height: 900px; }
 .character_deadsoldier { background:url(../images/character_deadsoldier_667x900.png) no-repeat; width: 667px; height: 900px; }
 
+.chatmessage { display: block;}
+.chatmessage .playername { font-weight: bold;}
+.chatmessage .player1 { color: #33FF22; }
+.chatmessage .player2 { color: #CC3229; }
+
 .boatbg_1 { position: absolute; left: 0; top: 0; background:url(../images/boat_bg1_608x1052.png) no-repeat; width: 608px; height: 1052px; z-index: -10;}
 .boatbg_2 { position: absolute; left: 0; top: 0; background:url(../images/boat_bg2_472x1000.png) no-repeat; width: 472px; height: 1000px; z-index: -10; }
 
-.shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); filter: url(images/shadow.svg#drop-shadow); }
+.shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); /*filter: url(images/shadow.svg#drop-shadow); */}
 #boat_bg { -webkit-transition:-webkit-filter 0.4s ease-in-out; }
 
 /*#output_panel { position: absolute; right: 0; top: 0; width: 50%; border: 3px solid #FFF; padding: 20px}*/
