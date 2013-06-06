@@ -22,6 +22,11 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 
 #screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
 .panel { padding: 30px 10px 30px 30px; border: 5px solid #FFF; }
+.poppanel { background: rgba(51,51,51,0.6); position: absolute; z-index: 100000; padding: 10px; transition: all 0.2s; opacity: 1}
+.poppanel input.button { font-family: 'IM Fell DW Pica SC', serif;}
+.panelcontrol { position: absolute; top: 5px; right: 5px; cursor: pointer; background: #666; padding: 0 4px;}
+.poppanel.panelhidden { top: -200px; opacity: 0;}
+
 h1, h2 { margin: 0; }
 ul { padding: 0; }
 li { list-style:none; display: inline-block; background: #039; padding: 20px; width: 350px; margin: 0 20px 20px 0 ; cursor: pointer; position: relative; border: 3px solid #039;}

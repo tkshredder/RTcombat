@@ -88,7 +88,7 @@ requirejs(
 
 				// Don't need to save the chat on the server...
 				io.sockets.emit('sendchat', data);
-
+				socket.broadcast.emit('sendchat', data);
 			});
 			
 			socket.on('playerReady', function(data) {

@@ -37,7 +37,7 @@ define(function(){
 			}
 		});
 
-		// Chat button
+		// Chat form
 		$('#chat').submit(function(e) { 
 			
 			e.preventDefault(); // Prevent form from submitting
@@ -53,6 +53,30 @@ define(function(){
 			}
 			
 		});
+
+		// Hide button
+		$('#chat_toggle').click(function() {
+			$(this).parent().addClass('panelhidden');
+		});
+
+		// Keycodes
+		$(document).on('keypress', function(e) {
+			var code = e.keyCode || e.which;
+			
+			//console.log('keypress: ' + code);
+			if (document.activeElement.tagName.toLowerCase() == "input")
+				return;
+
+			// C - Hide / show chat form
+			if (code == 67 || code == 99) {
+				if ($('#chat_panel').hasClass('panelhidden')) {
+					$('#chat_panel').removeClass('panelhidden');
+				} else {
+					$('#chat_panel').addClass('panelhidden');
+				}
+			}
+		});
+
 
 		// Animation test button:	
 		$('#animtest').click(function() {

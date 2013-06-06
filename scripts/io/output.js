@@ -36,7 +36,7 @@ define(function(){
 			$('#remainingtime').html(game.getRemainingTime());
 			
 			// start a timer here as well?
-			//setTimeout(function() { wo.update(); }, 100);
+			setTimeout(function() { wo.update(); }, 100);
 			
 			
 		},
