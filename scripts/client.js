@@ -61,6 +61,7 @@ define(
 			
 			console.log('Event: sendchat for player', data); 
 			
+			output.showChatPanel();
 			output.addChatMessage(data);
 			
 		});

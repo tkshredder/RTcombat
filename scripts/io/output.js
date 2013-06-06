@@ -153,6 +153,12 @@ define(function(){
 				$("#"+list[key]+"_panel").removeClass('hidden');
 			}
 		},
+
+		showChatPanel: function() {
+			if ($('#chat_panel').hasClass('panelhidden')){
+				$('#chat_panel').removeClass('panelhidden');
+			}
+		},
 		
 		updateCommandOrder: function (playerID) {
 			$('.order').empty();
