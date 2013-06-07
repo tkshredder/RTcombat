@@ -40,7 +40,6 @@
 		<h2>Chat</h2>
 		<form id="chat">
 			<input id="chatinput" class="dark chat">
-			<!--<input class="button submit" type="submit" id="sendchat" value="send">-->
 		</form>
 		<div id="chatlog"></div>
 		
@@ -50,7 +49,15 @@
   	
 	<div id="boat_bg" class="boatbg_1"></div>
 	<div id="active_character" class="character character_shaman shadowfilter"></div>
-	
+	<div id="character_stats">
+		<!-- this content is dynamic, based on current character -->
+		<span id="attack" class="stat"><span class="icon attack"></span>7</span>
+		<span id="defense" class="stat"><span class="icon defense"></span>6</span>
+		<span id="courage" class="stat"><span class="icon courage"></span>5</span>
+		<span id="dodge" class="stat"><span class="icon dodge"></span>3</span>		
+	</div>
+
+
 	<div id="screen">
 		
 		<div id="output_panel" class="panel hidden">
