@@ -9,7 +9,7 @@ body {	background:#000; }
 #outer { position: relative; }
 
 /* panels */
-#screen { width: 885px; background: #333; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
+#screen { width: 885px; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
 .panel { padding: 30px 10px 30px 30px; border: 5px solid #FFF; }
 .poppanel { background: rgba(51,51,51,0.6); position: absolute; z-index: 100000; padding: 10px; transition: all 0.2s; opacity: 1}
 .poppanel input.button { font-family: 'IM Fell DW Pica SC', serif;}
@@ -73,6 +73,12 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .action_name { color: #F8FEC7; }
 .darken {	-webkit-filter: brightness(0.6); }
 
+/* ships */
+#active_ship { position: absolute; z-index: 800;}
+.ship { position: absolute; left: 10px; z-index:799;}
+.ship_drowcruiser { background:url(../images/ship_drowcruiser_810x900.png) no-repeat; width: 810px; height: 900px; }
+.ship_deadblimp	{ background:url(../images/ship_deadblimp_676x900.png) no-repeat; width: 676px; height: 900px; }
+
 /* characters */
 #active_character { position: absolute; z-index: 1000;}
 .character { position: absolute; left: 10px; z-index:999;}
@@ -83,6 +89,13 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .character_tentacles 	{ background:url(../images/character_tentacles_752x900.png) no-repeat; width: 752px; height: 900px; }
 .character_deadsoldier 	{ background:url(../images/character_deadsoldier_667x900.png) no-repeat; width: 667px; height: 900px; }
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); /*filter: url(images/shadow.svg#drop-shadow); */}
+
+.avatar { position: relative; overflow: hidden; height: 200px; width: 200px; border: 3px #fff outset }
+.avatar_image { zoom: 0.4; position:absolute; top: -46px; left: -57px;}
+.avatar_image.character_unknown { zoom: 0.7; top: 40px; left: 42px; }
+.avatar_image.character_drowarcher { zoom: 0.6; top: 44px; }
+.avatar_image.character_shaman { zoom: 0.55; top: -222px; left: -81px; }
+.avatar_image.character_centipede { zoom: 0.52; top: -37px; left: -57px; }
 
 /* icons */
 #character_stats { position: absolute; top: 100px; width: 600px; height: 70px;}

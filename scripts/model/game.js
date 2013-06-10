@@ -94,12 +94,6 @@ define(
 				// Create a new player and add it to the area of players:
 				this.players[playerID] = new Player(params);
 				
-				
-				// Loop through all the properties in params
-				//       and set accordingly.
-				// Note: this is coming from a DB request 
-				// this.players[playerID].prop = value
-				
 			},
 			
 			/**
@@ -117,14 +111,25 @@ define(
 				// Create a new player and add it to the area of players:
 				this.ships[shipID] = new Ship(params);
 				
+			},
+
+			/**
+			 * Called when adding a character to the game.
+			 */
+			addCharacter: function(characterID, params) {
 				
-				// Loop through all the properties in params
-				//       and set accordingly.
-				// Note: this is coming from a DB request 
-				// this.players[playerID].prop = value
+				console.log(' -- (game.js) addCharacter function', params);
+				
+				// Check if the characterID already exists
+				if (this.characters[characterID] != null) {
+					// Do whatever you need
+				}
+				
+				// Create a new character and add it to the array of characters:
+				this.characters[characterID] = new Character(params);
 				
 			},
-						
+			
 			/**
 			 * Called when a player leaves the game
 			 */
@@ -235,15 +240,31 @@ define(
 				// Add the player to the game:
 				this.addPlayer(data.playerID, data);
 				
-				//console.log(' - (game.js) addShip call');
-				// Add the player's ship to the game:
-				this.addShip(data.playerID, data);
-				
 				// TO DO: 
 					// Create a look up for ship and characters, based on player.
 				
 				return data.playerID;
 			},
+
+			chooseShip: function(data) {
+				
+				console.log(' - (game.js) addShip call');
+				
+				// Add the player's ship to the game:
+				this.addShip(data.playerID, data);
+				
+			},
+
+			chooseCharacter: function(data) {
+				
+				console.log(' - (game.js) addShip call');
+				
+				// Add the player's character to the game:
+				this.addCharacter(data.playerID, data);
+				
+			},
+
+
 			
 			/**
 			 * Called when a starting a new game
