@@ -114,14 +114,14 @@ define(function(){
 		});
 
 		// Ship Selection Screen:
-		$(document).on('mouseover', '#ship_selection:not(.ships_chosen) li', function() {
+		$(document).on('mouseover', '#ship_selection:not(.ships_chosen):not(.ship_unknown) li', function() {
 			var cname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			console.log('set ship: ' + cname);
 			output.setShip(cname);
 		});
 
 		// Character Selection Screen:
-		$(document).on('mouseover', '#character_selection:not(.characters_chosen) li', function() {
+		$(document).on('mouseover', '#character_selection:not(.characters_chosen):not(.character_unknown) li', function() {
 			var cname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			console.log('set character: ' + cname);
 			output.setCharacter(cname);

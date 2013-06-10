@@ -34,12 +34,11 @@ define(function(){
 
 		setShip: function(shipname) {
 			$('#active_ship').removeClass().addClass('ship_'+shipname).addClass('shadowfilter');
-		}
-
+		},
 
 		setCharacter: function(charactername) {
 			$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
-		}
+		},
 		
 		displayTurnTimer: function() {
 			$('#remainingtime').html(game.getRemainingTime());
