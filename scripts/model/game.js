@@ -345,6 +345,24 @@ define(
 			},
 			
 			// Accessor functions:
+
+			setShip: function(data) {
+				console.log(" -- (game.js) setShip ", data);
+
+				//this.ships[data.playersID].setName(data.name);
+
+				// Create an object for the new ship:
+				var newShipObj = {};
+				newShipObj.name = data.name;
+				newShipObj.playerID = data.playerID;
+				newShipObj.shipID = data.shipID;
+				newShipObj.teamID = data.teamID;
+
+				// Add the new ship:
+				this.addShip(data.shipID, newShipObj);
+			},
+
+
 			getTeamID: function(playerID) { return this.players[playerID].getTeamID(); },
 			getPlayerCount: function() { return Object.keys(this.players).length;},
 			getRemainingTime: function() { return this.currentTurnTimeRemaining; },

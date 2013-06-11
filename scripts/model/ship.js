@@ -3,7 +3,7 @@ define(function(){
 	// Ship class constructor
 	function Ship(params) {
 		
-		// console.log(" --- (ship.js Constructor) Creating a new ship with parameters: ", params);
+		console.log(" --- (ship.js Constructor) Creating a new ship with parameters: ", params);
 		
 		this.shipID = params.shipID;
 		this.name = params.name;

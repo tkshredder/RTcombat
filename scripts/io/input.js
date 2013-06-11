@@ -114,14 +114,24 @@ define(function(){
 		});
 
 		// Ship Selection Screen:
-		$(document).on('mouseover', '#ship_selection:not(.ships_chosen):not(.ship_unknown) li', function() {
-			var cname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
-			console.log('set ship: ' + cname);
-			output.setShip(cname);
+		$(document).on('mouseover', '#ship_selection:not(.ships_chosen) li:not(.unknown)', function() {
+			//console.log($(this).data());
+			//console.log('set ship: ' + cname);
+			output.setShip($(this).data());
 		});
 
+		$(document).on('click', '#ship_selection:not(.ships_chosen) li:not(.unknown)', function() {
+			
+			console.log('clicked on a ship! myID: ', wi.client.getMyID());
+
+			var shipname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
+			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:shipname});
+		});
+
+
+
 		// Character Selection Screen:
-		$(document).on('mouseover', '#character_selection:not(.characters_chosen):not(.character_unknown) li', function() {
+		$(document).on('mouseover', '#character_selection:not(.characters_chosen) li:not(.unknown)', function() {
 			var cname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			console.log('set character: ' + cname);
 			output.setCharacter(cname);

@@ -13,6 +13,7 @@ define(function(){
 		// Animation variables (build this out)
 		this.slideDuration = 0.3;
 		this.timeline;
+		this.timelinemax;
 		
 		// Current Animation:
 		this.target;
@@ -113,7 +114,27 @@ define(function(){
 				.to(this.target, 0, {backgroundPosition: "0px 0px", delay: 0.5, onComplete:this.displayResults})
 				.to(this.target, 0, {delay:3, onComplete:this.playNext});
 		
+		},
+
+		floatBoat: function () {
+			this.target = document.getElementById("active_ship");//'#active_ship';
+			this.timelinemax = new TimelineMax({paused:true});
+			//console.log(this.target);
+			//TweenMax.to(this.target, 3, {y:"50px", repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			this.timelinemax.to(this.target, 3, {y:"50px", repeat:-1, yoyo:true, ease:Power1.easeInOut}).to(this.target, 3, {y:"0px", repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			this.timelinemax.repeat(-1);
+			this.timelinemax.play();
+			/*var boat = document.getElementById("boat");
+			TweenMax.to(boat, 5, {y:"50px", repeat:-1, repeatDelay:0.5, yoyo:true, ease:Power1.easeInOut});
+			*/
+		},
+
+		stopFloat: function() {
+			this.timelinemax.stop();
 		}
+
+
+
 	}
 	
 	return CombatAnimation;

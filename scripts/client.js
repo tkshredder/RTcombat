@@ -23,7 +23,8 @@ define(
 		this.opponentID;
 		this.totalSkew;
 		
-		
+		animator.floatBoat();
+
 		// TO DO:
 		// Move this?
 		function callback() {
@@ -148,17 +149,26 @@ define(
 				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
 			} else {
 				output.displayWaitingMessage(data.isme);
-				
 			}
 			
+			output.hidePanels(['login', 'welcome']);
+			output.showPanels('chooseship');
+
 		});
-		
-		
-		
-		
-		
-		
-		
+
+
+		socket.on('chooseShip', function(data) {
+			
+			// Update the game:
+			game.setShip(data);
+
+			// Ship chosen. Allow user to choose characters.
+			output.hidePanels('chooseship');
+			output.showPanels('choosecharacters');
+
+		});
+
+
 		
 		// Event: startGame
 		// Description: Fires when a new game starts. Updates client, game, output

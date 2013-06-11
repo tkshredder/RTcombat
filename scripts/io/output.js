@@ -32,8 +32,13 @@ define(function(){
 			$('#opponentname').html(game.getPlayerName(names.opponentID));
 		},
 
-		setShip: function(shipname) {
+		setShip: function(data) {
+			
+			var shipname = data.name.trim().replace(/\s/g, '').toLowerCase();
+			
+			$('#active_entity_label').html(data.name);
 			$('#active_ship').removeClass().addClass('ship_'+shipname).addClass('shadowfilter');
+
 		},
 
 		setCharacter: function(charactername) {

@@ -91,7 +91,24 @@ requirejs(
 				socket.emit('sendchat', data);
 				socket.broadcast.emit('sendchat', data);
 			});
+
+
+
+
+
+			socket.on('chooseShip', function(data) {
+				console.log('Event: chooseShip', data);
+
+				game.setShip(data);
+
+				socket.emit('chooseShip', data);
+				socket.broadcast.emit('chooseShip', data);
+			});
+
+
+
 			
+
 			socket.on('playerReady', function(data) {
 				console.log('Event: playerReady', data);
 				

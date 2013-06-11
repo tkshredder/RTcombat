@@ -79,6 +79,8 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 #chooseship_panel { background: rgba(243,161,92,0.6); }
 #chooseship_panel h1 { text-align: center; font-size: 44px; text-transform: uppercase; text-shadow: 3px 3px #333; }
 
+#active_entity_label { position: absolute; z-index: 1002031; text-shadow: 3px 3px #333; color: rgb(211, 240, 2); font-size: 80px; width: 700px; text-align: center;}
+
 /* ships */
 #active_ship { position: absolute; z-index: 800;}
 .ship { position: absolute; left: 10px; z-index:799;}
