@@ -175,11 +175,15 @@ define(
 
 		socket.on('addCharacter', function(data) {
 			
-			console.log(' --- (client.js) addCharacter event', data)
+			console.log(' -- (client.js) addCharacter event', data)
 
 
 			// Update the game:
-			game.addCharacter(data);
+			game.addCharacter(data.playerID, data);
+
+			if (game.getPlayerCharacterCount(data.playerID) == 3) {
+				game.logPlayersCharacters(data.playerID);
+			}
 
 
 		});

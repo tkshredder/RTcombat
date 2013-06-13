@@ -120,21 +120,28 @@ define(
 			/**
 			 * Called when adding a character to the game.
 			 */
-			addCharacter: function(params) {
+			addCharacter: function(playerID, params) {
 				
-				console.log(' -- (game.js) addCharacter', params);
+				console.log(' --- (game.js) addCharacter', params);
 				
 				// NEED: next available character slot
-				var characterID = this.getNextAvailableCharacterID;
+				var characterID = this.getNextAvailableCharacterID(playerID);
 
+				console.log('     ----- adding new character at characterID: ' + characterID);
+				console.log('      --- this.characters['+playerID+']: ', this.characters[playerID]);
+				
+				// Check if the array for this player's character already exists
+				if (this.characters[playerID] == null) {
+					this.characters[playerID] = [];
+				}
 
 				// Check if the characterID already exists
-				if (this.characters[characterID] != null) {
+				if (this.characters[playerID][characterID] != null) {
 					// Do whatever you need
 				}
 				
 				// Create a new character and add it to the array of characters:
-				this.characters[characterID] = new Character(params);
+				this.characters[playerID][characterID] = new Character(params);
 				
 			},
 
@@ -381,7 +388,7 @@ define(
 
 
 			getNextAvailableCharacterID: function(playerID) {
-				console.log(' -- (game.js) getNextAvailableCharacterID for playerID ' + playerID)
+				//console.log(' -- (game.js) getNextAvailableCharacterID for playerID ' + playerID)
 				
 				// Create an empty array to store characters:
 				if (this.characters[playerID] == null) 
@@ -390,21 +397,36 @@ define(
 
 				//if (this.characters[playerID] == null && this.characters[playerID].isArray)
 
-				return this.characters[playerID].length+1;
+				return this.characters[playerID].length;
 
 			},
 
 			getNextAvailableCharacterSlotID: function(playerID) { 
-				console.log(' -- (game.js) getNextAvailableCharacterSlotID for playerID ' + playerID)
 				
-				// Need to get which character(s) (if any) have been added for playerID
+				// Need to get which character(s) (if any) have been added for playerID.
+				// Check the characters array by index of the playerID:
+				if (this.characters[playerID] == null) {
 
+					// Create an empty array to store characters for this player:
+					this.characters[playerID] = [];
+				}
 
+				// console.log(' --- (game.js) getNextAvailableCharacterSlotID for playerID ' + playerID + ': ' + (this.characters[playerID].length+1));
+				
+				return this.characters[playerID].length+1;
+			},
 
-				return this.characters.length+1;
+			getPlayerCharacterCount: function(playerID) {
+				if (this.characters[playerID] == null) {
+					return 0;
+				}
+				return this.characters[playerID].length;
 			},
 			
+			logPlayersCharacters: function(playerID) {
 
+				console.log(this.characters[playerID]);
+			},
 
 			getTeamID: function(playerID) { return this.players[playerID].getTeamID(); },
 			getPlayerCount: function() { return Object.keys(this.players).length;},

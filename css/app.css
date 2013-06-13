@@ -44,7 +44,8 @@ li.disabled { cursor: default !important; }
 .order { position: absolute; right: 0; top: 0; }
 
 /* form elements */
-input.dark { background: #333; color: #FFF;border: 1px solid #FFF; padding: 10px; font-family: 'IM Fell DW Pica SC', serif;font-size: 20px;text-transform: uppercase; text-align: center;}
+input { font-family: 'IM Fell DW Pica SC', serif; }
+input.dark { background: #333; color: #FFF;border: 1px solid #FFF; padding: 10px; font-size: 20px;text-transform: uppercase; text-align: center;}
 input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 14px; width: 300px; text-align: left}
 
 /* buttons */
@@ -76,19 +77,22 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 /* page backgrounds */
 #page_bg { position: absolute; width: 100%; height: 100%; background: url(../images/the_ocean_by_eluva-d48z4wx.jpg); background-size: cover; }
 
-#chooseship_panel { width: 63%; float: right;}
+/* panel background */
+#chooseship_panel { width: 64%; float: right;}
 #chooseship_panel, #choosecharacters_panel { background: rgba(243,161,92,0.6); }
 #chooseship_panel h1, #choosecharacters_panel h1 { text-align: center; font-size: 44px; text-transform: uppercase; text-shadow: 3px 3px #333; }
+#myteam_panel { background: rgba(219,221,203,0.8); }
 
-
+/* labels */
 #active_entity_label { position: absolute; z-index: 1002031; text-shadow: 3px 3px #333; color: rgb(211, 240, 2); font-size: 80px; width: 700px; text-align: center;}
+.textshadow { text-shadow: 3px 3px #333;}
 
 /* ships */
 #active_ship { position: absolute; z-index: 800;}
 .ship { position: absolute; left: 10px; z-index:799;}
 .ship_drowcruiser { background:url(../images/ship_drowcruiser_809x880.png) no-repeat; width: 809px; height: 880px; }
 .ship_deadblimp	{ background:url(../images/ship_deadblimp_676x900.png) no-repeat; width: 676px; height: 900px; }
-.ship_unknown {  }
+.ship_unknown { background: url(../images/lock.png) no-repeat; width: 256px; height: 256px;}
 
 /* characters */
 #active_character { position: absolute; z-index: 1000;}
@@ -99,9 +103,10 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .character_drowarcher 	{ background:url(../images/character_drowarcher_550x900.png) no-repeat; width: 550px; height: 900px; }
 .character_tentacles 	{ background:url(../images/character_tentacles_752x900.png) no-repeat; width: 752px; height: 900px; }
 .character_deadsoldier 	{ background:url(../images/character_deadsoldier_667x900.png) no-repeat; width: 667px; height: 900px; }
+.character_unknown { background: url(../images/lock.png) no-repeat; width: 256px; height: 256px;}
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); /*filter: url(images/shadow.svg#drop-shadow); */}
 
-.avatar { position: relative; overflow: hidden; height: 200px; width: 200px; border: 3px #fff outset }
+.avatar { position: relative; overflow: hidden; height: 100px; width: 100px; border: 3px #fff outset }
 .avatar_small { position: relative; overflow: hidden; height: 150px; width: 150px; background: none; }
 
 .avatar_image { zoom: 0.4; position:absolute; top: -46px; left: -57px;}

@@ -108,7 +108,7 @@ requirejs(
 			socket.on('addCharacter', function(data) {
 				console.log('Event: addCharacter', data);
 
-				game.addCharacter(data);
+				game.addCharacter(data.playerID, data);
 
 				socket.emit('addCharacter', data);
 				//socket.broadcast.emit('chooseShip', data);
