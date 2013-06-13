@@ -10,7 +10,7 @@ body {	background:#000; }
 
 /* panels */
 #screen { width: 845px; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
-.panel { padding: 20px 10px 20px 20px; border: 5px solid #FFF; }
+.panel { padding: 20px 10px 20px 20px; border: 5px solid #FFF; background: rgba(0,0,0,0.7); }
 .poppanel { background: rgba(51,51,51,0.6); position: absolute; z-index: 100000; padding: 10px; transition: all 0.2s; opacity: 1}
 .poppanel input.button { font-family: 'IM Fell DW Pica SC', serif;}
 .panelcontrol { position: absolute; top: 5px; right: 5px; cursor: pointer; background: #666; padding: 0 4px;}

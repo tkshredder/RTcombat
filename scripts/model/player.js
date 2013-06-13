@@ -10,7 +10,8 @@ define(function(){
 		this.shipID = params.shipID;
 		this.commandsAvailable = 3;
 		this.teamID = params.teamID;
-			
+		
+		this.teamChosen = false;
 		this.playerReady = false;
 	
 		// Each Player has their own set of commands:
@@ -132,6 +133,8 @@ define(function(){
 		getPossibleCommands: function() { return this.possibleCommands; },
 		setPossibleCommands: function(value) { this.possibleCommands = value; },
 		getCommandsAvailable: function() { return this.commandsAvailable; },
+		getTeamChosen: function() { return this.teamChosen; },
+		setTeamChosen: function(value) { this.teamChosen = value; },
 		getPlayerReady: function() { return this.playerReady; },
 		setPlayerReady: function(value) { this.playerReady = value; }
 

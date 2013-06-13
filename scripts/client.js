@@ -175,15 +175,46 @@ define(
 
 		socket.on('addCharacter', function(data) {
 			
-			console.log(' -- (client.js) addCharacter event', data)
-
+			console.log('Event: addCharacter', data)
 
 			// Update the game:
 			game.addCharacter(data.playerID, data);
 
+			// Debug:
 			if (game.getPlayerCharacterCount(data.playerID) == 3) {
 				game.logPlayersCharacters(data.playerID);
 			}
+		});
+
+		socket.on('removeCharacter', function(data) {
+			
+			console.log('Event: removeCharacter', data)
+
+			// Update the game:
+			game.removeCharacter(data.playerID, data);
+
+			// Debug:
+			console.log('Player '+data.playerID+' characters post removal: ')
+			game.logPlayersCharacters(data.playerID);
+		});
+
+
+
+
+
+		socket.on('chooseTeam', function(data) {
+			
+			console.log('Event: chooseTeam', data)
+
+			// Update the game:
+			game.chooseTeam(data.playerID);
+
+			// Debug:
+			console.log('Player '+data.playerID+' team chosen.');
+
+			// Update DOM:
+			output.hidePanels(['choosecharacters', 'myteam']);
+			output.showPanels('output');
 
 
 		});

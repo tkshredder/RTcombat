@@ -122,13 +122,13 @@ define(
 			 */
 			addCharacter: function(playerID, params) {
 				
-				console.log(' --- (game.js) addCharacter', params);
+				//console.log(' --- (game.js) addCharacter', params);
 				
 				// NEED: next available character slot
 				var characterID = this.getNextAvailableCharacterID(playerID);
 
-				console.log('     ----- adding new character at characterID: ' + characterID);
-				console.log('      --- this.characters['+playerID+']: ', this.characters[playerID]);
+				//console.log('     ----- adding new character at characterID: ' + characterID);
+				//console.log('      --- this.characters['+playerID+']: ', this.characters[playerID]);
 				
 				// Check if the array for this player's character already exists
 				if (this.characters[playerID] == null) {
@@ -142,6 +142,48 @@ define(
 				
 				// Create a new character and add it to the array of characters:
 				this.characters[playerID][characterID] = new Character(params);
+				
+			},
+
+			/**
+			 * Called when removing a character to the game.
+			 */
+			removeCharacter: function(playerID, characterID) {
+				
+				console.log(' --- (game.js) removeCharacter', characterID);
+				
+				console.log('      --- this.characters['+playerID+']: ', this.characters[playerID]);
+				
+				// Check if the array for this player's character already exists
+				if (this.characters[playerID] == null) {
+					// Impossible to remove
+					return;
+				}
+
+				// Check if the characterID already exists
+				if (this.characters[playerID][characterID] == null) {
+					// Impossible to remove 
+					return;
+				}
+				
+				// Set the object to null:
+				this.characters[playerID][characterID] = null;
+				
+			},
+
+
+			/**
+			 * Called when a player chooses their team
+			 */
+			chooseTeam: function(playerID) {
+				
+				console.log(' --- (game.js) chooseTeam', playerID);
+				
+				// TO DO:
+				// Add error checking for size of team (this.characters[playerID].length) vs max team size
+				
+				// Set the object to null:
+				this.players[playerID].setTeamChosen(true);
 				
 			},
 
@@ -452,7 +494,7 @@ define(
 				return -1;
 			},
 			
-			
+			getPlayerTeamChosen: function(playerID) { return this.players[playerID].getTeamChosen(); },
 			getMasterCommandQueue: function() { return this.masterCommandQueue; },
 			setCommandQueue: function(playerID, value) { this.players[playerID].setCommandQueue = value; },
 			getCommandQueue: function(playerID) { return this.players[playerID].getCommandQueue(); },			

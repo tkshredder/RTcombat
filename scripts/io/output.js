@@ -87,6 +87,7 @@ define(function(){
 		
 		displayWaitingMessage: function (isMe) {
 			if (isMe) {
+				$('#output_headline').html('All Set!');
 				$('#output').html('Waiting on another player to join.');
 			} else {
 				$('#output').html('Your opponent is waiting for you to join!');

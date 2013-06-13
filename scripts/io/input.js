@@ -135,12 +135,6 @@ define(function(){
 			sound.play('cv2_menu_tick');
 		});
 
-
-
-
-
-
-
 		// Character Selection Screen:
 		$(document).on('mouseover', '#character_selection:not(.characters_chosen) li:not(.unknown)', function() {
 			
@@ -152,8 +146,7 @@ define(function(){
 
 		$(document).on('click', '#character_selection li:not(.unknown)', function() {
 			
-			console.log('clicked on a character! myID: ', wi.client.getMyID());
-
+			//console.log('clicked on a character! myID: ', wi.client.getMyID());
 			var charactername = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			
 			// Send message to server:
@@ -161,16 +154,18 @@ define(function(){
 			
 			// Update DOM:
 			output.chooseCharacter(wi.game.getNextAvailableCharacterSlotID(wi.client.getMyID()), $(this).data());
-
-
 			sound.play('cv2_menu_tick');
 
+		});	
 
-
-
+		$('#createteam').submit(function(e) { 
+			
+			console.log('createTeam form submit');
+			e.preventDefault(); // Prevent form from submitting
+			
+			wi.socket.emit('chooseTeam', {playerID:wi.client.getMyID()});
+			
 		});
-
-
 
 
 

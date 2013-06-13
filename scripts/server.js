@@ -114,6 +114,46 @@ requirejs(
 				//socket.broadcast.emit('chooseShip', data);
 			});
 
+			socket.on('removeCharacter', function(data) {
+				console.log('Event: removeCharacter', data);
+
+				game.removeCharacter(data.playerID, data);
+
+				socket.emit('removeCharacter', data);
+			});
+
+
+			socket.on('chooseTeam', function(data) {
+				console.log('Event: chooseTeam', data);
+
+				game.chooseTeam(data.playerID);
+
+				socket.emit('chooseTeam', data);
+				//socket.broadcast.emit('chooseShip', data);
+
+
+				// Check if we have two players and both players are ready:
+				if (game.getPlayerCount() == 2) {
+					
+
+					console.log('player 1 team chosen: ' + game.getPlayerTeamChosen(1));
+					console.log('player 2 team chosen: ' + game.getPlayerTeamChosen(2));
+					
+					// TO DO:
+					// Determine which playerIDs are being used for this game.
+
+					if (game.getPlayerTeamChosen(1) == true && game.getPlayerTeamChosen(2) == true) {
+						game.startGame();
+						socket.emit('startGame', {message:"start"});
+						socket.broadcast.emit('startGame', {message:"start"});
+						
+						startNextTurn();
+					}
+				}
+
+
+
+			});
 
 
 			
@@ -188,6 +228,9 @@ requirejs(
 					state: game.save()
 				});
 			});
+
+
+
 		
 			// Client joins the game as a player
 			socket.on('join', function(data) {
@@ -219,13 +262,13 @@ requirejs(
 				
 				//console.log("Current number of players: " + game.getPlayerCount());
 				
-				if (game.getPlayerCount() == 2) {
+				/*if (game.getPlayerCount() == 2) {
 					game.startGame();
 					socket.emit('startGame', {message:"start"});
 					socket.broadcast.emit('startGame', {message:"start"});
 					
 					startNextTurn();
-				}
+				}*/
 			
 			});
 		 
