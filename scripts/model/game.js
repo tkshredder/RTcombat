@@ -113,13 +113,21 @@ define(
 				
 			},
 
+
+
+
+
 			/**
 			 * Called when adding a character to the game.
 			 */
-			addCharacter: function(characterID, params) {
+			addCharacter: function(params) {
 				
-				console.log(' -- (game.js) addCharacter function', params);
+				console.log(' -- (game.js) addCharacter', params);
 				
+				// NEED: next available character slot
+				var characterID = this.getNextAvailableCharacterID;
+
+
 				// Check if the characterID already exists
 				if (this.characters[characterID] != null) {
 					// Do whatever you need
@@ -129,6 +137,12 @@ define(
 				this.characters[characterID] = new Character(params);
 				
 			},
+
+
+
+
+
+
 			
 			/**
 			 * Called when a player leaves the game
@@ -361,6 +375,35 @@ define(
 				// Add the new ship:
 				this.addShip(data.shipID, newShipObj);
 			},
+
+
+
+
+
+			getNextAvailableCharacterID: function(playerID) {
+				console.log(' -- (game.js) getNextAvailableCharacterID for playerID ' + playerID)
+				
+				// Create an empty array to store characters:
+				if (this.characters[playerID] == null) 
+					this.characters[playerID] = [];
+
+
+				//if (this.characters[playerID] == null && this.characters[playerID].isArray)
+
+				return this.characters[playerID].length+1;
+
+			},
+
+			getNextAvailableCharacterSlotID: function(playerID) { 
+				console.log(' -- (game.js) getNextAvailableCharacterSlotID for playerID ' + playerID)
+				
+				// Need to get which character(s) (if any) have been added for playerID
+
+
+
+				return this.characters.length+1;
+			},
+			
 
 
 			getTeamID: function(playerID) { return this.players[playerID].getTeamID(); },

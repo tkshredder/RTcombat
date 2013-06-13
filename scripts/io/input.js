@@ -26,9 +26,14 @@ define(function(){
 			wi.onJoin();
 		});
 
-		$('#login').click(function() {
+
+		$('#login').submit(function(e) {
+			
+			e.preventDefault(); // Prevent form from submitting
+
 			name = $('#loginname').val();
 			console.log('login name: ', name)
+			
 			if (name != '') {
 
 				wi.socket.emit('join', {name: name});
@@ -118,24 +123,58 @@ define(function(){
 			//console.log($(this).data());
 			//console.log('set ship: ' + cname);
 			output.setShip($(this).data());
+			sound.play('menu_tick');
 		});
 
-		$(document).on('click', '#ship_selection:not(.ships_chosen) li:not(.unknown)', function() {
+		$(document).on('click', '#ship_selection li:not(.unknown)', function() {
 			
-			console.log('clicked on a ship! myID: ', wi.client.getMyID());
+			//console.log('clicked on a ship! myID: ', wi.client.getMyID());
 
 			var shipname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:shipname});
+			sound.play('cv2_menu_tick');
 		});
+
+
+
+
 
 
 
 		// Character Selection Screen:
 		$(document).on('mouseover', '#character_selection:not(.characters_chosen) li:not(.unknown)', function() {
-			var cname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
-			console.log('set character: ' + cname);
-			output.setCharacter(cname);
+			
+			// Set character
+			output.setCharacter($(this).data());
+			sound.play('menu_tick');
 		});
+
+
+		$(document).on('click', '#character_selection li:not(.unknown)', function() {
+			
+			console.log('clicked on a character! myID: ', wi.client.getMyID());
+
+			var charactername = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
+			
+			// Send message to server:
+			wi.socket.emit('addCharacter', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:charactername});
+			
+			// Update DOM:
+			output.chooseCharacter(wi.game.getNextAvailableCharacterSlotID(wi.client.getMyID()), $(this).data());
+
+
+			sound.play('cv2_menu_tick');
+
+
+
+
+		});
+
+
+
+
+
+
 		
 		// COMMANDS:
 		$(document).on('click', '#commands li', function() {

@@ -5,9 +5,10 @@ define(function(){
 	 * TO DO: migrate display Message X to displayMessages(messages, params).
 	 */
 	
-	function WindowOutput(gameInstance) {
+	function WindowOutput(gameInstance, animator) {
 		
 		game = gameInstance;
+		animator = animator;
 		wo = this;
 		
 		var updateTimer;
@@ -41,9 +42,35 @@ define(function(){
 
 		},
 
-		setCharacter: function(charactername) {
+		setCharacter: function(data) {
+			//$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
+			var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
+			
+			$('#active_entity_label').html(data.name);
 			$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
+
 		},
+
+
+
+
+
+
+
+		chooseCharacter: function(slot, data) {
+
+			var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
+
+			// NEED: Which li slot is currently available?
+			$('#myteam_'+slot+' .avatar_image').addClass('character_'+charactername);
+
+		},
+
+
+
+
+
+
 		
 		displayTurnTimer: function() {
 			$('#remainingtime').html(game.getRemainingTime());
@@ -113,9 +140,9 @@ define(function(){
 			$('#boat_bg').removeClass().addClass('boatbg_' + teamID);
 		},
 		
-		setCharacter: function (charactername) {
+		/*setCharacter: function (charactername) {
 			$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
-		},
+		},*/
 		
 		disableCommands: function () {
 			$('#commands li').each(function(index, element) {
@@ -164,6 +191,36 @@ define(function(){
 
 			for (var key in list) {
 				$("#"+list[key]+"_panel").removeClass('hidden');
+			}
+		},
+
+		stopAnimation: function(animationID) {
+			animator.stopAnimation(animationID);
+		},
+
+		hideElements: function (list) {
+			
+			// Add support for a single string passed in:
+			if (typeof(list) === 'string') {
+				oldval = list;
+				list = [oldval];
+			}
+			
+			for (var key in list) {
+				$("#"+list[key]).addClass('hidden');
+			}
+		},
+
+		showElements: function (list) {
+			
+			// Add support for a single string passed in:
+			if (typeof(list) === 'string') {
+				oldval = list;
+				list = [oldval];
+			}
+			
+			for (var key in list) {
+				$("#"+list[key]).removeClass('hidden');
 			}
 		},
 

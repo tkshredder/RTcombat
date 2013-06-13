@@ -153,7 +153,7 @@ define(
 			
 			output.hidePanels(['login', 'welcome']);
 			output.showPanels('chooseship');
-
+			output.setShip({name:'Drow Cruiser'})
 		});
 
 
@@ -164,9 +164,35 @@ define(
 
 			// Ship chosen. Allow user to choose characters.
 			output.hidePanels('chooseship');
-			output.showPanels('choosecharacters');
+			output.hideElements('active_ship');
+			output.showPanels(['choosecharacters','myteam']);
+			output.showElements('active_character');
+			output.stopAnimation('ship');
+		});
+
+
+
+
+		socket.on('addCharacter', function(data) {
+			
+			console.log(' --- (client.js) addCharacter event', data)
+
+
+			// Update the game:
+			game.addCharacter(data);
+
 
 		});
+
+
+
+
+
+
+
+
+
+
 
 
 		

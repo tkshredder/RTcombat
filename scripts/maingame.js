@@ -46,9 +46,9 @@ require(
 		// Create an instance of our main game class:
 		game = new Game();
 		
-		output = new Output(game),
 		sound = new Sound(SoundJS),
 		animator = new CombatAnimation(game, $, GSAP),
+		output = new Output(game, animator),
 		client = new Client(game, socket, output, sound, animator),
 		input = new Input(game, client, output, sound, socket, $);
 		

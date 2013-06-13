@@ -31,8 +31,10 @@
 		
 		<div id="login_panel" class="centerpanel panel hidden">
 			<h1>Enter your name</h1>
-			<input id="loginname" class="dark">
-			<a class="button" id="login">Login</a>
+			<form id="login">
+				<input id="loginname" class="dark">
+				<input class="button" value="Login" type="submit">
+			</form>
 		</div>
 		
 		<div id="center_panel" class="centerpanel panel hidden">
@@ -116,6 +118,22 @@
 				</li>
 			</ul>
 		</div>
+
+		<div id="myteam_panel" class="panel hidden">
+			<h1>Your Team</h1>
+			<ul>
+				<li id="myteam_1" class="avatar_small">
+					<div class="avatar_image"></div>
+				</li>
+				<li id="myteam_2" class="avatar_small">
+					<div class="avatar_image"></div>
+				</li>
+				<li id="myteam_3" class="avatar_small">
+					<div class="avatar_image"></div>
+				</li>
+			</ul>
+		</div>
+
 
 		<div id="output_panel" class="panel hidden">
 			<h1 id="output_headline"></h1>

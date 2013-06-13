@@ -131,7 +131,18 @@ define(function(){
 
 		stopFloat: function() {
 			this.timelinemax.stop();
+		},
+
+		stopAnimation: function(animiationID) {
+			// TO DO:
+			// Flesh this out the animator class with IDs for stored animations
+
+			// Just call the stop float function for now.
+			this.stopFloat();
+
 		}
+
+
 
 
 
