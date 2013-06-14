@@ -13,7 +13,7 @@ define(function(){
 		this.dodge = params.dodge;
 		
 		// TO DO:
-		// Dynamically load actions -- 
+		// Dynamically load actions from action library
 		this.actions = [];
 
 		return(this);
@@ -38,7 +38,8 @@ define(function(){
 		setCourage: function(value) { this.courage = value; },
 		getDodge: function() {return( this.dodge ); },
 		setDodge: function(value) { this.dodge = value; },
-			
+		getActions: function() { return this.actions; },
+		setActions: function(actions) { this.actions = actions; }
 	};
 	
 	return Character;

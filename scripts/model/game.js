@@ -3,11 +3,12 @@ define(
 	[
 	"model/character",
 	"model/player",
-	"model/ship"
+	"model/ship",
+	"model/actionlibrary"
 	],
-	function( Character, Player, Ship ){
+	function( Character, Player, Ship, ActionLibrary ){
 	 
-	 	function Game() {
+	 	function Game(actionlibrary) {
 			
 			g = this;
 			
@@ -15,7 +16,8 @@ define(
 			this.players = [];
 			this.ships = [];
 			this.masterCommandQueue = [];
-			
+			this.actionlibrary = actionlibrary;
+
 			this.updateCount = 0;
 			this.timer = null;
 			this.currentRound = 0;
@@ -122,7 +124,7 @@ define(
 			 */
 			addCharacter: function(playerID, params) {
 				
-				//console.log(' --- (game.js) addCharacter', params);
+				console.log(' --- (game.js) addCharacter', params);
 				
 				// NEED: next available character slot
 				var characterID = this.getNextAvailableCharacterID(playerID);
@@ -142,7 +144,7 @@ define(
 				
 				// Create a new character and add it to the array of characters:
 				this.characters[playerID][characterID] = new Character(params);
-				
+				this.characters[playerID][characterID].setActions(this.actionlibrary.getActions(params.name));
 			},
 
 			/**
@@ -207,10 +209,14 @@ define(
 			 * Called at the start of a turn to update the possible commands for all players
 			 */
 			loadPlayerCommands: function() {
-				for (id in this.players) {
+				
+
+				/*for (id in this.players) {
 					var player = this.players[id];
 					player.loadPlayerCommands();
 				}
+				*/
+
 			},
 			
 			/**
@@ -501,8 +507,31 @@ define(
 			
 			getExecutedCommands: function(playerID) { return this.players[playerID].getExecutedCommands(); },
 			setExecutedCommands: function(value) { this.players[playerID].setExecutedCommands = value; },
-			getPossibleCommands: function(playerID) { return this.players[playerID].getPossibleCommands(); },
-			setPossibleCommands: function(value) { this.players[playerID].setPossibleCommands = value; },
+			getPossibleCommands: function(playerID) { 
+				
+				// TO DO:
+				// Factor in disabled / busy characters.
+				// For now, all actions are available.
+
+				var charActions, allActions;
+
+				// Loop through characters[playerID]
+				for (characterID in this.characters[playerID]) {
+					
+					// Get the characters available actions:
+					charActions = this.characters[playerID][characterID].getActions();
+
+					// Loop through the characters array of actions and add them to the master array:
+					for (actionID in charActions) {
+						allActions.push(charActions[actionID]);						
+					}
+
+				}
+
+				return allActions;
+			
+			},
+			setPossibleCommands: function(playerID, actions) { this.players[playerID].setPossibleCommands = actions; },
 			getCommandsAvailable: function(playerID) { return this.players[playerID].getCommandsAvailable(); },
 			loadPlayerCommands: function(playerID) { this.players[playerID].loadPlayerCommands(); },
 			getNextAction: function() { return this.masterCommandQueue[0]; },
@@ -517,6 +546,17 @@ define(
 			getPlayerName: function(playerID){ return this.players[playerID].getName() },			
 			setPlayerName: function(playerID, value) { this.players[playerID].setName(value) },
 			
+			getPlayersCharactersActions: function(playerID) {
+				var actions;
+				for (characterID in this.characters[playerID]) {
+					actions = this.characters[playerID][characterID].getActions();
+					console.log(actions);
+				}
+				
+				//return
+			},
+
+
 			/***********************************************
 			 * Loading and saving
 			 * TO DO: Evaluate how this handles with saving sessions to / from DB

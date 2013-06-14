@@ -54,10 +54,14 @@ var timer;
 
 requirejs.config({nodeRequire: require});
 requirejs(
-	['model/game'],
-	function (Game) {
+	[
+	'model/game',
+	'model/actionlibrary'
+	],
+	function (Game, ActionLibrary) {
 		
-		var game = new Game();
+		var actionlibrary = new ActionLibrary();
+		var game = new Game(actionlibrary);
 		
 		//game.addPlayer(1, {name:"Albatross"});
 		//game.addPlayer(2, {name:"Zod"});
