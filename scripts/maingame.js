@@ -17,13 +17,13 @@ requirejs.config({
 
 // Set our main variables available across the document for quick access:
 // Ideally these should go into the main function below
-var game, actionlibrary, client, socket, output, input, sound, animator, createjs;
+var game, characterfactory, client, socket, output, input, sound, animator, createjs;
 
 // Load the main application and all required files:
 require(
 	[
 	"model/game",
-	"model/actionlibrary",
+	"model/characterfactory",
 	"lib/socket.io",
 	"io/combatanimation",
 	"io/input",
@@ -34,7 +34,7 @@ require(
 	"gsap",
 	"soundjs"
 	],
-	function(Game, ActionLibrary, SocketIO, CombatAnimation, Input, Output, Sound, Client, $, GSAP, SoundJS){
+	function(Game, CharacterFactory, SocketIO, CombatAnimation, Input, Output, Sound, Client, $, GSAP, SoundJS){
 		
 		
 		// Testing audio...
@@ -45,11 +45,11 @@ require(
 		//socket = io.connect('http://ec2-54-234-252-103.compute-1.amazonaws.com:5050');
 		
 		// Create instances of all classes
-		actionlibrary = new ActionLibrary(),
-		game = new Game(actionlibrary),
+		characterfactory = new CharacterFactory(),
+		game = new Game(characterfactory),
 		sound = new Sound(SoundJS),
 		animator = new CombatAnimation(game, $, GSAP),
-		output = new Output(game, animator),
+		output = new Output(game, animator, characterfactory),
 		client = new Client(game, socket, output, sound, animator),
 		input = new Input(game, client, output, sound, socket, $);
 		

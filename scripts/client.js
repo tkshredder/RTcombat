@@ -147,22 +147,34 @@ define(
 			
 			if ((game.getPlayerCount() == 2) && data.isme) {
 				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
+			
 			} else {
+				// Update DOM for ???
 				output.displayWaitingMessage(data.isme);
 			}
+
+			// Update DOM for me:
+			if (data.isme) {
+				output.hidePanels(['login', 'welcome']);
+				output.showPanels('chooseship');
+				output.setShip({name:'Drow Cruiser'});
+			}
+
 			
-			output.hidePanels(['login', 'welcome']);
-			output.showPanels('chooseship');
-			output.setShip({name:'Drow Cruiser'})
 		});
 
 
+		// Ship chosen. Hide Ship Selection, Load Character Selection
 		socket.on('chooseShip', function(data) {
 			
 			// Update the game:
 			game.setShip(data);
 
-			// Ship chosen. Allow user to choose characters.
+			var theTeamID = game.getTeamID(c.myID);
+			console.log('- (client.js) theTeamID: ' + theTeamID);
+
+			// Update DOM
+			output.writeCharacterSelection(theTeamID);
 			output.hidePanels('chooseship');
 			output.hideElements('active_ship');
 			output.showPanels(['choosecharacters','myteam']);
@@ -180,9 +192,13 @@ define(
 			// Update the game:
 			game.addCharacter(data.playerID, data);
 
-			// Debug:
+			// Update DOM:
 			if (game.getPlayerCharacterCount(data.playerID) == 3) {
-				game.logPlayersCharacters(data.playerID);
+				
+				output.enableCreateTeamSubmit();
+
+				// Debug:
+				//game.logPlayersCharacters(data.playerID);
 			}
 		});
 
@@ -210,7 +226,7 @@ define(
 			game.chooseTeam(data.playerID);
 
 			// Debug:
-			console.log('Player '+data.playerID+' team chosen.');
+			//console.log('Player '+data.playerID+' team chosen.');
 
 			// Update DOM:
 			output.hidePanels(['choosecharacters', 'myteam']);
@@ -283,8 +299,12 @@ define(
 			
 			// Update game:
 			// To do: need to process this on the server?
-			game.loadPlayerCommands(c.myID);
-			
+			//game.loadPlayerCommands(c.myID);
+
+			myActions
+
+			game.setPossibleCommands(c.myID, myActions);
+
 			// Update DOM:
 			output.drawCommands(c.myID);
 			output.showCommands();

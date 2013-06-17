@@ -118,6 +118,9 @@ define(function(){
 			
 		});
 
+
+		// SHIP SELECTION ///////////////////////////////////////////////////////////////
+
 		// Ship Selection Screen:
 		$(document).on('mouseover', '#ship_selection:not(.ships_chosen) li:not(.unknown)', function() {
 			//console.log($(this).data());
@@ -129,11 +132,19 @@ define(function(){
 		$(document).on('click', '#ship_selection li:not(.unknown)', function() {
 			
 			//console.log('clicked on a ship! myID: ', wi.client.getMyID());
+			//console.log($(this).data('name'), $(this).data('team'));
 
 			var shipname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
-			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:shipname});
+			var teamID = $(this).data('team');
+
+			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:shipname, teamID:teamID});
 			sound.play('cv2_menu_tick');
 		});
+
+
+
+
+		// CHARACTER SELECTION ///////////////////////////////////////////////////////////////
 
 		// Character Selection Screen:
 		$(document).on('mouseover', '#character_selection:not(.characters_chosen) li:not(.unknown)', function() {
@@ -143,7 +154,7 @@ define(function(){
 			sound.play('menu_tick');
 		});
 
-
+		// Add character:
 		$(document).on('click', '#character_selection li:not(.unknown)', function() {
 			
 			//console.log('clicked on a character! myID: ', wi.client.getMyID());
@@ -158,9 +169,10 @@ define(function(){
 
 		});	
 
+		// Submit (create) team:
 		$('#createteam').submit(function(e) { 
 			
-			console.log('createTeam form submit');
+			//console.log('createTeam form submit');
 			e.preventDefault(); // Prevent form from submitting
 			
 			wi.socket.emit('chooseTeam', {playerID:wi.client.getMyID()});

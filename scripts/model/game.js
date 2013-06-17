@@ -4,11 +4,11 @@ define(
 	"model/character",
 	"model/player",
 	"model/ship",
-	"model/actionlibrary"
+	"model/characterfactory"
 	],
-	function( Character, Player, Ship, ActionLibrary ){
+	function( Character, Player, Ship, CharacterFactory ){
 	 
-	 	function Game(actionlibrary) {
+	 	function Game(characterfactory) {
 			
 			g = this;
 			
@@ -16,7 +16,7 @@ define(
 			this.players = [];
 			this.ships = [];
 			this.masterCommandQueue = [];
-			this.actionlibrary = actionlibrary;
+			cfactory = characterfactory;
 
 			this.updateCount = 0;
 			this.timer = null;
@@ -103,7 +103,7 @@ define(
 			 */
 			addShip: function(shipID, params) {
 				
-				//console.log(' -- (game.js) addShip function', params);
+				console.log(' -- (game.js) addShip function', params);
 				
 				// Check if the shipID already exists
 				if (this.ships[shipID] != null) {
@@ -124,7 +124,7 @@ define(
 			 */
 			addCharacter: function(playerID, params) {
 				
-				console.log(' --- (game.js) addCharacter', params);
+				//console.log(' --- (game.js) addCharacter', params);
 				
 				// NEED: next available character slot
 				var characterID = this.getNextAvailableCharacterID(playerID);
@@ -143,8 +143,9 @@ define(
 				}
 				
 				// Create a new character and add it to the array of characters:
-				this.characters[playerID][characterID] = new Character(params);
-				this.characters[playerID][characterID].setActions(this.actionlibrary.getActions(params.name));
+				this.characters[playerID][characterID] = cfactory.createCharacter(params.name);
+				
+				//this.characters[playerID][characterID].setActions(this.actionlibrary.getActions(params.name));
 			},
 
 			/**
@@ -179,22 +180,17 @@ define(
 			 */
 			chooseTeam: function(playerID) {
 				
-				console.log(' --- (game.js) chooseTeam', playerID);
+				//console.log(' --- (game.js) chooseTeam', playerID);
 				
 				// TO DO:
 				// Add error checking for size of team (this.characters[playerID].length) vs max team size
 				
-				// Set the object to null:
+				// Set the player's team chosen flag:
 				this.players[playerID].setTeamChosen(true);
 				
 			},
 
-
-
-
-
-
-			
+		
 			/**
 			 * Called when a player leaves the game
 			 */
@@ -476,7 +472,7 @@ define(
 				console.log(this.characters[playerID]);
 			},
 
-			getTeamID: function(playerID) { return this.players[playerID].getTeamID(); },
+			getTeamID: function(playerID) { return this.ships[playerID].getTeamID(); },
 			getPlayerCount: function() { return Object.keys(this.players).length;},
 			getRemainingTime: function() { return this.currentTurnTimeRemaining; },
 			getOpponentID: function(playerID) {

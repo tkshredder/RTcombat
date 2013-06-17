@@ -79,10 +79,10 @@
 			<h1>Choose a ship</h1>
 
 			<ul id="ship_selection" >
-				<li class="avatar" data-name="Drow Cruiser" data-teamID="1">
+				<li class="avatar" data-name="Drow Cruiser" data-team="1">
 					<div class="avatar_image ship_drowcruiser" ></div>
 				</li>
-				<li class="avatar" data-name="Dead Blimp" data-teamID="2">
+				<li class="avatar" data-name="Dead Blimp" data-team="2">
 					<div class="avatar_image ship_deadblimp" ></div>
 				</li>
 				<li class="avatar unknown" data-name="??????">
@@ -98,24 +98,6 @@
 		<div id="choosecharacters_panel" class="panel hidden">
 			<h1>Select a Character</h1>
 			<ul id="character_selection">
-				<li class="avatar" data-name="Shaman">
-					<div class="avatar_image character_shaman" ></div>
-				</li>
-				<li class="avatar" data-name="Drow Archer">
-					<div class="avatar_image character_drowarcher" ></div>
-				</li>
-				<li class="avatar" data-name="Centipede">
-					<div class="avatar_image character_centipede" ></div>
-				</li>
-				<li class="avatar unknown" data-name="??????">
-					<div class="avatar_image character_unknown" ></div>
-				</li>
-				<li class="avatar unknown" data-name="??????">
-					<div class="avatar_image character_unknown"></div>
-				</li>
-				<li class="avatar unknown" data-name="??????">
-					<div class="avatar_image character_unknown" ></div>
-				</li>
 			</ul>
 		</div>
 
@@ -133,7 +115,7 @@
 				</li>
 			</ul>
 			<form id="createteam">
-				<input class="button" value="Create" type="submit">
+				<input id="createteam_submit" class="button disabled" value="Create" type="submit">
 			</form>
 		</div>
 

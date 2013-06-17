@@ -56,17 +56,12 @@ requirejs.config({nodeRequire: require});
 requirejs(
 	[
 	'model/game',
-	'model/actionlibrary'
+	'model/characterfactory'
 	],
-	function (Game, ActionLibrary) {
+	function (Game, CharacterFactory) {
 		
-		var actionlibrary = new ActionLibrary();
-		var game = new Game(actionlibrary);
-		
-		//game.addPlayer(1, {name:"Albatross"});
-		//game.addPlayer(2, {name:"Zod"});
-		
-		//game.sayHello();
+		var characterfactory = new CharacterFactory();
+		var game = new Game(characterfactory);
 		
 		io.sockets.on('connection', function(socket) {
 	
