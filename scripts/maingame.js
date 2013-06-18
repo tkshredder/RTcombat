@@ -25,7 +25,7 @@ require(
 	"model/game",
 	"model/characterfactory",
 	"lib/socket.io",
-	"io/combatanimation",
+	"io/entityanimator",
 	"io/input",
 	"io/output",
 	"io/sound",
@@ -34,11 +34,7 @@ require(
 	"gsap",
 	"soundjs"
 	],
-	function(Game, CharacterFactory, SocketIO, CombatAnimation, Input, Output, Sound, Client, $, GSAP, SoundJS){
-		
-		
-		// Testing audio...
-		createjs = SoundJS;
+	function(Game, CharacterFactory, SocketIO, EntityAnimator, Input, Output, Sound, Client, $, GSAP, SoundJS){
 		
 		// Create an instance of our socket class:
 		socket = io.connect('http://localhost:5050');
@@ -48,13 +44,13 @@ require(
 		characterfactory = new CharacterFactory(),
 		game = new Game(characterfactory),
 		sound = new Sound(SoundJS),
-		animator = new CombatAnimation(game, $, GSAP),
+		animator = new EntityAnimator(game, $, GSAP),
 		output = new Output(game, animator, characterfactory),
 		client = new Client(game, socket, output, sound, animator),
 		input = new Input(game, client, output, sound, socket, $);
-		
+
+		// Stub code for anything that needs to run post init()		
 		//game.sayHello();
-		
 		//output.hidePanels(["commands","vitals"]);
 	}
 );

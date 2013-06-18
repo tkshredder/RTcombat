@@ -1,12 +1,12 @@
 define(function(){
 
 	/**
-	 * Window Combat Animation handler
-	 * Description: Handles animations.
+	 * EntityAnimator class
+	 * Description: Provides wrappers for specific animations used by the games characters and entities (ships, weather, items, etc)
 	 * Requires: GSAP
 	 */
 	
-	function CombatAnimation(game, $, gsap) {
+	function EntityAnimator(game, $, gsap) {
 		
 		ca = this;
 		
@@ -27,8 +27,8 @@ define(function(){
 		return (this);	
 	}
 	
-	// CombatAnimation class methods:
-	CombatAnimation.prototype = {
+	// EntityAnimator class methods:
+	EntityAnimator.prototype = {
 	
 		play: function() {
 			console.log('timeline: ', this.timeline);
@@ -129,16 +129,39 @@ define(function(){
 			*/
 		},
 
-		stopFloat: function() {
-			this.timelinemax.stop();
+		rotateCharacter: function () {
+			this.target = document.getElementById("active_character");//'#active_ship';
+			this.timelinemax = new TimelineMax({paused:true});
+			//console.log(this.target);
+			//TweenMax.to(this.target, 3, {y:"50px", repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			this.timelinemax.to(this.target, 3, {rotation:50, repeat:-1, yoyo:true, ease:Power1.easeInOut}).to(this.target, 3, {rotation:-50, repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			this.timelinemax.repeat(-1);
+			this.timelinemax.play();
+			/*var boat = document.getElementById("boat");
+			TweenMax.to(boat, 5, {y:"50px", repeat:-1, repeatDelay:0.5, yoyo:true, ease:Power1.easeInOut});
+			*/
+		},
+
+		startAnimation: function(animationID) {
+
+			console.log('-- (entityanimator.js) startAnimation: ' + animiationID);
+
+			switch(animationID) {
+				case "character":
+					this.rotateCharacter();
+					break;
+				case "ship":
+					this.floatBoat();
+			}
+
 		},
 
 		stopAnimation: function(animiationID) {
 			// TO DO:
 			// Flesh this out the animator class with IDs for stored animations
 
-			// Just call the stop float function for now.
-			this.stopFloat();
+			// Just call the stop timeline command:
+			this.timelinemax.stop();
 
 		}
 
@@ -148,6 +171,6 @@ define(function(){
 
 	}
 	
-	return CombatAnimation;
+	return EntityAnimator;
 
 });

@@ -21,10 +21,7 @@ define(
 		// Client class private variables:
 		this.myID;
 		this.opponentID;
-		this.totalSkew;
 		
-		animator.floatBoat();
-
 		// TO DO:
 		// Move this?
 		function callback() {
@@ -157,7 +154,7 @@ define(
 			if (data.isme) {
 				output.hidePanels(['login', 'welcome']);
 				output.showPanels('chooseship');
-				output.setShip({name:'Drow Cruiser'});
+				output.setShip({name:'Drow Cruiser', animate: true});
 			}
 
 			
@@ -180,6 +177,7 @@ define(
 			output.showPanels(['choosecharacters','myteam']);
 			output.showElements('active_character');
 			output.stopAnimation('ship');
+			output.startAnimation('character');
 		});
 
 

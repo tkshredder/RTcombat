@@ -3,6 +3,7 @@ define(
 	"model/characterfactory"
 	],
 	function( CharacterFactory ){
+		
 		/**
 		 * Window Output 
 		 * Description: Sets various aspects in the DOM to keep view-related info away from the main core.
@@ -33,17 +34,23 @@ define(
 		// WindowOutput public class methods:
 		WindowOutput.prototype = {
 		
-			setNames: function (names) {
+			/*setPlayerNames: function (names) {
 				$('#myname').html(game.getPlayerName(names.myID));
 				$('#opponentname').html(game.getPlayerName(names.opponentID));
-			},
+			},*/
 
 			setShip: function(data) {
 				
 				var shipname = data.name.trim().replace(/\s/g, '').toLowerCase();
 				
+				// Set the ship name & graphical css class:
 				$('#active_entity_label').html(data.name);
 				$('#active_ship').removeClass().addClass('ship_'+shipname).addClass('shadowfilter');
+
+				// Check if we need to animate boat:
+				if (data.animate == true) {
+					animator.floatBoat();
+				}
 
 			},
 
@@ -56,34 +63,24 @@ define(
 
 			},
 
-
-
-
-
-
-
 			chooseCharacter: function(slot, data) {
+
+				// Error check input
+				if (typeof(slot) != "number") slot = 1;
+				if (!data.hasOwnProperty('name')) data.name = "unknown";
 
 				var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
 
-				// NEED: Which li slot is currently available?
 				$('#myteam_'+slot+' .avatar_image').addClass('character_'+charactername);
 
 			},
 
-
-
-
-
-
-			
 			displayTurnTimer: function() {
+				
 				$('#remainingtime').html(game.getRemainingTime());
 				
 				// start a timer here as well?
 				setTimeout(function() { wo.update(); }, 100);
-				
-				
 			},
 
 			addChatMessage: function (data) {
@@ -205,6 +202,9 @@ define(
 				}
 			},
 
+			startAnimation: function(animationID) {
+				animator.startAnimation(animationID);
+			}
 			stopAnimation: function(animationID) {
 				animator.stopAnimation(animationID);
 			},
