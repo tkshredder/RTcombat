@@ -233,11 +233,11 @@ define(function(){
 	
 		onJoin: function() {
 
-			console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
+			//console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
 
 			if (!this.client.getMyID()) {
 				
-				console.log('hide welcome show login...');
+				//console.log('hide welcome show login...');
 
 				output.hidePanels('welcome');
 				output.showPanels('login');
@@ -249,7 +249,6 @@ define(function(){
 			wi.socket.emit('leave', {name: playerId});
 		},
 		
-
 	}
 	
 	return WindowInput;

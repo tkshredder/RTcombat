@@ -7,6 +7,10 @@ mime = require('mime'),
 requirejs = require('requirejs'),
 serverEmitter = new events.EventEmitter();
 
+//var databaseUrl = "mydb"; // "username:password@example.com/mydb"
+//var collections = ["users", "reports"]
+//var db = require("mongojs").connect(databaseUrl, collections);
+
 httpd.createServer(function(request,response){
 	var my_path = url.parse(request.url).pathname;
 	

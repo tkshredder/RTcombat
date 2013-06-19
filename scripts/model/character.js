@@ -11,10 +11,7 @@ define(function(){
 		this.defense = params.defense;
 		this.courage = params.courage;
 		this.dodge = params.dodge;
-		
-		// TO DO:
-		// Dynamically load actions from action library
-		this.actions = [];
+		this.actions = params.actions;
 
 		return(this);
 	}

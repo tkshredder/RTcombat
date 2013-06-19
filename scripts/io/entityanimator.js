@@ -14,7 +14,8 @@ define(function(){
 		this.slideDuration = 0.3;
 		this.timeline;
 		this.timelinemax;
-		
+		this.tween;
+
 		// Current Animation:
 		this.target;
 		this.characterName;
@@ -133,10 +134,11 @@ define(function(){
 			this.target = document.getElementById("active_character");//'#active_ship';
 			this.timelinemax = new TimelineMax({paused:true});
 			//console.log(this.target);
-			//TweenMax.to(this.target, 3, {y:"50px", repeat:-1, yoyo:true, ease:Power1.easeInOut});
-			this.timelinemax.to(this.target, 3, {rotation:50, repeat:-1, yoyo:true, ease:Power1.easeInOut}).to(this.target, 3, {rotation:-50, repeat:-1, yoyo:true, ease:Power1.easeInOut});
-			this.timelinemax.repeat(-1);
-			this.timelinemax.play();
+			this.tween = TweenMax.to(this.target, 3, {rotation: 5, repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			
+			//this.timelinemax.to(this.target, 3, {rotation:5, repeat:-1, yoyo:true, ease:Power1.easeInOut}).to(this.target, 3, {rotation:-5, repeat:-1, yoyo:true, ease:Power1.easeInOut});
+			//this.timelinemax.repeat(-1);
+			//this.timelinemax.play();
 			/*var boat = document.getElementById("boat");
 			TweenMax.to(boat, 5, {y:"50px", repeat:-1, repeatDelay:0.5, yoyo:true, ease:Power1.easeInOut});
 			*/
@@ -144,7 +146,7 @@ define(function(){
 
 		startAnimation: function(animationID) {
 
-			console.log('-- (entityanimator.js) startAnimation: ' + animiationID);
+			console.log('-- (entityanimator.js) startAnimation: ' + animationID);
 
 			switch(animationID) {
 				case "character":
@@ -156,13 +158,18 @@ define(function(){
 
 		},
 
-		stopAnimation: function(animiationID) {
+		stopAnimation: function(animationID) {
+			
+			console.log('--- (entityanimator.js) stopAnimation: ' + animationID);
+
 			// TO DO:
 			// Flesh this out the animator class with IDs for stored animations
 
 			// Just call the stop timeline command:
 			this.timelinemax.stop();
 
+			// Kill the animating character:
+			TweenMax.killTweensOf($("#active_character"));
 		}
 
 

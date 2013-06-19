@@ -509,13 +509,20 @@ define(
 				// Factor in disabled / busy characters.
 				// For now, all actions are available.
 
-				var charActions, allActions;
+				var charActions, allActions = [];
+
+				console.log('--- (game.js) getPossibleCommands for player ', playerID);
 
 				// Loop through characters[playerID]
 				for (characterID in this.characters[playerID]) {
 					
 					// Get the characters available actions:
+
+					console.log(this.characters[playerID][characterID]);
+
 					charActions = this.characters[playerID][characterID].getActions();
+
+					console.log('--- (game.js) char actions for character ' + characterID + ': ', charActions);
 
 					// Loop through the characters array of actions and add them to the master array:
 					for (actionID in charActions) {
@@ -527,9 +534,18 @@ define(
 				return allActions;
 			
 			},
-			setPossibleCommands: function(playerID, actions) { this.players[playerID].setPossibleCommands = actions; },
+			setPossibleCommands: function(playerID) { 
+				
+				// Build a composite list of available commands:
+				var availableActions = this.getPossibleCommands(playerID);
+
+				console.log('--- (game.js) setPossibleCommands: ', availableActions);
+
+				// Set the player's possible commands:
+				this.players[playerID].setPossibleCommands = availableActions; 
+			},
 			getCommandsAvailable: function(playerID) { return this.players[playerID].getCommandsAvailable(); },
-			loadPlayerCommands: function(playerID) { this.players[playerID].loadPlayerCommands(); },
+			
 			getNextAction: function() { return this.masterCommandQueue[0]; },
 			
 			// Again -- move these??

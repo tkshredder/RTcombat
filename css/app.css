@@ -55,6 +55,9 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .button.bigcentered { display: block; width: 200px; margin: 0 auto; padding: 10px 10px 2px; text-align: center; font-size: 52px; line-height: 32px; text-shadow: 2px 2px #DEDEDE; }
 #join.button.bigcentered { margin: 20px auto; padding: 10px 10px 17px;}
 
+/* forms */
+#createteam { text-align: right;}
+
 .newest { display: none; }
 .command { display: none; }
 

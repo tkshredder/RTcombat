@@ -203,8 +203,11 @@ define(
 			},
 
 			startAnimation: function(animationID) {
+
+				console.log('--- (output.js) startAnimation: ' + animationID)
 				animator.startAnimation(animationID);
-			}
+			},
+
 			stopAnimation: function(animationID) {
 				animator.stopAnimation(animationID);
 			},
@@ -271,6 +274,7 @@ define(
 			writeCharacterSelection: function (teamID) {
 				
 				console.log(' --- (output.js) writeCharacterSelection: ', teamID);
+
 				switch (teamID) {
 					case 1:
 						$('#character_selection').append(this.createCharacterHTML('shaman'));

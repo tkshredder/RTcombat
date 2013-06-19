@@ -229,7 +229,7 @@ define(
 			// Update DOM:
 			output.hidePanels(['choosecharacters', 'myteam']);
 			output.showPanels('output');
-
+			output.stopAnimation('character');
 
 		});
 
@@ -299,9 +299,9 @@ define(
 			// To do: need to process this on the server?
 			//game.loadPlayerCommands(c.myID);
 
-			myActions
+			//myActions
 
-			game.setPossibleCommands(c.myID, myActions);
+			game.setPossibleCommands(c.myID);
 
 			// Update DOM:
 			output.drawCommands(c.myID);
