@@ -178,6 +178,10 @@ define(
 			
 			hidePanels: function (list) {
 				
+				if(typeof(list) === 'undefined') {
+					$('[id*=panel]').addClass('hidden');
+				}
+
 				// Add support for a single string passed in:
 				if (typeof(list) === 'string') {
 					oldval = list;

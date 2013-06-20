@@ -7,9 +7,13 @@ mime = require('mime'),
 requirejs = require('requirejs'),
 serverEmitter = new events.EventEmitter();
 
-//var databaseUrl = "mydb"; // "username:password@example.com/mydb"
-//var collections = ["users", "reports"]
-//var db = require("mongojs").connect(databaseUrl, collections);
+var dburl = 'localhost/mongoapp';
+var collections = ['players', 'ships', 'characters'];
+var db = require('mongojs').connect(dburl, collections);
+
+initDBRules();
+
+console.log('Starting RTcombat....');
 
 httpd.createServer(function(request,response){
 	var my_path = url.parse(request.url).pathname;
@@ -54,7 +58,7 @@ console.log("Socket Server Running on 5050");
 // Server variables
 var observerCount = 0;
 var timer;
-
+var globalSocket;
 
 requirejs.config({nodeRequire: require});
 requirejs(
@@ -68,7 +72,10 @@ requirejs(
 		var game = new Game(characterfactory);
 		
 		io.sockets.on('connection', function(socket) {
-	
+			
+			// Set global socket var:
+			globalSocket = socket;
+
 			// Increment number of total observers
 			observerCount++;
 			
@@ -95,18 +102,51 @@ requirejs(
 				socket.broadcast.emit('sendchat', data);
 			});
 
+			// Client joins the game as a player
+			socket.on('join', function(data) {
+				
+				// data is an object that comes in with data.name = username ONLY
+				console.log('Event: join', data);
+				
+				// Don't allow more than 2 players:
+				if (game.getPlayerCount() >= 2) {
+					console.log('Error: too many players! (' + game.getPlayerCount() + ')');
+					return;
+				}
+
+				// Create player
+				playerID = game.join(data);
+				console.log(' --- playerID after join: ' + playerID);
+				
+				playerObj = game.getPlayer(playerID);
+				console.log(' --- playerObj after getPlayer: ' + playerObj);
+				
+
+				// Look up to see if player exists
+				// Note: this function will handle whether to save a new player to the DB
+				// or load an existing one. 
+				
+				dbLookUpPlayer(playerObj);
+			
+				//dbSavePlayer(playerObj);
+
+			});
+
 			socket.on('chooseShip', function(data) {
 				console.log('Event: chooseShip', data);
 
-				game.setShip(data);
+				// Create the new ship and get back its object data.
+				// NEW: creating a ship now provides back the shipID
+				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
+				
+				shipID = game.addShip(data);
+				//console.log(' --- shipID after join: ' + shipID);
+				
+				shipObj = game.getShip(shipID);
+				//console.log(' --- shipObj after getPlayer: ', shipObj);
 
-				socket.emit('chooseShip', data);
-				//socket.broadcast.emit('chooseShip', data);
+				dbSaveShip(shipObj);
 			});
-
-
-
-
 
 			socket.on('addCharacter', function(data) {
 				console.log('Event: addCharacter', data);
@@ -235,48 +275,8 @@ requirejs(
 
 
 		
-			// Client joins the game as a player
-			socket.on('join', function(data) {
-				
-				// data is an object that comes in with data.name = username ONLY
-				console.log('Event: join', data);
-				
-				// Don't allow more than 2 players:
-				if (game.getPlayerCount() >= 2) {
-					console.log('Error: too many players! (' + game.getPlayerCount() + ')');
-					return;
-				}
-				
-				data.playerID = game.getPlayerCount() + 1; // Assigns a 1 to first user, 2 to second...
-				data.shipID = data.playerID;	
-				
-				// TO DO: Make the Team ID depend on what the user chose! 
-				data.teamID = game.getPlayerCount() + 1;
-				
-				// Create player and ship object on the SERVER:
-				playerID = game.join(data);
-				
-				data.timeStamp = new Date();
-				
-				// Broadcast that client has joined:
-				socket.broadcast.emit('join', data);
-				data.isme = true;
-				socket.emit('join', data);
-				
-				//console.log("Current number of players: " + game.getPlayerCount());
-				
-				/*if (game.getPlayerCount() == 2) {
-					game.startGame();
-					socket.emit('startGame', {message:"start"});
-					socket.broadcast.emit('startGame', {message:"start"});
-					
-					startNextTurn();
-				}*/
 			
-			});
-		 
-			/* Custom functions */
-			 
+		  
 			socket.on('startGame', function(data) {
 				
 				console.log('Event: startGame', data);		
@@ -354,6 +354,127 @@ requirejs(
 			}, 2000);
 		});
 		
+
+		
+
+		// DB Functions
+		function dbLookUpPlayer(player) {
+
+			var thatPlayer = player;
+
+			console.log('--- (server.js) dbLookUpPlayer ', player);
+
+			db.players.find({name:thatPlayer.name}, function(err, players) {
+				
+				//console.log('holy shit, a response!');
+				//console.log(err, players);
+				
+				// Check if we had any errors looking up:
+				if (err || !players) {
+					console.log('No player named ' + thatPlayer.name + ' was found in the DB.');
+				}
+
+				// No DB errors 
+				else { 
+
+					// Check if the players array is an empty set:
+					if (players.length == 0 ) {
+						// Add this player to DB:
+						dbSavePlayer(thatPlayer);
+					}
+
+					else { 
+
+						// This should be just one record, but it gets returned as an array.
+						players.forEach( function (player) {
+
+							console.log("Found player in DB. ", player);
+
+							var data = {};
+							data.playerID = player.playerID;
+							data.name = player.name;
+
+							// Hey hey! welcome to the game...
+							data.timeStamp = new Date();
+							
+							// Broadcast that an existing player has joined:
+							broadcast('joinexisting', data);
+
+						});
+					}
+				}
+			});
+		}
+
+		function dbSavePlayer(player) {
+			
+			var thatPlayer = player;
+
+			console.log('--- (server.js) dbSavePlayer ', player)
+
+			db.players.save(player, function(err, savedPlayer) {
+				if (err || !savedPlayer) {
+					console.log('Player ' + player.name + ' could not be saved to the DB.', err);
+				}
+				else {
+					console.log('Player ' + savedPlayer.name + ' saved to DB');
+
+					var data = {};
+					data.playerID = thatPlayer.playerID;
+					data.name = thatPlayer.name;
+
+					// Hey hey! welcome to the game...
+					data.timeStamp = new Date();
+					
+					// Broadcast that a new Player has joined:
+					broadcast('joinnew', data);
+
+				}
+			});
+		}
+
+		function dbSaveShip(ship) {
+
+			var thatShip = ship;
+
+			console.log('--- (server.js) dbSaveShip ', ship)
+
+			db.ships.save(ship, function(err, savedShip) {
+				if (err || !savedShip) 
+					console.log('Ship ' + ship.name + ' could not be saved to the DB.', err);
+				else {
+					console.log('Ship ' + savedShip.name + ' saved to DB');
+
+					// Emit chooseShip event
+					// On the client side, this will load the character selection screen.
+					var data = {};
+					data.playerID = thatShip.playerID;
+					data.shipID = thatShip.shipID;
+					data.teamID = thatShip.teamID;
+					data.name = thatShip.name;
+					data.timeStamp = new Date();
+
+					broadcast('chooseShip', data);
+				}
+			});
+		}
+
+		function broadcast(eventName, data) {
+			
+			console.log(' (broadcast): ', eventName, data);
+
+			globalSocket.broadcast.emit(eventName, data);
+			data.isme = true;
+			globalSocket.emit(eventName, data);
+		}
+
+
+
+
+
+
+
+
 		
 		// TO DO:
 		// Move these into a server core file?
@@ -403,11 +524,13 @@ requirejs(
 	}
 );
 
+function initDBRules() {
+	
+	// Set up Database rules
+	db.players.ensureIndex({name:1}, {unique:true});
+	//db.ships.ensureIndex({name:1}, {unique:true});
 
+	// additional rules go here...
 
-
-
-
-
-
+}
 

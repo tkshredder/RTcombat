@@ -126,13 +126,15 @@ define(
 			game.load(data.state);
 		});
 
-		// A new client joins.
-		socket.on('join', function(data) {
+		// A new player joins.
+		socket.on('joinnew', function(data) {
 			
-			console.log('Event: join', data);
+			console.log('Event: joinnew', data);
 			
+			// Update Game:
 			game.join(data);
-			
+
+			// Update client vars:
 			if (data.isme) {
 				c.myID = data.playerID;
 				// Set the hash in the address bar:
@@ -142,6 +144,7 @@ define(
 				c.opponentID = data.myID;
 			}
 			
+			// Update DOM:
 			if ((game.getPlayerCount() == 2) && data.isme) {
 				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
 			
@@ -155,17 +158,49 @@ define(
 				output.hidePanels(['login', 'welcome']);
 				output.showPanels('chooseship');
 				output.setShip({name:'Drow Cruiser', animate: true});
+			}			
+		});
+
+		socket.on('joinexisting', function(data) {
+			console.log('Event: joinexisting', data);
+
+			// Update Game:
+			game.join(data);
+
+			// Update client vars:
+			if (data.isme) {
+				c.myID = data.playerID;
+				// Set the hash in the address bar:
+				window.location.hash = '#' + data.name;
+			} else {
+				// Someone else has joined.
+				c.opponentID = data.myID;
+			}
+			
+			// Update DOM:
+			if (data.isme) {
+				output.hidePanels();
+				output.showPanels('output');
 			}
 
-			
+			if ((game.getPlayerCount() == 2) && data.isme) {
+				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
+			} else {
+				output.displayWaitingMessage(data.isme);
+			}
+
 		});
 
 
 		// Ship chosen. Hide Ship Selection, Load Character Selection
 		socket.on('chooseShip', function(data) {
 			
+			console.log('Event: chooseShip', data);
+			data.playerID = c.myID;
+
+
 			// Update the game:
-			game.setShip(data);
+			game.addShip(data);
 
 			var theTeamID = game.getTeamID(c.myID);
 			console.log('- (client.js) theTeamID: ' + theTeamID);
@@ -177,7 +212,7 @@ define(
 			output.showPanels(['choosecharacters','myteam']);
 			output.showElements('active_character');
 			output.stopAnimation('ship');
-			output.startAnimation('character');
+			//output.startAnimation('character');
 		});
 
 
@@ -298,9 +333,6 @@ define(
 			// Update game:
 			// To do: need to process this on the server?
 			//game.loadPlayerCommands(c.myID);
-
-			//myActions
-
 			game.setPossibleCommands(c.myID);
 
 			// Update DOM:

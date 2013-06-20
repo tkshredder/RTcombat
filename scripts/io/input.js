@@ -137,7 +137,7 @@ define(function(){
 			var shipname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			var teamID = $(this).data('team');
 
-			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:shipname, teamID:teamID});
+			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), name:shipname, teamID:teamID});
 			sound.play('cv2_menu_tick');
 		});
 
