@@ -16,10 +16,15 @@ define(
 		// CharacterFactory class methods
 		CharacterFactory.prototype = {
 
-			createCharacter: function (characterType) {
+			createCharacter: function (characterType, basicParams) {
 				
 				// Generate the character's data
 				characterParams = this.createCharacterData(characterType);
+
+				// Merge additional character parameters (e.g., playerID, shipID, etc.) into the characterParams
+				for (var attrname in basicParams) {
+					characterParams[attrname] = basicParams[attrname];
+				}
 				
 				// Create a new character based on the character data:
 				newCharacter = new Character(characterParams);
@@ -41,7 +46,7 @@ define(
 					case "shaman":
 						characterParams.name = "Shaman";
 						characterParams.class = "shaman";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -56,7 +61,7 @@ define(
 					case "drowarcher":
 						characterParams.name = "Drow Archer";
 						characterParams.class = "drowarcher";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -70,7 +75,7 @@ define(
 					case "centipede":
 						characterParams.name = "Centipede";
 						characterParams.class = "centipede";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -84,7 +89,7 @@ define(
 					case "tentacles":
 						characterParams.name = "Tentacles";
 						characterParams.class = "tentacles";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -98,7 +103,7 @@ define(
 					case "deadsoldier":
 						characterParams.name = "Dead Soldier";
 						characterParams.class = "deadsoldier";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -112,7 +117,7 @@ define(
 					case "skeleshark":
 						characterParams.name = "Skeleshark";
 						characterParams.class = "skeleshark";
-						characterParams.strength = 5;
+						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;

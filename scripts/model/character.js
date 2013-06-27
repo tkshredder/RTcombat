@@ -6,7 +6,7 @@ define(function(){
 		this.name = params.name;
 		this.class = params.class;
 		this.playerID = params.playerID;
-		this.shipID = params.playerID;
+		this.shipID = params.shipID;
 		this.attack = params.attack;
 		this.defense = params.defense;
 		this.courage = params.courage;

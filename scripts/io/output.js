@@ -71,6 +71,7 @@ define(
 
 				var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
 
+				console.log(' --- (output.js) chooseCharacter: ' + slot, data);
 				$('#myteam_'+slot+' .avatar_image').addClass('character_'+charactername);
 
 			},
@@ -96,7 +97,7 @@ define(
 				}
 			},
 			
-			displayMessage: function ( message, params ) {
+			displayMessage: function (message) {
 				$('#output').html(message);	
 			},
 			
@@ -277,7 +278,7 @@ define(
 
 			writeCharacterSelection: function (teamID) {
 				
-				console.log(' --- (output.js) writeCharacterSelection: ', teamID);
+				//console.log(' --- (output.js) writeCharacterSelection: ', teamID);
 
 				switch (teamID) {
 					case 1:

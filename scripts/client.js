@@ -19,8 +19,10 @@ define(
 		this.socket = socket;
 		
 		// Client class private variables:
-		this.myID;
-		this.opponentID;
+		this.myPlayerID;
+		this.myShipID;
+		this.opponentPlayerID;
+		this.opponentShipID;
 		
 		// TO DO:
 		// Move this?
@@ -38,7 +40,7 @@ define(
 			game.playerReady(data);
 			
 			// Update DOM, if applicable:
-			if (data.playerID == c.myID) {
+			if (data.playerID == c.myPlayerID) {
 
 
 				if (game.waitingOnPlayers()) {
@@ -72,11 +74,11 @@ define(
 			game.addCommand(data);
 			
 			// Update DOM, if applicable:
-			if (data.playerID == c.myID) {
-				output.activateExecutionButton(c.myID);
+			if (data.playerID == c.myPlayerID) {
+				output.activateExecutionButton(c.myPlayerID);
 				//output.disableCommandRolloverUpdate();
-				output.updateCommandOrder(c.myID);
-				output.updateCommandsAvailable(c.myID);
+				output.updateCommandOrder(c.myPlayerID);
+				output.updateCommandsAvailable(c.myPlayerID);
 			}
 		});
 		
@@ -88,8 +90,8 @@ define(
 			game.removeCommand(data);
 			
 			// Update DOM:
-			output.updateCommandsAvailable(c.myID);
-			output.updateCommandOrder(c.myID);
+			output.updateCommandsAvailable(c.myPlayerID);
+			output.updateCommandOrder(c.myPlayerID);
 		
 		});
 		
@@ -136,12 +138,12 @@ define(
 
 			// Update client vars:
 			if (data.isme) {
-				c.myID = data.playerID;
+				c.myPlayerID = data.playerID;
 				// Set the hash in the address bar:
 				window.location.hash = '#' + data.name;
 			} else {
 				// Someone else has joined.
-				c.opponentID = data.myID;
+				c.opponentPlayerID = data.myPlayerID;
 			}
 			
 			// Update DOM:
@@ -164,24 +166,64 @@ define(
 		socket.on('joinexisting', function(data) {
 			console.log('Event: joinexisting', data);
 
-			// Update Game:
+			// Add player to the game:
 			game.join(data);
+
+			// Look up ships
+			console.log(' --- (client.js) emitting loadShips socket', data)
+			
+			socket.emit('loadShips', data);
+
 
 			// Update client vars:
 			if (data.isme) {
-				c.myID = data.playerID;
+				c.myPlayerID = data.playerID;
 				// Set the hash in the address bar:
 				window.location.hash = '#' + data.name;
 			} else {
 				// Someone else has joined.
-				c.opponentID = data.myID;
+				c.opponentPlayerID = data.myPlayerID;
 			}
 			
 			// Update DOM:
 			if (data.isme) {
 				output.hidePanels();
 				output.showPanels('output');
+				output.displayMessage('loading ship data....');
 			}
+
+			/*
+			
+			if ((game.getPlayerCount() == 2) && data.isme) {
+				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
+			} else {
+				output.displayWaitingMessage(data.isme);
+			}
+			*/
+
+		});
+
+		socket.on('loadShips', function(data) {
+			
+			console.log('Event: loadShips', data);
+
+			// TO DO: 
+			// give player an opportunity to choose which ship to load
+
+			// FOR NOW:
+			// load up the first ship
+			var submitData = {};
+			submitData.shipID = data.ships[0].shipID;
+
+			socket.emit('loadCrew', submitData);
+
+		});
+
+		socket.on('loadCrew', function(data) {
+			
+			console.log('Event: loadCrew', data);
+
+
 
 			if ((game.getPlayerCount() == 2) && data.isme) {
 				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
@@ -192,18 +234,19 @@ define(
 		});
 
 
+
 		// Ship chosen. Hide Ship Selection, Load Character Selection
 		socket.on('chooseShip', function(data) {
 			
 			console.log('Event: chooseShip', data);
-			data.playerID = c.myID;
+			data.playerID = c.myPlayerID;
 
 
-			// Update the game:
-			game.addShip(data);
+			// Add the ship to the game, and store the shipID in Client:
+			c.myShipID = game.addShip(data);
 
-			var theTeamID = game.getTeamID(c.myID);
-			console.log('- (client.js) theTeamID: ' + theTeamID);
+			var theTeamID = game.getTeamID(c.myShipID);
+			//console.log('- (client.js) theTeamID: ' + theTeamID);
 
 			// Update DOM
 			output.writeCharacterSelection(theTeamID);
@@ -218,15 +261,15 @@ define(
 
 
 
-		socket.on('addCharacter', function(data) {
+		socket.on('addCrewMember', function(data) {
 			
-			console.log('Event: addCharacter', data)
+			console.log('Event: addCrewMemeber', data)
 
 			// Update the game:
-			game.addCharacter(data.playerID, data);
+			game.addCrewMember(data.shipID, data);
 
 			// Update DOM:
-			if (game.getPlayerCharacterCount(data.playerID) == 3) {
+			if (game.getShipsCrewSize(data.shipID) == 3) {
 				
 				output.enableCreateTeamSubmit();
 
@@ -235,21 +278,14 @@ define(
 			}
 		});
 
-		socket.on('removeCharacter', function(data) {
+		socket.on('removeCrewMember', function(data) {
 			
-			console.log('Event: removeCharacter', data)
+			console.log('Event: removeCrewMember', data)
 
 			// Update the game:
-			game.removeCharacter(data.playerID, data);
+			game.removeCrewMember(data.playerID, data);
 
-			// Debug:
-			console.log('Player '+data.playerID+' characters post removal: ')
-			game.logPlayersCharacters(data.playerID);
 		});
-
-
-
-
 
 		socket.on('chooseTeam', function(data) {
 			
@@ -286,9 +322,9 @@ define(
 			
 			console.log('Event: startGame', data);
 			
-			// (This client only) Set the opponentID if not already set:
-			if (c.opponentID == null) {
-				c.opponentID = game.getOpponentID(c.myID);
+			// (This client only) Set the opponentPlayerID if not already set:
+			if (c.opponentPlayerID == null) {
+				c.opponentPlayerID = game.getopponentPlayerID(c.myPlayerID);
 			}
 			
 			// Update game:
@@ -296,9 +332,9 @@ define(
 			
 			// Update DOM:
 			output.hidePanels(["welcome","login"]);
-			output.setNames({myID: c.myID, opponentID: c.opponentID});
-			output.updateCommandsAvailable(c.myID);
-			output.setBoatBG(game.getTeamID(c.myID));
+			output.setNames({myPlayerID: c.myPlayerID, opponentPlayerID: c.opponentPlayerID});
+			output.updateCommandsAvailable(c.myPlayerID);
+			output.setBoatBG(game.getTeamID(c.myPlayerID));
 
 		});
 		
@@ -332,11 +368,11 @@ define(
 			
 			// Update game:
 			// To do: need to process this on the server?
-			//game.loadPlayerCommands(c.myID);
-			game.setPossibleCommands(c.myID);
+			//game.loadPlayerCommands(c.myPlayerID);
+			game.setPossibleCommands(c.myPlayerID);
 
 			// Update DOM:
-			output.drawCommands(c.myID);
+			output.drawCommands(c.myPlayerID);
 			output.showCommands();
 			
 		});
@@ -382,7 +418,7 @@ define(
 		// A client leaves.
 		socket.on('leave', function(data) {
 			console.log('Event: leave', data);
-			if (c.myID == data.name) {
+			if (c.myPlayerID == data.name) {
 				gameover('you were absorbed. play again?');
 			}
 			game.leave(data.name);
@@ -409,9 +445,9 @@ define(
 			
 			// Update HUD:
 			// TO DO: Move this into a render function?
-			//console.log("getting info for player " + myID);
-			document.getElementById('myhealth').innerText = game.getHealth(c.myID) + "HP";
-			document.getElementById('opponenthealth').innerText = game.getHealth(c.opponentID) + "HP";
+			//console.log("getting info for player " + myPlayerID);
+			document.getElementById('myhealth').innerText = game.getHealth(c.myPlayerID) + "HP";
+			document.getElementById('opponenthealth').innerText = game.getHealth(c.opponentPlayerID) + "HP";
 			document.getElementById('observer-count').innerText = Math.max(data.observerCount - game.getPlayerCount(), 0);
 			document.getElementById('player-count').innerText = game.getPlayerCount();
 			document.getElementById('average-lag').innerText = Math.abs(updateDelta);
@@ -419,8 +455,8 @@ define(
 		
 		// Server reports that somebody won!
 		socket.on('victory', function(data) {
-			if (this.myID) {
-				if (data.id == c.myID) {
+			if (this.myPlayerID) {
+				if (data.id == c.myPlayerID) {
 					gameover('you win! play again?');
 				} else {
 					gameover(data.id + ' won and you lost! play again?');
@@ -435,13 +471,13 @@ define(
 	
 	Client.prototype = {
 		
-		getMyID: function() {
-			return this.myID;
-		},
+		getMyPlayerID: function() { return this.myPlayerID; },
+
+		getMyShipID: function() { return this.myShipID; },
 		
-		getOpponentID: function() {
-			return this.opponentID;
-		},
+		getOpponentPlayerID: function() { return this.opponentPlayerID; },
+
+		getOpponentShipID: function() { return this.opponentShipID; }, 
 		
 		playAnimation: function(command) {
 			var anim = {};

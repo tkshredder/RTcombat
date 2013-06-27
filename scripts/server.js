@@ -102,7 +102,7 @@ requirejs(
 				socket.broadcast.emit('sendchat', data);
 			});
 
-			// Client joins the game as a player
+			// Client joins the game
 			socket.on('join', function(data) {
 				
 				// data is an object that comes in with data.name = username ONLY
@@ -132,6 +132,33 @@ requirejs(
 
 			});
 
+			socket.on('loadShips', function(data) {
+				console.log('Event: loadShips', data);
+
+				// Look up ship & crew from DB:
+				dbLookUpShips(data.playerID);
+
+				// Update game here?
+				//game.
+
+
+			});
+
+			socket.on('loadCrew', function(data) {
+				console.log('Event: loadCrew', data);
+
+				// Look up crew from DB:
+				dbLookUpCrew(data.playerID);
+
+				// Update game here?
+				//game.
+
+
+			});
+
+
+
+
 			socket.on('chooseShip', function(data) {
 				console.log('Event: chooseShip', data);
 
@@ -148,21 +175,21 @@ requirejs(
 				dbSaveShip(shipObj);
 			});
 
-			socket.on('addCharacter', function(data) {
-				console.log('Event: addCharacter', data);
+			socket.on('addCrewMember', function(data) {
+				console.log('Event: addCrewMember', data);
 
-				game.addCharacter(data.playerID, data);
+				game.addCrewMember(data.shipID, data);
 
-				socket.emit('addCharacter', data);
+				socket.emit('addCrewMember', data);
 				//socket.broadcast.emit('chooseShip', data);
 			});
 
-			socket.on('removeCharacter', function(data) {
-				console.log('Event: removeCharacter', data);
+			socket.on('removeCrewMember', function(data) {
+				console.log('Event: removeCrewMember', data);
 
-				game.removeCharacter(data.playerID, data);
+				game.removeCrewMember(data.playerID, data);
 
-				socket.emit('removeCharacter', data);
+				socket.emit('removeCrewMember', data);
 			});
 
 
@@ -171,7 +198,19 @@ requirejs(
 
 				game.chooseTeam(data.playerID);
 
-				socket.emit('chooseTeam', data);
+				// Save chosen characters to DB:
+				var crew = game.getShipsCrew(data.shipID);
+
+				console.log(' -- (server.js) crew: ', crew);
+
+				/*for (var character in characters) {
+					dbSaveCharacters(character);
+				}*/
+				dbSaveCrew(characters);
+
+
+
+				/*socket.emit('chooseTeam', data);
 				//socket.broadcast.emit('chooseShip', data);
 
 
@@ -193,7 +232,7 @@ requirejs(
 						startNextTurn();
 					}
 				}
-
+				*/
 
 
 			});
@@ -361,7 +400,7 @@ requirejs(
 		function dbLookUpPlayer(player) {
 
 			var thatPlayer = player;
-
+			
 			console.log('--- (server.js) dbLookUpPlayer ', player);
 
 			db.players.find({name:thatPlayer.name}, function(err, players) {
@@ -389,9 +428,12 @@ requirejs(
 						players.forEach( function (player) {
 
 							console.log("Found player in DB. ", player);
+							thatPlayer = player;
 
+							
 							var data = {};
 							data.playerID = player.playerID;
+							//data.hasShips = true;
 							data.name = player.name;
 
 							// Hey hey! welcome to the game...
@@ -399,7 +441,7 @@ requirejs(
 							
 							// Broadcast that an existing player has joined:
 							broadcast('joinexisting', data);
-
+							
 						});
 					}
 				}
@@ -433,6 +475,81 @@ requirejs(
 			});
 		}
 
+		function dbLookUpShips(playerID) {
+			
+			console.log('-- (game.js) Looking up ships for player ' + playerID);
+
+			var lookupPlayerID = playerID;
+			var thatShip, shipCrew = [];
+
+			// Look Up player's ship:
+			db.ships.find({playerID:lookupPlayerID}, function(err, ships) {
+				// Check if we had any errors looking up:
+				if (err || !ships) {
+					console.log('No ships found in the DB.');
+				} 
+				// No DB errors:
+				else {
+					if (ships.length > 0) {
+						console.log("Found ship(s) in DB. ", ships);
+
+						/*ships.forEach(function(ship) {
+							dbLookUpCrew(ship.shipID);
+						});
+						*/
+
+
+						// Create a return object for the ships
+						var data = {};
+						data.ships = ships;
+
+						console.log(' --- broadcast loadShipAndCharacters')
+						// Broadcast the ships data 
+						broadcast('loadShips', data);
+						
+
+					}
+				}
+			});
+
+		}
+
+		function dbLookUpCrew(shipID) {
+			console.log('-- (game.js) Looking up crew for ship ' + shipID);
+
+			var lookupShipID = shipID;
+			var thatShip, shipCrew = [];
+
+			db.characters.find({shipID: lookupShipID}, function(err, characters) {
+				// Check if we had any errors looking up:
+				if (err || !characters) {
+					console.log('No crew for ship ' + shipID + ' found in the DB.');
+				} 
+
+				// No DB errors:
+				else {
+					console.log('Crew found: ', characters);
+					
+					// TO DO:
+					// build an array of IDs pertaining to this ship
+					characters.forEach(function(character) {
+						shipCrew.push(character);
+					});
+
+					var data = {};
+					data.shipID = lookupShipID;
+					data.shipCrew = shipCrew;
+					data.timeStamp = new Date();
+					
+					// Broadcast that a player's ships were found
+					broadcast('loadCharacters', data);
+				}
+
+			});
+
+		}
+
+
 		function dbSaveShip(ship) {
 
 			var thatShip = ship;
@@ -455,6 +572,31 @@ requirejs(
 					data.timeStamp = new Date();
 
 					broadcast('chooseShip', data);
+				}
+			});
+		}
+
+
+
+		function dbSaveCrew(crewArray) {
+
+			var theCrew = crewArray;
+
+			console.log('--- (server.js) dbSaveCrew ', crewArray)
+
+			db.crew.insert(crewArray, function(err, savedCrew) {
+				if (err || !savedCrew) 
+					console.log('Characters could not be saved to the DB.', err);
+				else {
+					console.log('Characters saved to DB');
+
+					// Emit chooseShip event
+					// On the client side, this will load the character selection screen.
+					var data = {};
+					data.playerID = crewArray[0].playerID;
+					data.timeStamp = new Date();
+
+					broadcast('chooseTeam', data);
 				}
 			});
 		}

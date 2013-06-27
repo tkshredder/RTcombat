@@ -32,10 +32,8 @@ define(function(){
 			e.preventDefault(); // Prevent form from submitting
 
 			name = $('#loginname').val();
-			console.log('login name: ', name)
 			
 			if (name != '') {
-
 				wi.socket.emit('join', {name: name});
 			} else {
 				alert('Please enter a name to continue.')
@@ -53,7 +51,7 @@ define(function(){
 			// scrub the message to protect against injection attacks
 
 			if (myMessage != '') {
-				wi.socket.emit('sendchat', {message:myMessage, playerID:wi.client.getMyID()});
+				wi.socket.emit('sendchat', {message:myMessage, playerID:wi.client.getMyPlayerID()});
 				$('#chatinput').val('');
 			}
 			
@@ -110,7 +108,7 @@ define(function(){
 		$(document).on('click', '#execute:not(.disabled)', function() {
 			
 			// Send player Ready event to SERVER:
-			wi.socket.emit('playerReady', {playerID: wi.client.getMyID()});
+			wi.socket.emit('playerReady', {playerID: wi.client.getMyPlayerID()});
 			
 			//output.disableCommands();
 			output.hidePanels('commands');
@@ -137,7 +135,7 @@ define(function(){
 			var shipname = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			var teamID = $(this).data('team');
 
-			wi.socket.emit('chooseShip', {playerID:wi.client.getMyID(), name:shipname, teamID:teamID});
+			wi.socket.emit('chooseShip', {playerID:wi.client.getMyPlayerID(), name:shipname, teamID:teamID});
 			sound.play('cv2_menu_tick');
 		});
 
@@ -161,10 +159,10 @@ define(function(){
 			var charactername = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			
 			// Send message to server:
-			wi.socket.emit('addCharacter', {playerID:wi.client.getMyID(), shipID: wi.client.getMyID(), name:charactername});
+			wi.socket.emit('addCrewMember', {playerID:wi.client.getMyPlayerID(), shipID: wi.client.getMyShipID(), name:charactername});
 			
 			// Update DOM:
-			output.chooseCharacter(wi.game.getNextAvailableCharacterSlotID(wi.client.getMyID()), $(this).data());
+			output.chooseCharacter(wi.game.getNextAvailableCrewID(wi.client.getMyShipID()) + 1, $(this).data());
 			sound.play('cv2_menu_tick');
 
 		});	
@@ -175,7 +173,7 @@ define(function(){
 			//console.log('createTeam form submit');
 			e.preventDefault(); // Prevent form from submitting
 			
-			wi.socket.emit('chooseTeam', {playerID:wi.client.getMyID()});
+			wi.socket.emit('chooseTeam', {playerID:wi.client.getMyPlayerID(), shipID:wi.client.getMyShipID()});
 			
 		});
 
@@ -190,8 +188,8 @@ define(function(){
 			
 			// TO DO: 
 			// These should be assigned on the server
-			currentCommand.playerID = wi.client.getMyID();
-			currentCommand.targetID = wi.client.getOpponentID();
+			currentCommand.playerID = wi.client.getMyPlayerID();
+			currentCommand.targetID = wi.client.getOpponentPlayerID();
 			
 			// TO DO: 
 			// Clean this up for healing spells (targetID could be a single character or group of characters....
@@ -204,11 +202,11 @@ define(function(){
 				wi.socket.emit('removeCommand', {command: currentCommand});
 			} else {
 				// Break out if no more commands are available:
-				if (game.getCommandsAvailable(wi.client.getMyID()) <= 0)
+				if (game.getCommandsAvailable(wi.client.getMyPlayerID()) <= 0)
 					return;
 				
 				// Emit addCommand event to SERVER:
-				wi.socket.emit('addCommand', {command: currentCommand, playerID: wi.client.getMyID(), targetID: wi.client.getOpponentID()});
+				wi.socket.emit('addCommand', {command: currentCommand, playerID: wi.client.getMyPlayerID(), targetID: wi.client.getOpponentPlayerID()});
 				
 				// Update DOM:
 				$(this).addClass('chosen');
@@ -235,7 +233,7 @@ define(function(){
 
 			//console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
 
-			if (!this.client.getMyID()) {
+			if (!this.client.getMyPlayerID()) {
 				
 				//console.log('hide welcome show login...');
 
