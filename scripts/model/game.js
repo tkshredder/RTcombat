@@ -104,7 +104,7 @@ define(
 				// Add the ship to the array of ships:
 				this.ships[ship.shipID] = new Ship(ship);
 
-				console.log('this.ships: ', this.ships);
+				//console.log('this.ships: ', this.ships);
 
 				return ship.shipID;
 			},
@@ -114,7 +114,7 @@ define(
 			 */
 			addCrewMember: function(crewMember) {
 				
-				console.log(' --- (game.js) addCrewMember', crewMember);
+				//console.log(' --- (game.js) addCrewMember', crewMember);
 
 				// Add the crew member to the ship:
 				this.ships[crewMember.shipID].addCrewMember(new Character(crewMember));				
@@ -149,11 +149,11 @@ define(
 				
 			},
 
-			updateCrew: function(crewArray) {
+			updateCrew: function(shipID, crewObject) {
 				
-				console.log('updateCrewIDs -- ', crewArray);
+				console.log('updateCrewIDs -- ', crewObject);
 
-				this.ships[shipID].setCrew(crewArray);
+				this.ships[shipID].setCrew(crewObject);
 			},
 
 		

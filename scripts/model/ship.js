@@ -7,7 +7,7 @@ define(
 	// Ship class constructor
 	function Ship(params) {
 		
-		console.log(" --- (ship.js Constructor) Creating a new ship with parameters: ", params);
+		//console.log(" --- (ship.js Constructor) Creating a new ship with parameters: ", params);
 		
 		this.shipID = params.shipID;
 		this.name = params.name;
@@ -24,7 +24,7 @@ define(
 
 		
 		addCrewMember: function(crewMember) {
-			console.log(' --- (ship.js) addCrewMember', crewMember)
+			//console.log(' --- (ship.js) addCrewMember', crewMember)
 			this.crew[crewMember.crewID] = new Character(crewMember);
 		},
 
@@ -35,7 +35,7 @@ define(
 
 		getCrewSize: function() {
 			var size = Object.keys(this.crew).length;
-			console.log(' --- (ship.js) getCrewSize: ' + size)
+			//console.log(' --- (ship.js) getCrewSize: ' + size)
 			return size;
 		},
 

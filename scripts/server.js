@@ -648,7 +648,7 @@ requirejs(
 						);
 
 						// Emit chooseTeam event:
-						broadcast('chooseTeam', {crew:theCrew, playerID:theCrewArray[0].getPlayerID()});
+						broadcast('chooseTeam', {crew:theCrew, playerID:crewMember.getPlayerID(), shipID:crewMember.getShipID()});
 					};
 				}
 			});
@@ -664,8 +664,8 @@ requirejs(
 		}
 
 		function makePrettyID(mongoObjectID) {
-			return String(mongoObjectID).substr(-5);
-
+			//return String(mongoObjectID).substr(-5);
+			return String(mongoObjectID);
 		}
 
 

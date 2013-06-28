@@ -71,7 +71,7 @@ define(
 
 				var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
 
-				console.log(' --- (output.js) chooseCharacter: ' + slot, data);
+				//console.log(' --- (output.js) chooseCharacter: ' + slot, data);
 				$('#myteam_'+(slot+1)+' .avatar_image').addClass('character_'+charactername);
 
 			},

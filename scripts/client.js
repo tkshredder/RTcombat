@@ -291,6 +291,7 @@ define(
 
 			// Update the game:
 			game.chooseTeam(data.playerID);
+			console.log(' --- (client.js) calling update crew...');
 			game.updateCrew(data.shipID, data.crew);
 
 			// Debug:
