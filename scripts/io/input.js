@@ -162,7 +162,7 @@ define(function(){
 			wi.socket.emit('addCrewMember', {playerID:wi.client.getMyPlayerID(), shipID: wi.client.getMyShipID(), name:charactername});
 			
 			// Update DOM:
-			output.chooseCharacter(wi.game.getNextAvailableCrewID(wi.client.getMyShipID()) + 1, $(this).data());
+			output.chooseCharacter(wi.game.getShipsCrewSize(wi.client.getMyShipID()), $(this).data());
 			sound.play('cv2_menu_tick');
 
 		});	

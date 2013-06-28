@@ -5,6 +5,7 @@ define(function(){
 		
 		this.name = params.name;
 		this.class = params.class;
+		this.crewID = params.crewID;
 		this.playerID = params.playerID;
 		this.shipID = params.shipID;
 		this.attack = params.attack;
@@ -27,6 +28,8 @@ define(function(){
 		setPlayerID: function(value) { this.playerID = value; },
 		getShipID: function() {return( this.shipID ); },
 		setShipID: function(value) { this.shipID = value; },
+		getCrewID: function() {return( this.crewID ); },
+		setCrewID: function(value) { this.crewID = value; },
 		getAttack: function() {return( this.attack ); },
 		setAttack: function(value) { this.attack = value; },
 		getDefense: function() {return( this.defense ); },

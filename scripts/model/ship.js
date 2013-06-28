@@ -1,4 +1,8 @@
-define(function(){
+define(
+	[
+	"model/character"
+	],
+	function(Character){
 	 
 	// Ship class constructor
 	function Ship(params) {
@@ -10,7 +14,7 @@ define(function(){
 		this.playerID = params.playerID;
 		this.teamID = params.teamID; // TO DO: clan instead of team? e.g., Dark Elves, Dead Team
 		this.health = 20; // TO DO: set this based on the ship's size etc.
-		this.crew = [];
+		this.crew = {};
 
 		return(this);
 	}
@@ -19,9 +23,9 @@ define(function(){
 	Ship.prototype = {
 
 		
-		addCrewMember: function(character) {
-			console.log(' --- (ship.js) addCrewMember', character)
-			this.crew.push(character);
+		addCrewMember: function(crewMember) {
+			console.log(' --- (ship.js) addCrewMember', crewMember)
+			this.crew[crewMember.crewID] = new Character(crewMember);
 		},
 
 		removeCrewMember: function(character) {
@@ -29,8 +33,10 @@ define(function(){
 			this.crew.splice(index, 1);
 		},
 
-		getNextAvailableCrewID: function() {
-			return this.crew.length;
+		getCrewSize: function() {
+			var size = Object.keys(this.crew).length;
+			console.log(' --- (ship.js) getCrewSize: ' + size)
+			return size;
 		},
 
 		toJSON: function() { 
@@ -49,10 +55,13 @@ define(function(){
 		
 		// Accessor functions:
 		getCrew: function() { return this.crew; },
+		setCrew: function(value) { this.crew = value; },
 		getName: function(){ return this.name; },
 		setName: function(value) { this.name = value; },
 		getID: function(){ return( this.ID ); },
 		setID: function(value) { this.ID = value; },
+		getShipID: function(){ return( this.shipID ); },
+		setShipID: function(value) { this.shipID = value; },
 		getPlayerID: function(){ return( this.playerID ); },
 		setPlayerID: function(value) { this.playerID = value; },
 		getTeamID: function(){ return( this.teamID ); },

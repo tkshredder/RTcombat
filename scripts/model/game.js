@@ -12,8 +12,8 @@ define(
 			
 			g = this;
 			
-			this.players = [];
-			this.ships = [];
+			this.players = {};
+			this.ships = {};
 			this.masterCommandQueue = [];
 			cfactory = CharacterFactory;
 
@@ -62,72 +62,62 @@ define(
 		}
 		
 		Game.prototype = {
-		 				
+			
 			/**
-			 * Called when adding a player to the game.
+			 * Called when a new player joins
 			 */
-			addPlayer: function(params) {
+			addPlayer: function(player) {
 				
-				//console.log(' -- (game.js) addPlayer function', params);
-
+				//console.log(' - (game.js) addPlayer', player);
+				
 				// Check if we have a playerID (e.g., loading a saved game)
-				if (params.playerID == null) {
+				if (player.playerID == null) {
 					
-					// If not, get the next available playerID based on the length of players array
-					// and set this in the params object. 
+					console.log('ERROR! Attempting to add a player to the game without a playerID!');
+				} 
+				else {
 					
-					// TO DO
-					// This should be a look up function of the next available ID, not just arbitrary length!
-					params.playerID = this.players.length;
+					// Update the game model:
+					this.players[player.playerID] = new Player(player);
+
 				}
 
-				// Create a new player and add it to the area of players:
-				this.players[params.playerID] = new Player(params);
+				// TEST:
+				// add a new player
+				//this.players["test"] = new Player({playerID: "player99999", name:"test"});
 				
-				return params.playerID;
+				console.log('-- (game.js) end of addPlayer. game.players: ', this.players);
+
+				return player.playerID;
 			},
-			
+
+
 			/**
 			 * Called when adding a ship to the game.
 			 */
-			addShip: function(params) {
+			addShip: function(ship) {
 				
-				//console.log(' -- (game.js) addShip function', params);
+				//console.log(' -- (game.js) addShip function', ship);
 				
-				// Check if the shipID already exists
-				if (params.shipID == null) {
-					params.shipID = this.ships.length;
-				}
-				
-				// Create a new player and add it to the area of players:
-				this.ships[params.shipID] = new Ship(params);
-				
-				return params.shipID;
+				//console.log('Adding ship at shipID ' + ship.shipID);
+
+				// Add the ship to the array of ships:
+				this.ships[ship.shipID] = new Ship(ship);
+
+				console.log('this.ships: ', this.ships);
+
+				return ship.shipID;
 			},
-
-
-
-
 
 			/**
 			 * Called when adding a crew member to the game.
 			 */
-			addCrewMember: function(shipID, params) {
+			addCrewMember: function(crewMember) {
 				
-				console.log(' --- (game.js) addCrewMember', params);
-				
-				
-				// Create an object of basicParams to add to the crew member:
-				var basicParams = {};
-				basicParams.playerID = params.playerID;
-				basicParams.shipID = shipID;
-				
-				// Create the new crew member:
-				var newCrewMember = cfactory.createCharacter(params.name, basicParams);
+				console.log(' --- (game.js) addCrewMember', crewMember);
 
-				// Lastly, add the crew member to the ship:
-				this.ships[shipID].addCrewMember(newCrewMember);
-				
+				// Add the crew member to the ship:
+				this.ships[crewMember.shipID].addCrewMember(new Character(crewMember));				
 			},
 
 			/**
@@ -157,6 +147,13 @@ define(
 				// Set the player's team chosen flag:
 				this.players[playerID].setTeamChosen(true);
 				
+			},
+
+			updateCrew: function(crewArray) {
+				
+				console.log('updateCrewIDs -- ', crewArray);
+
+				this.ships[shipID].setCrew(crewArray);
 			},
 
 		
@@ -265,22 +262,7 @@ define(
 				}
 			},
 			
-			/**
-			 * Called when a new player joins
-			 */
-			join: function(data) {
-				
-				console.log(' - (game.js) join', data);
-				
-				// Add the player to the game:
-				var playerID = this.addPlayer(data);
-				
-				// Add the ship to the game:
-				//var shipID = this.addShip(data)
-
-				return playerID;
-			},
-
+			
 			loadShip: function(data) {
 				console.log(' -- (game.js) loadShip', data);
 
@@ -416,18 +398,15 @@ define(
 
 			getShipsCrewSize: function(shipID) {
 				
-				var shipCrew = this.ships[shipID].getCrew();
+				var shipCrewSize = this.ships[shipID].getCrewSize();
 
-				if (shipCrew == null) {
-					return 0;
-				}
-				return shipCrew.length;
+				return shipCrewSize;
 			},
 
 			getPlayer: function(playerID) { return this.players[playerID]; },
 			getShip: function(shipID) { return this.ships[shipID]; },
 			getTeamID: function(shipID) { 
-				//console.log(' -- (game.js) getTeamID for ship ' + shipID);
+				//console.log(' -- (game.js) getTeamID for ship ' + shipID, this.ships[shipID]);
 				return this.ships[shipID].getTeamID(); 
 			},
 			getPlayerCount: function() { return Object.keys(this.players).length;},

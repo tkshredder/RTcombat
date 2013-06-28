@@ -134,16 +134,16 @@ define(
 			console.log('Event: joinnew', data);
 			
 			// Update Game:
-			game.join(data);
+			game.addPlayer(data.player);
 
 			// Update client vars:
 			if (data.isme) {
-				c.myPlayerID = data.playerID;
+				c.myPlayerID = data.player.playerID;
 				// Set the hash in the address bar:
-				window.location.hash = '#' + data.name;
+				window.location.hash = '#' + data.player.name;
 			} else {
 				// Someone else has joined.
-				c.opponentPlayerID = data.myPlayerID;
+				c.opponentPlayerID = data.player.playerID;
 			}
 			
 			// Update DOM:
@@ -167,22 +167,22 @@ define(
 			console.log('Event: joinexisting', data);
 
 			// Add player to the game:
-			game.join(data);
+			game.addPlayer(data.player);
 
 			// Look up ships
 			console.log(' --- (client.js) emitting loadShips socket', data)
 			
-			socket.emit('loadShips', data);
+			socket.emit('loadShips', data.player);
 
 
 			// Update client vars:
 			if (data.isme) {
 				c.myPlayerID = data.playerID;
 				// Set the hash in the address bar:
-				window.location.hash = '#' + data.name;
+				window.location.hash = '#' + data.player.name;
 			} else {
 				// Someone else has joined.
-				c.opponentPlayerID = data.myPlayerID;
+				c.opponentPlayerID = data.player.playerID;
 			}
 			
 			// Update DOM:
@@ -239,8 +239,6 @@ define(
 		socket.on('chooseShip', function(data) {
 			
 			console.log('Event: chooseShip', data);
-			data.playerID = c.myPlayerID;
-
 
 			// Add the ship to the game, and store the shipID in Client:
 			c.myShipID = game.addShip(data);
@@ -261,15 +259,15 @@ define(
 
 
 
-		socket.on('addCrewMember', function(data) {
+		socket.on('addCrewMember', function(newCrewMember) {
 			
-			console.log('Event: addCrewMemeber', data)
+			console.log('Event: addCrewMember', newCrewMember)
 
 			// Update the game:
-			game.addCrewMember(data.shipID, data);
+			game.addCrewMember(newCrewMember);
 
 			// Update DOM:
-			if (game.getShipsCrewSize(data.shipID) == 3) {
+			if (game.getShipsCrewSize(newCrewMember.shipID) == 3) {
 				
 				output.enableCreateTeamSubmit();
 
@@ -293,6 +291,7 @@ define(
 
 			// Update the game:
 			game.chooseTeam(data.playerID);
+			game.updateCrew(data.shipID, data.crew);
 
 			// Debug:
 			//console.log('Player '+data.playerID+' team chosen.');

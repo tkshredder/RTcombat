@@ -8,8 +8,9 @@ requirejs = require('requirejs'),
 serverEmitter = new events.EventEmitter();
 
 var dburl = 'localhost/mongoapp';
-var collections = ['players', 'ships', 'characters'];
+var collections = ['players', 'ships', 'crew'];
 var db = require('mongojs').connect(dburl, collections);
+var ObjectId = db.ObjectId;
 
 initDBRules();
 
@@ -64,9 +65,11 @@ requirejs.config({nodeRequire: require});
 requirejs(
 	[
 	'model/game',
+	'model/player',
+	'model/ship',
 	'model/characterfactory'
 	],
-	function (Game, CharacterFactory) {
+	function (Game, Player, Ship, CharacterFactory) {
 		
 		var characterfactory = new CharacterFactory();
 		var game = new Game(characterfactory);
@@ -105,7 +108,7 @@ requirejs(
 			// Client joins the game
 			socket.on('join', function(data) {
 				
-				// data is an object that comes in with data.name = username ONLY
+				// data is an object that comes in with data.name = username
 				console.log('Event: join', data);
 				
 				// Don't allow more than 2 players:
@@ -114,22 +117,16 @@ requirejs(
 					return;
 				}
 
-				// Create player
-				playerID = game.join(data);
-				console.log(' --- playerID after join: ' + playerID);
-				
-				playerObj = game.getPlayer(playerID);
-				console.log(' --- playerObj after getPlayer: ' + playerObj);
-				
+				// Create a new player object:
+				//  ... all we know is the player username
+				var newPlayer = new Player(data);
+
+				console.log("new player: ", newPlayer);
 
 				// Look up to see if player exists
-				// Note: this function will handle whether to save a new player to the DB
-				// or load an existing one. 
+				// Note: this function will automatically save a new player if no record is found.
+				dbLookUpPlayer(newPlayer);
 				
-				dbLookUpPlayer(playerObj);
-			
-				//dbSavePlayer(playerObj);
-
 			});
 
 			socket.on('loadShips', function(data) {
@@ -144,6 +141,55 @@ requirejs(
 
 			});
 
+			socket.on('chooseShip', function(data) {
+				console.log('Event: chooseShip', data);
+
+				// Create the new ship and get back its object data.
+				// NEW: creating a ship now provides back the shipID
+				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
+				
+				var newShip = new Ship(data);
+
+
+
+				//shipID = game.addShip(data);
+				//console.log(' --- shipID after join: ' + shipID);
+				
+				//shipObj = game.getShip(shipID);
+				//console.log(' --- shipObj after getPlayer: ', shipObj);
+
+				dbInsertShip(newShip);
+			});
+
+
+			// CREW RELATED:
+
+			socket.on('addCrewMember', function(data) {
+				console.log('Event: addCrewMember', data);
+
+				// Add a temp crewID since we don't want to update the DB just yet
+				// returns 0, 1, 2 etc...
+				data.crewID = game.getShipsCrewSize(data.shipID);
+
+				// Create the new crew member:
+				var newCrewMember = cfactory.createCharacter(data.name, data);
+
+				// Update the game
+				game.addCrewMember(newCrewMember);
+
+				socket.emit('addCrewMember', newCrewMember);
+			});
+
+
+			socket.on('removeCrewMember', function(data) {
+				console.log('Event: removeCrewMember', data);
+
+				game.removeCrewMember(data.shipID, data);
+
+				socket.emit('removeCrewMember', data);
+			});
+
+
 			socket.on('loadCrew', function(data) {
 				console.log('Event: loadCrew', data);
 
@@ -157,41 +203,7 @@ requirejs(
 			});
 
 
-
-
-			socket.on('chooseShip', function(data) {
-				console.log('Event: chooseShip', data);
-
-				// Create the new ship and get back its object data.
-				// NEW: creating a ship now provides back the shipID
-				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
-				
-				shipID = game.addShip(data);
-				//console.log(' --- shipID after join: ' + shipID);
-				
-				shipObj = game.getShip(shipID);
-				//console.log(' --- shipObj after getPlayer: ', shipObj);
-
-				dbSaveShip(shipObj);
-			});
-
-			socket.on('addCrewMember', function(data) {
-				console.log('Event: addCrewMember', data);
-
-				game.addCrewMember(data.shipID, data);
-
-				socket.emit('addCrewMember', data);
-				//socket.broadcast.emit('chooseShip', data);
-			});
-
-			socket.on('removeCrewMember', function(data) {
-				console.log('Event: removeCrewMember', data);
-
-				game.removeCrewMember(data.playerID, data);
-
-				socket.emit('removeCrewMember', data);
-			});
-
+			// PLAYER EVENTS
 
 			socket.on('chooseTeam', function(data) {
 				console.log('Event: chooseTeam', data);
@@ -203,12 +215,7 @@ requirejs(
 
 				console.log(' -- (server.js) crew: ', crew);
 
-				/*for (var character in characters) {
-					dbSaveCharacters(character);
-				}*/
-				dbSaveCrew(characters);
-
-
+				dbSaveCrew(crew);
 
 				/*socket.emit('chooseTeam', data);
 				//socket.broadcast.emit('chooseShip', data);
@@ -405,7 +412,7 @@ requirejs(
 
 			db.players.find({name:thatPlayer.name}, function(err, players) {
 				
-				//console.log('holy shit, a response!');
+				//console.log('holy shit, a response for players.find!');
 				//console.log(err, players);
 				
 				// Check if we had any errors looking up:
@@ -419,7 +426,7 @@ requirejs(
 					// Check if the players array is an empty set:
 					if (players.length == 0 ) {
 						// Add this player to DB:
-						dbSavePlayer(thatPlayer);
+						dbInsertPlayer(thatPlayer);
 					}
 
 					else { 
@@ -430,15 +437,12 @@ requirejs(
 							console.log("Found player in DB. ", player);
 							thatPlayer = player;
 
-							
-							var data = {};
-							data.playerID = player.playerID;
-							//data.hasShips = true;
-							data.name = player.name;
+							// Update game on server:
+							game.addPlayer(thatPlayer);
 
-							// Hey hey! welcome to the game...
-							data.timeStamp = new Date();
-							
+							var data = {};
+							data.player = thatPlayer;
+
 							// Broadcast that an existing player has joined:
 							broadcast('joinexisting', data);
 							
@@ -448,28 +452,38 @@ requirejs(
 			});
 		}
 
-		function dbSavePlayer(player) {
+		function dbInsertPlayer(player) {
 			
 			var thatPlayer = player;
 
-			console.log('--- (server.js) dbSavePlayer ', player)
+			//console.log('--- (server.js) dbInsertPlayer ', player)
 
+			// Save the player into the DB:
 			db.players.save(player, function(err, savedPlayer) {
 				if (err || !savedPlayer) {
 					console.log('Player ' + player.name + ' could not be saved to the DB.', err);
 				}
 				else {
 					console.log('Player ' + savedPlayer.name + ' saved to DB');
-
-					var data = {};
-					data.playerID = thatPlayer.playerID;
-					data.name = thatPlayer.name;
-
-					// Hey hey! welcome to the game...
-					data.timeStamp = new Date();
 					
+					// Update player ID of the original player object:
+					thatPlayer.setPlayerID("player"+makePrettyID(savedPlayer._id));
+					
+					// Add player to the main game:
+					game.addPlayer(thatPlayer);	
+
 					// Broadcast that a new Player has joined:
-					broadcast('joinnew', data);
+					broadcast('joinnew', {player:thatPlayer});
+
+					// Update this player record to set the playerID (it's the _id)
+					db.players.findAndModify({ 
+						query: { name: savedPlayer.name}, 
+						update: { $set: { playerID:thatPlayer.playerID } }}, 
+						function (err, updatedPlayer) {
+							// nothing
+						}
+					);
+
 
 				}
 			});
@@ -477,7 +491,7 @@ requirejs(
 
 		function dbLookUpShips(playerID) {
 			
-			console.log('-- (game.js) Looking up ships for player ' + playerID);
+			console.log('-- (server.js) Looking up ships for player ' + playerID);
 
 			var lookupPlayerID = playerID;
 			var thatShip, shipCrew = [];
@@ -493,25 +507,58 @@ requirejs(
 					if (ships.length > 0) {
 						console.log("Found ship(s) in DB. ", ships);
 
-						/*ships.forEach(function(ship) {
-							dbLookUpCrew(ship.shipID);
-						});
-						*/
-
-
 						// Create a return object for the ships
 						var data = {};
 						data.ships = ships;
 
-						console.log(' --- broadcast loadShipAndCharacters')
 						// Broadcast the ships data 
 						broadcast('loadShips', data);
-						
 
+						
 					}
 				}
 			});
 
+		}
+
+		function dbInsertShip(ship) {
+
+			var thatShip = ship;
+
+			//console.log('--- (server.js) dbSaveShip ', ship)
+
+			db.ships.save(ship, function(err, savedShip) {
+				if (err || !savedShip) 
+					console.log('Ship ' + thatShip.name + ' could not be saved to the DB.', err);
+				else {
+					//console.log('Ship ' + savedShip.name + ' saved to DB');
+					console.log(savedShip);
+
+					
+					// Emit chooseShip event
+					// On the client side, this will load the character selection screen.
+					thatShip.setShipID("ship"+makePrettyID(savedShip._id));
+
+					// Add ship to game
+					game.addShip(thatShip);
+
+					// Broadcast the chooseShip event.
+					// TO DO:
+					// Control where this gets broadcast!!!
+					broadcast('chooseShip', thatShip);
+
+					// Update this ship record to set the shipID (it's the _id)
+					db.ships.findAndModify({ 
+						query: { _id: savedShip._id}, 
+						update: { $set: { shipID:thatShip.shipID } }}, 
+						function (err, updateShip) {
+							//nothing
+						}
+					);
+
+
+				}
+			});
 		}
 
 		function dbLookUpCrew(shipID) {
@@ -520,7 +567,7 @@ requirejs(
 			var lookupShipID = shipID;
 			var thatShip, shipCrew = [];
 
-			db.characters.find({shipID: lookupShipID}, function(err, characters) {
+			db.crew.find({shipID: lookupShipID}, function(err, characters) {
 				// Check if we had any errors looking up:
 				if (err || !characters) {
 					console.log('No crew for ship ' + shipID + ' found in the DB.');
@@ -543,71 +590,82 @@ requirejs(
 					
 					// Broadcast that a player's ships were found
 					broadcast('loadCharacters', data);
+
+
+
+
+
+
 				}
 
 			});
 
 		}
 
+		function dbSaveCrew(crewObject) {
 
-		function dbSaveShip(ship) {
+			var theCrew = crewObject;
+			var theCrewArray = [];
+			var crewMember;
+			var counter = 0;
 
-			var thatShip = ship;
+			console.log('--- (server.js) dbSaveCrew ', crewObject);
 
-			console.log('--- (server.js) dbSaveShip ', ship)
+			// TODO:
+			// Convert crewObject to an Array
 
-			db.ships.save(ship, function(err, savedShip) {
-				if (err || !savedShip) 
-					console.log('Ship ' + ship.name + ' could not be saved to the DB.', err);
-				else {
-					console.log('Ship ' + savedShip.name + ' saved to DB');
+			for (var key in theCrew) {
+				theCrewArray[counter++] = theCrew[key];
+			}
 
-					// Emit chooseShip event
-					// On the client side, this will load the character selection screen.
-					var data = {};
-					data.playerID = thatShip.playerID;
-					data.shipID = thatShip.shipID;
-					data.teamID = thatShip.teamID;
-					data.name = thatShip.name;
-					data.timeStamp = new Date();
+			console.log('--- (server.js) dbSaveCrew as Array: ', theCrewArray)
 
-					broadcast('chooseShip', data);
-				}
-			});
-		}
-
-
-
-		function dbSaveCrew(crewArray) {
-
-			var theCrew = crewArray;
-
-			console.log('--- (server.js) dbSaveCrew ', crewArray)
-
-			db.crew.insert(crewArray, function(err, savedCrew) {
+			db.crew.insert(theCrewArray, function(err, savedCrew) {
 				if (err || !savedCrew) 
 					console.log('Characters could not be saved to the DB.', err);
 				else {
 					console.log('Characters saved to DB');
 
-					// Emit chooseShip event
-					// On the client side, this will load the character selection screen.
-					var data = {};
-					data.playerID = crewArray[0].playerID;
-					data.timeStamp = new Date();
+					// This should be just one record, but it gets returned as an array.
+					for (var key in theCrew) {
 
-					broadcast('chooseTeam', data);
+
+						crewMember = theCrew[key];
+
+						crewMember.setCrewID("crew"+makePrettyID(crewMember._id));
+
+						// Need to update crew Member models in the game...
+						console.log('Need to update crew of temp crewID' + key + '....');
+
+
+						// Update this crewMembers record to set the crewID
+						db.crew.findAndModify({ 
+							query: { _id: crewMember._id}, 
+							update: { $set: { crewID:crewMember.crewID } }}, 
+							function (err, updateShip) {
+								//nothing
+							}
+						);
+
+						// Emit chooseTeam event:
+						broadcast('chooseTeam', {crew:theCrew, playerID:theCrewArray[0].getPlayerID()});
+					};
 				}
 			});
 		}
 
 		function broadcast(eventName, data) {
 			
-			console.log(' (broadcast): ', eventName, data);
+			//console.log(' (broadcast): ', eventName, data);
 
 			globalSocket.broadcast.emit(eventName, data);
 			data.isme = true;
 			globalSocket.emit(eventName, data);
+		}
+
+		function makePrettyID(mongoObjectID) {
+			return String(mongoObjectID).substr(-5);
+
 		}
 
 

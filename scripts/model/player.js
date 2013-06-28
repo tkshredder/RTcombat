@@ -9,7 +9,6 @@ define(function(){
 		this.name = params.name;
 		this.shipID = params.shipID;
 		this.commandsAvailable = 3;
-		this.teamID = params.teamID;
 		
 		this.teamChosen = false;
 		this.playerReady = false;
