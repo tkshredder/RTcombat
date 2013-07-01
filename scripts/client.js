@@ -215,6 +215,10 @@ define(
 			var submitData = {};
 			submitData.shipID = data.ships[0].shipID;
 
+
+			c.myShipID = game.addShip(data.ships[0]);
+
+			// load the crew!
 			socket.emit('loadCrew', submitData);
 
 		});
@@ -223,6 +227,11 @@ define(
 			
 			console.log('Event: loadCrew', data);
 
+			data.shipCrew.forEach(function(crewMember) {
+				// Add the crew member to the ship:
+				game.addCrewMember(crewMember);
+
+			});
 
 
 			if ((game.getPlayerCount() == 2) && data.isme) {

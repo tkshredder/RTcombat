@@ -78,7 +78,7 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .darken {	-webkit-filter: brightness(0.6); }
 
 /* page backgrounds */
-#page_bg { position: absolute; width: 100%; height: 100%; background: url(../images/the_ocean_by_eluva-d48z4wx.jpg); background-size: cover; }
+#page_bg { position: absolute; width: 100%; height: 100%; background: url(../images/bg_sea.jpg); background-size: cover; }
 
 /* panel background */
 #chooseship_panel { width: 64%; float: right;}

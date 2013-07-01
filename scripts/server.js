@@ -194,11 +194,7 @@ requirejs(
 				console.log('Event: loadCrew', data);
 
 				// Look up crew from DB:
-				dbLookUpCrew(data.playerID);
-
-				// Update game here?
-				//game.
-
+				dbLookUpCrew(data.shipID);
 
 			});
 
@@ -511,6 +507,13 @@ requirejs(
 						var data = {};
 						data.ships = ships;
 
+
+						// Load the first ship into memory:
+						// TO DO: 
+						// Make this a selectable action
+						game.addShip(data.ships[0]);
+
+
 						// Broadcast the ships data 
 						broadcast('loadShips', data);
 
@@ -567,34 +570,31 @@ requirejs(
 			var lookupShipID = shipID;
 			var thatShip, shipCrew = [];
 
-			db.crew.find({shipID: lookupShipID}, function(err, characters) {
+			db.crew.find({shipID: lookupShipID}, function(err, crew) {
 				// Check if we had any errors looking up:
-				if (err || !characters) {
+				if (err || !crew) {
 					console.log('No crew for ship ' + shipID + ' found in the DB.');
 				} 
 
 				// No DB errors:
 				else {
-					console.log('Crew found: ', characters);
+					console.log('Crew found for ship ' + lookupShipID + '. ');
 					
-					// TO DO:
-					// build an array of IDs pertaining to this ship
-					characters.forEach(function(character) {
-						shipCrew.push(character);
+					crew.forEach(function(crewMember) {
+						shipCrew.push(crewMember);
+
+						// Add the crew member to the ship:
+						game.addCrewMember(crewMember);
+
 					});
 
 					var data = {};
 					data.shipID = lookupShipID;
 					data.shipCrew = shipCrew;
 					data.timeStamp = new Date();
-					
+
 					// Broadcast that a player's ships were found
-					broadcast('loadCharacters', data);
-
-
-
-
-
+					broadcast('loadCrew', data);
 
 				}
 
