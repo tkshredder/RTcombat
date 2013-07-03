@@ -21,7 +21,8 @@ define(function(){
 	// GameInstance class methods
 	GameInstance.prototype = {
 	 
-		addPlayerID: function(playerID) { }
+		addPlayerID: function(playerID) { },
+		removePlayerID: function(playerID) {}
 	};
 	
 	return GameInstance;
