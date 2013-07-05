@@ -14,7 +14,7 @@ define(
 			
 			this.players = {};
 			this.ships = {};
-			this.masterCommandQueue = [];
+			this.gameinstances = {};
 			cfactory = CharacterFactory;
 
 			this.updateCount = 0;
@@ -63,6 +63,40 @@ define(
 		
 		Game.prototype = {
 			
+			/**
+			 * Retrieve active game instances
+			 */
+			getActiveGameInstances: function() {
+
+				// Check if there are any game instances:
+				var activeGameCount = Object.keys(this.gameinstances).length;
+				var activeGames = {};
+
+				console.log(' -- (game.js) getActiveGameInstances. count: ' + activeGameCount);
+
+				if (activeGameCount > 0) {
+					
+					// Build an object of active game instances:
+					for (var key in this.gameinstances) {
+						if (this.gameinstances[key].getIsActive() == true) 
+							activeGames[key] = this.gameinstances[key];
+					}
+				}
+
+				return activeGames;
+			},
+
+			/**
+			 * Add a game instance to the game.
+			 */
+			addGameInstance: function(gameinstance) {
+				if (gameinstance.getGameInstanceID() == null) {
+					console.log('ERROR! Attempting to add a game instance without gameinstanceID!');
+				} else {
+					this.gameinstances[gameinstance.getGameInstanceID()] = gameinstance; // Need to cast?
+				}
+			},
+
 			/**
 			 * Called when a new player joins
 			 */

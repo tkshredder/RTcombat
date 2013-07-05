@@ -8,7 +8,7 @@ requirejs = require('requirejs'),
 serverEmitter = new events.EventEmitter();
 
 var dburl = 'localhost/mongoapp';
-var collections = ['players', 'ships', 'crew'];
+var collections = ['players', 'ships', 'crew', 'gameinstances'];
 var db = require('mongojs').connect(dburl, collections);
 var ObjectId = db.ObjectId;
 
@@ -65,11 +65,12 @@ requirejs.config({nodeRequire: require});
 requirejs(
 	[
 	'model/game',
+	'model/gameinstance',
 	'model/player',
 	'model/ship',
 	'model/characterfactory'
 	],
-	function (Game, Player, Ship, CharacterFactory) {
+	function (Game, GameInstance, Player, Ship, CharacterFactory) {
 		
 		var characterfactory = new CharacterFactory();
 		var game = new Game(characterfactory);
@@ -95,6 +96,18 @@ requirejs(
 			socket.emit('start', {
 				state: game.save();
 
+				// look up active games
+				var activeGames = game.getActiveGameInstances();
+				var activeGameCount = Object.keys(activeGames).length;
+
+				// Check if no active games:
+				if (activeGameCount == 0) {
+					
+					// Create a new game instance on the DB. GAME ON!!!
+					dbCreateGameInstance();
+					//game.createGameInstance();
+
+				}
 
 				
 			});
@@ -403,6 +416,38 @@ requirejs(
 		
 
 		// DB Functions
+
+		function dbCreateGameInstance() {
+			var newGameInstance = new GameInstance();
+
+			db.gameinstances.save(newGameInstance, function(err, savedGameInstance) {
+				if (err || !savedGameInstance) {
+					console.log('GameInstance could not be saved to the DB.', err);
+				}
+				else {
+					console.log('savedGameInstance saved to DB');
+					
+					// Update gameInstance ID of the original game instance object:
+					newGameInstance.setGameInstanceID("gameinstance"+makePrettyID(savedGameInstance._id));
+					
+					// Add gameinstance to the main game:
+					game.addGameInstance(newGameInstance);	
+
+					// Broadcast that a new Player has joined:
+					broadcast('createGameInstance', {gameinstance:newGameInstance});
+
+					// Update this player record to set the playerID (it's the _id)
+					db.gameinstances.findAndModify({ 
+						query: { _id: savedGameInstance._id}, 
+						update: { $set: { gameinstanceID:newGameInstance.gameinstanceID } }}, 
+						function (err, updatedPlayer) {
+							// nothing
+						}
+					);
+				}
+			});
+		}
+
 		function dbLookUpPlayer(player) {
 
 			var thatPlayer = player;

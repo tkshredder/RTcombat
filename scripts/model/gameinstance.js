@@ -1,8 +1,10 @@
 define(function(){
 	
 	// GameInstance class constructor
-	function GameInstance(){
+	function GameInstance() {
 		
+		this.gameinstanceID;
+		this.isActive = true;
 		this.playerIDs = {};
 		this.shipIDs = {};
 		this.masterCommandQueue = [];
@@ -20,7 +22,11 @@ define(function(){
 	// GameInstance class methods
 	GameInstance.prototype = {
 	 
-		addPlayerID: function(playerID) { this.playerIDs[playerID] = playerID; },
+	 	getGameInstanceID: function() { return this.gameinstanceID; },
+	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
+	 	getIsActive: function() { return this.isActive; },
+		setIsActive: function(isActive) { this.isActive = isActive; },
+	 	addPlayerID: function(playerID) { this.playerIDs[playerID] = playerID; },
 		removePlayerID: function(playerID) { delete this.playerIDs[playerID]; },
 		addShipID: function(shipID) { this.shipIDs[shipID] = shipID; },
 		removeShipID: function(shipID) { delete this.shipIDs[shipID]; },
