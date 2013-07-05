@@ -3,6 +3,8 @@ define(function(){
 	// Character class constructor
 	function Character(params){
 		
+		//console.log('Creating a new character: ', params)
+
 		this.name = params.name;
 		this.class = params.class;
 		this.crewID = params.crewID;

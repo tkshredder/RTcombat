@@ -117,7 +117,7 @@ define(
 				//console.log(' --- (game.js) addCrewMember', crewMember);
 
 				// Add the crew member to the ship:
-				this.ships[crewMember.shipID].addCrewMember(new Character(crewMember));				
+				this.ships[crewMember.shipID].addCrewMember(crewMember);				
 			},
 
 			/**
@@ -151,9 +151,16 @@ define(
 
 			updateCrew: function(shipID, crewObject) {
 				
-				console.log('updateCrewIDs -- ', crewObject);
+				//console.log('updateCrewIDs -- ', crewObject);
+				var tempCrewMember, tempCrew = {};
 
-				this.ships[shipID].setCrew(crewObject);
+				// Convert each crewMember object to Character class:
+				for (var crewMember in crewObject) {
+					tempCrewMember = new Character(crewObject[crewMember]);
+					tempCrew[tempCrewMember.getCrewID()] = tempCrewMember;
+				}
+
+				this.ships[shipID].setCrew(tempCrew);
 			},
 
 		

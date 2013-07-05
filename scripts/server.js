@@ -91,9 +91,12 @@ requirejs(
 				socket.emit(data);
 			});
 			
-			// When client connects, dump game state
+			// When client connects, save the game state
 			socket.emit('start', {
-				state: game.save()
+				state: game.save();
+
+
+				
 			});
 
 			socket.on('sendchat', function(data) {
@@ -112,10 +115,10 @@ requirejs(
 				console.log('Event: join', data);
 				
 				// Don't allow more than 2 players:
-				if (game.getPlayerCount() >= 2) {
+				/*if (game.getPlayerCount() >= 2) {
 					console.log('Error: too many players! (' + game.getPlayerCount() + ')');
 					return;
-				}
+				}*/
 
 				// Create a new player object:
 				//  ... all we know is the player username
@@ -618,7 +621,7 @@ requirejs(
 				theCrewArray[counter++] = theCrew[key];
 			}
 
-			console.log('--- (server.js) dbSaveCrew as Array: ', theCrewArray)
+			//console.log('--- (server.js) dbSaveCrew as Array: ', theCrewArray)
 
 			db.crew.insert(theCrewArray, function(err, savedCrew) {
 				if (err || !savedCrew) 
@@ -637,7 +640,6 @@ requirejs(
 						// Need to update crew Member models in the game...
 						console.log('Need to update crew of temp crewID' + key + '....');
 
-
 						// Update this crewMembers record to set the crewID
 						db.crew.findAndModify({ 
 							query: { _id: crewMember._id}, 
@@ -646,10 +648,12 @@ requirejs(
 								//nothing
 							}
 						);
-
-						// Emit chooseTeam event:
-						broadcast('chooseTeam', {crew:theCrew, playerID:crewMember.getPlayerID(), shipID:crewMember.getShipID()});
 					};
+
+					// Crew is now updated with correct crew IDs
+
+					// Emit chooseTeam event:
+					broadcast('chooseTeam', {crew:theCrew, playerID:crewMember.getPlayerID(), shipID:crewMember.getShipID()});
 				}
 			});
 		}
