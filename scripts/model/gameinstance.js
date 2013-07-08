@@ -1,17 +1,30 @@
 define(function(){
 	
 	// GameInstance class constructor
-	function GameInstance() {
+	function GameInstance(params) {
 		
-		this.gameinstanceID;
-		this.isActive = true;
-		this.playerIDs = {};
-		this.shipIDs = {};
-		this.masterCommandQueue = [];
-		this.currentRound = 0;
-		this.updateCount = 0;
-		this.timer = null;
+		// Allow for empty GameInstances (ie, Server creates a new one from scratch)
+		if (params == null) {
+			params = {};
+			params.gameinstanceID = -1;
+			params.isActive = true;
+			params.playerIDs = {};
+			params.shipIDs = {};
+			params.masterCommandQueue = [];
+			params.currentRound = 0;
+			params.updateCount = 0;
+		}
+
+		this.gameinstanceID = params.gameinstanceID;
+		this.isActive = params.isActive;
+		this.playerIDs = params.playerIDs;
+		this.shipIDs = params.shipIDs;
+		this.masterCommandQueue = params.masterCommandQueue;
+		this.currentRound = params.currentRound;
+		this.updateCount = params.updateCount;
 		
+		// TBD variables:
+		this.timer = null;	
 		this.turnTimer;
 		this.currentTurnTimeRemaining;
 		this.lastTimeStamp;

@@ -1,6 +1,8 @@
 define(
-	
-	function(){
+	[
+	"model/gameinstance"
+	],
+	function(GameInstance){
 	
 	/**
 	 * Client
@@ -21,8 +23,12 @@ define(
 		// Client class private variables:
 		this.myPlayerID;
 		this.myShipID;
+		this.myGameInstanceID;
 		this.opponentPlayerID;
 		this.opponentShipID;
+
+		// Start loading audio:
+		sound.loadAudio();
 		
 		// TO DO:
 		// Move this?
@@ -31,6 +37,46 @@ define(
 				executeNextCommand(); 
 			}, game.getCommandDelay());
 		}
+
+		////////////////////////////////////////////////////////////////////
+		// SOCKET EVENTS
+
+		// Get the initial game state
+		socket.on('start', function(data) {
+			
+			console.log('Event: start', data);
+			
+			if (data.state.timeStamp == null) {
+			  data.state.timeStamp = new Date();
+			}
+			
+			//console.log(' --- (client) loading game from current state');
+			game.load(data.state);
+			
+			// Start looking up active games on the server:
+			c.lookUpActiveGames();
+
+			// Check if there's a name specified
+			if (window.location.hash) {
+				var name = window.location.hash.slice(1);
+				socket.emit('join', {name: name});
+				$('#join').hide();
+			}
+			
+		});
+
+
+		socket.on('createGameInstance', function(data) {
+			
+			console.log('Event: createGameInstance ', data.gameinstance); 
+			
+			// Add gameinstance to the main game:
+			game.addGameInstance(new GameInstance(data.gameinstance));
+
+			// Set game instance on Client:
+			myGameInstanceID = data.gameinstance.gameinstanceID;
+
+		});
 
 		socket.on('playerReady', function(data) {
 			
@@ -95,33 +141,7 @@ define(
 		
 		});
 		
-		// Get the initial game state
-		socket.on('start', function(data) {
-			console.log('Event: start', data);
-			
-			if (data.state.timeStamp == null) {
-			  data.state.timeStamp = new Date();
-			}
-			
-			//console.log(' --- (client) loading game from current state');
-			game.load(data.state);
-			
-			// Get the initial time to calibrate synchronization.
-			var startDelta = new Date().valueOf() - data.state.timeStamp;
-			// Setup the game progress loop
-			//game.updateEvery(Game.UPDATE_INTERVAL, startDelta);
-			
-			// Check if there's a name specified
-			if (window.location.hash) {
-				var name = window.location.hash.slice(1);
-				socket.emit('join', {name: name});
-				$('#join').hide();
-			}
-			
-			// Start loading audio:
-			sound.loadAudio();
-			
-		});
+		
 		
 		socket.on('state', function(data) {
 			//console.log('Event: state', data);
@@ -135,6 +155,9 @@ define(
 			
 			// Update Game:
 			game.addPlayer(data.player);
+			
+			// Add Player to Game Instance
+			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
 
 			// Update client vars:
 			if (data.isme) {
@@ -169,11 +192,13 @@ define(
 			// Add player to the game:
 			game.addPlayer(data.player);
 
+			// Add Player to Game Instance
+			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
+
 			// Look up ships
 			console.log(' --- (client.js) emitting loadShips socket', data)
 			
 			socket.emit('loadShips', data.player);
-
 
 			// Update client vars:
 			if (data.isme) {
@@ -203,6 +228,23 @@ define(
 
 		});
 
+		socket.on('addPlayerToGameInstance', function(data) {
+			
+			console.log('addPlayerToGameInstance', data);
+
+			// Update GameInstance:
+			game.addPlayerToGameInstance(data.player.playerID, c.myGameInstanceID);
+
+		});
+
+		socket.on('addShipToGameInstance', function(data) {
+			console.log('addShipToGameInstance', data);
+
+			// Update GameInstance:
+			game.addShipToGameInstance(data.ship.shipID, c.myGameInstanceID);
+
+		});
+
 		socket.on('loadShips', function(data) {
 			
 			console.log('Event: loadShips', data);
@@ -215,12 +257,14 @@ define(
 			var submitData = {};
 			submitData.shipID = data.ships[0].shipID;
 
-
+			// Add Ship to game and save ID:
 			c.myShipID = game.addShip(data.ships[0]);
+
+			// Add Ship to Game Instance
+			socket.emit('addShipToGameInstance', {shipID: submitData.shipID, gameinstanceID: c.myGameInstanceID});
 
 			// load the crew!
 			socket.emit('loadCrew', submitData);
-
 		});
 
 		socket.on('loadCrew', function(data) {
@@ -439,31 +483,14 @@ define(
 		
 		// Get a time sync from the server
 		socket.on('time', function(data) {
-			// Compute how much we've skewed from the server since the last tick.
-			var updateDelta = data.lastUpdate - game.getLastTimeStamp();
-			
-			// Add to the cumulative skew offset.
-			c.totalSkew += updateDelta;
-			
-			// If the skew offset is too large in either direction, get the real state from the server:
-			
-			if (Math.abs(this.totalSkew) > game.TARGET_LATENCY) {
-				// Fetch the new truth from the server.
-				socket.emit('state');
-				c.totalSkew = 0;
-			}
-			
-			// Set the true timestamp anyway now.
-			//game.state.timeStamp = data.lastUpdate;
 			
 			// Update HUD:
 			// TO DO: Move this into a render function?
 			//console.log("getting info for player " + myPlayerID);
-			document.getElementById('myhealth').innerText = game.getHealth(c.myPlayerID) + "HP";
-			document.getElementById('opponenthealth').innerText = game.getHealth(c.opponentPlayerID) + "HP";
-			document.getElementById('observer-count').innerText = Math.max(data.observerCount - game.getPlayerCount(), 0);
-			document.getElementById('player-count').innerText = game.getPlayerCount();
-			document.getElementById('average-lag').innerText = Math.abs(updateDelta);
+			//document.getElementById('myhealth').innerText = game.getHealth(c.myPlayerID) + "HP";
+			//document.getElementById('opponenthealth').innerText = game.getHealth(c.opponentPlayerID) + "HP";
+			//document.getElementById('observer-count').innerText = Math.max(data.observerCount - game.getPlayerCount(), 0);
+			
 		});
 		
 		// Server reports that somebody won!
@@ -484,14 +511,6 @@ define(
 	
 	Client.prototype = {
 		
-		getMyPlayerID: function() { return this.myPlayerID; },
-
-		getMyShipID: function() { return this.myShipID; },
-		
-		getOpponentPlayerID: function() { return this.opponentPlayerID; },
-
-		getOpponentShipID: function() { return this.opponentShipID; }, 
-		
 		playAnimation: function(command) {
 			var anim = {};
 			anim.target = "character_" + command.charactername.trim();
@@ -499,13 +518,39 @@ define(
 			anim.actionname = command.actionname;
 			//anim.results = successText;
 			animator.addAnimationAndPlay(anim);
-		}
+		},
+
+		lookUpActiveGames: function() {
+
+			// look up active games
+			var activeGames = game.getActiveGameInstances();
+			var activeGameCount = Object.keys(activeGames).length;
+
+			console.log('--- (client.js) lookUpActiveGames. Count: ' + activeGameCount)
+
+			// Check if no active games:
+			if (activeGameCount == 0) {
+				
+				// Tell server to create a new game instance:
+				socket.emit('createGameInstance', {});
+
+				// Create a new game instance on the DB. GAME ON!!!
+				//dbCreateGameInstance();
+				
+				//game.createGameInstance();
+			}
+		},
+
+		///////////////////////////////////////////////////////
+		// Accessor Functions
+		getMyPlayerID: function() { return this.myPlayerID; },
+		getMyShipID: function() { return this.myShipID; },
+		getMyGameInstanceID: function() { return this.myGameInstanceID; },
+		getOpponentPlayerID: function() { return this.opponentPlayerID; },
+		getOpponentShipID: function() { return this.opponentShipID; }, 
+
 	}
 	
 	return Client;
 
 });
-
-
-
-

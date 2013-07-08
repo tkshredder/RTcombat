@@ -90,6 +90,9 @@ define(
 			 * Add a game instance to the game.
 			 */
 			addGameInstance: function(gameinstance) {
+
+				console.log(' - (game.js) addGameInstance', gameinstance);
+
 				if (gameinstance.getGameInstanceID() == null) {
 					console.log('ERROR! Attempting to add a game instance without gameinstanceID!');
 				} else {
@@ -102,7 +105,7 @@ define(
 			 */
 			addPlayer: function(player) {
 				
-				//console.log(' - (game.js) addPlayer', player);
+				console.log(' - (game.js) addPlayer', player);
 				
 				// Check if we have a playerID (e.g., loading a saved game)
 				if (player.playerID == null) {
@@ -113,8 +116,13 @@ define(
 					
 					// Update the game model:
 					this.players[player.playerID] = new Player(player);
-
 				}
+
+				// Update game instance:
+
+				//console.log('')
+				//this.gameinstances[gameinstanceID];
+				//this.gameinstances[gameinstanceID].addPlayerID(player.playerID);
 
 				// TEST:
 				// add a new player
@@ -123,6 +131,50 @@ define(
 				console.log('-- (game.js) end of addPlayer. game.players: ', this.players);
 
 				return player.playerID;
+			},
+
+			addPlayerToGameInstance: function(playerID, gameinstanceID) {
+				
+				console.log(' - (game.js) addPlayerToGameInstance: ', playerID +" to " + gameinstanceID);
+				
+				// Check if we have playerID & gameinstanceID 
+				if (playerID == null || gameinstanceID == null) {
+					console.log('ERROR! Attempting to add a player to a gameinstance without a playerID or gameinstanceID!');
+					return false;
+				} 
+				else {
+
+					// Update game instance if possible:
+					if (this.gameinstances[gameinstanceID] != null) {
+						this.gameinstances[gameinstanceID].addPlayerID(playerID);
+					} else { 
+						return false;
+					}
+				}
+
+				return true;
+			},
+
+			addShipToGameInstance: function(shipID, gameinstanceID) {
+				
+				console.log(' - (game.js) addShipToGameInstance: ', shipID +" to " + gameinstanceID);
+				
+				// Check if we have shipID & gameinstanceID 
+				if (shipID == null || gameinstanceID == null) {
+					console.log('ERROR! Attempting to add a player to a gameinstance without a shipID or gameinstanceID!');
+					return false;
+				} 
+				else {
+
+					// Update game instance if possible:
+					if (this.gameinstances[gameinstanceID] != null) {
+						this.gameinstances[gameinstanceID].addShipID(shipID);
+					} else { 
+						return false;
+					}
+				}
+
+				return true;
 			},
 
 

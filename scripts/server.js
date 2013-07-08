@@ -83,33 +83,19 @@ requirejs(
 			// Increment number of total observers
 			observerCount++;
 			
-			// Keep track of the player associated with this socket
-			var playerID = null;
-			
-			
 			serverEmitter.on('action', function (data) {
 				// this message will be sent to all connected users
 				socket.emit(data);
 			});
 			
 			// When client connects, save the game state
-			socket.emit('start', {
-				state: game.save();
+			socket.emit('start', {state: game.save()} );
 
-				// look up active games
-				var activeGames = game.getActiveGameInstances();
-				var activeGameCount = Object.keys(activeGames).length;
-
-				// Check if no active games:
-				if (activeGameCount == 0) {
-					
-					// Create a new game instance on the DB. GAME ON!!!
-					dbCreateGameInstance();
-					//game.createGameInstance();
-
-				}
-
+			// Client wants to create a new game instance
+			socket.on('createGameInstance', function(data) {
 				
+				dbCreateGameInstance();
+
 			});
 
 			socket.on('sendchat', function(data) {
@@ -145,77 +131,20 @@ requirejs(
 				
 			});
 
-			socket.on('loadShips', function(data) {
-				console.log('Event: loadShips', data);
-
-				// Look up ship & crew from DB:
-				dbLookUpShips(data.playerID);
-
-				// Update game here?
-				//game.
-
-
-			});
-
-			socket.on('chooseShip', function(data) {
-				console.log('Event: chooseShip', data);
-
-				// Create the new ship and get back its object data.
-				// NEW: creating a ship now provides back the shipID
-				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
-				
-				var newShip = new Ship(data);
-
-
-
-				//shipID = game.addShip(data);
-				//console.log(' --- shipID after join: ' + shipID);
-				
-				//shipObj = game.getShip(shipID);
-				//console.log(' --- shipObj after getPlayer: ', shipObj);
-
-				dbInsertShip(newShip);
-			});
-
-
-			// CREW RELATED:
-
-			socket.on('addCrewMember', function(data) {
-				console.log('Event: addCrewMember', data);
-
-				// Add a temp crewID since we don't want to update the DB just yet
-				// returns 0, 1, 2 etc...
-				data.crewID = game.getShipsCrewSize(data.shipID);
-
-				// Create the new crew member:
-				var newCrewMember = cfactory.createCharacter(data.name, data);
-
-				// Update the game
-				game.addCrewMember(newCrewMember);
-
-				socket.emit('addCrewMember', newCrewMember);
-			});
-
-
-			socket.on('removeCrewMember', function(data) {
-				console.log('Event: removeCrewMember', data);
-
-				game.removeCrewMember(data.shipID, data);
-
-				socket.emit('removeCrewMember', data);
-			});
-
-
-			socket.on('loadCrew', function(data) {
-				console.log('Event: loadCrew', data);
-
-				// Look up crew from DB:
-				dbLookUpCrew(data.shipID);
-
-			});
+			
 
 
 			// PLAYER EVENTS
+			socket.on('addPlayerToGameInstance', function(data) {
+							
+				console.log('addPlayerToGameInstance', data);
+
+				// Update GameInstance:
+				game.addPlayerToGameInstance(data.player.playerID, c.myGameInstanceID);
+
+				socket.emit('addPlayerToGameInstance', data);
+
+			});
 
 			socket.on('chooseTeam', function(data) {
 				console.log('Event: chooseTeam', data);
@@ -281,6 +210,83 @@ requirejs(
 					console.log("Still waiting on a player to choose actions.");
 				}
 			});
+
+			// SHIP EVENTS
+			socket.on('addShipToGameInstance', function(data) {
+							
+				console.log('addShipToGameInstance', data);
+
+				// Update GameInstance:
+				game.addShipToGameInstance(data.shipID, c.myGameInstanceID);
+
+				socket.emit('addShipToGameInstance', data);
+
+			});
+
+			socket.on('loadShips', function(data) {
+				console.log('Event: loadShips', data);
+
+				// Look up ship & crew from DB:
+				dbLookUpShips(data.playerID);
+
+				// Update game here?
+				//game.
+			});
+
+			socket.on('chooseShip', function(data) {
+				console.log('Event: chooseShip', data);
+
+				// Create the new ship and get back its object data.
+				// NEW: creating a ship now provides back the shipID
+				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
+				
+				var newShip = new Ship(data);
+
+				//shipID = game.addShip(data);
+				//console.log(' --- shipID after join: ' + shipID);
+				
+				//shipObj = game.getShip(shipID);
+				//console.log(' --- shipObj after getPlayer: ', shipObj);
+
+				dbInsertShip(newShip);
+			});
+
+
+			// CREW EVENTS:
+			socket.on('addCrewMember', function(data) {
+				console.log('Event: addCrewMember', data);
+
+				// Add a temp crewID since we don't want to update the DB just yet
+				// returns 0, 1, 2 etc...
+				data.crewID = game.getShipsCrewSize(data.shipID);
+
+				// Create the new crew member:
+				var newCrewMember = cfactory.createCharacter(data.name, data);
+
+				// Update the game
+				game.addCrewMember(newCrewMember);
+
+				socket.emit('addCrewMember', newCrewMember);
+			});
+
+
+			socket.on('removeCrewMember', function(data) {
+				console.log('Event: removeCrewMember', data);
+
+				game.removeCrewMember(data.shipID, data);
+
+				socket.emit('removeCrewMember', data);
+			});
+
+
+			socket.on('loadCrew', function(data) {
+				console.log('Event: loadCrew', data);
+
+				// Look up crew from DB:
+				dbLookUpCrew(data.shipID);
+
+			});
+
 			
 			
 			socket.on('addCommand', function(data) {
@@ -393,13 +399,17 @@ requirejs(
 		
 			socket.on('disconnect', function(data) {
 				console.log('Event:  disconnect', data);
-				observerCount--;
-				game.leave(playerID);
+				
+				// TO DO:
+				// Figure out who just left the game!
+
+				/*
+				//game.leave(playerID);
 				
 				// If this was a player, it just left
 				if (playerID) {
 					socket.broadcast.emit('leave', {name: playerID, timeStamp: new Date()});
-				}
+				}*/
 			});
 		
 			// Periodically emit time sync commands
@@ -418,6 +428,7 @@ requirejs(
 		// DB Functions
 
 		function dbCreateGameInstance() {
+			
 			var newGameInstance = new GameInstance();
 
 			db.gameinstances.save(newGameInstance, function(err, savedGameInstance) {

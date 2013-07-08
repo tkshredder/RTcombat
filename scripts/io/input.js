@@ -21,6 +21,11 @@ define(function(){
 		
 		// DOM event handlers:
 		
+		// Create button:	
+		$('#create').click(function() {
+			wi.onCreate();
+		});
+
 		// Join button:	
 		$('#join').click(function() {
 			wi.onJoin();
@@ -158,6 +163,8 @@ define(function(){
 			//console.log('clicked on a character! myID: ', wi.client.getMyID());
 			var charactername = $(this).data('name').trim().replace(/\s/g, '').toLowerCase();
 			
+			
+
 			// Send message to server:
 			wi.socket.emit('addCrewMember', {playerID:wi.client.getMyPlayerID(), shipID: wi.client.getMyShipID(), name:charactername});
 			
@@ -228,7 +235,21 @@ define(function(){
 	}
 	
 	WindowInput.prototype = {
-	
+		
+		onCreate: function() {
+
+			console.log(' --- (input.js) onCreate. Client ID: ' + wi.client.getMyPlayerID());
+
+			if (!this.client.getMyPlayerID()) {
+				
+				//console.log('hide welcome show login...');
+
+				output.hidePanels('welcome');
+				output.showPanels('login');
+
+			}
+		},
+
 		onJoin: function() {
 
 			//console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
@@ -244,7 +265,7 @@ define(function(){
 		},
 		
 		onLeave: function() {
-			wi.socket.emit('leave', {name: playerId});
+			wi.socket.emit('leave', {playerID: this.client.getMyPlayerID()});
 		},
 		
 	}
