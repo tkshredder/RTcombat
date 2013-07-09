@@ -4,9 +4,10 @@ define(
 	"model/character",
 	"model/player",
 	"model/ship",
+	"model/gameinstance",
 	"model/characterfactory"
 	],
-	function( Character, Player, Ship, CharacterFactory ){
+	function( Character, Player, Ship, GameInstance, CharacterFactory ){
 	 
 	 	function Game(CharacterFactory) {
 			
@@ -68,6 +69,8 @@ define(
 			 */
 			getActiveGameInstances: function() {
 
+				console.log(' -- (game.js) getActiveGameInstances -- all game instances: ', this.gameinstances);
+
 				// Check if there are any game instances:
 				var activeGameCount = Object.keys(this.gameinstances).length;
 				var activeGames = {};
@@ -91,7 +94,7 @@ define(
 			 */
 			addGameInstance: function(gameinstance) {
 
-				console.log(' - (game.js) addGameInstance', gameinstance);
+				//console.log(' - (game.js) addGameInstance', gameinstance);
 
 				if (gameinstance.getGameInstanceID() == null) {
 					console.log('ERROR! Attempting to add a game instance without gameinstanceID!');
@@ -135,7 +138,7 @@ define(
 
 			addPlayerToGameInstance: function(playerID, gameinstanceID) {
 				
-				console.log(' - (game.js) addPlayerToGameInstance: ', playerID +" to " + gameinstanceID);
+				//console.log(' - (game.js) addPlayerToGameInstance: ', playerID +" to " + gameinstanceID);
 				
 				// Check if we have playerID & gameinstanceID 
 				if (playerID == null || gameinstanceID == null) {
@@ -616,6 +619,7 @@ define(
 				var serialized = {
 					players: {},
 					ships: {},
+					gameinstances: {}
 					//timeStamp: this.state.timeStamp
 				};
 				
@@ -627,12 +631,17 @@ define(
 				
 				for (id in this.ships) {
 					
-					var ship = this.ships[id];
-					
+					var ship = this.ships[id];	
 					serialized.ships[id] = ship.toJSON();
 				}
+
+				for (id in this.gameinstances) {
+					
+					var gameinstance = this.gameinstances[id];	
+					serialized.gameinstances[id] = gameinstance.toJSON();
+				}
 				
-				console.log('end of save. ', serialized);
+				console.log(' --- (game.js) end of save. ', serialized);
 				
 				return serialized;
 			},
@@ -645,7 +654,8 @@ define(
 				
 				var players = savedState.players;
 				var ships = savedState.ships;
-				var actions = savedState.actions;
+				var gameinstances = savedState.gameinstances;
+				//var actions = savedState.actions;
 				
 				this.state = {
 					players: {},
@@ -667,6 +677,12 @@ define(
 					// console.log(' --- (game.js) loading ship ' + id, ship);
 					
 					this.ships[ship.shipID] = new Ship(ship);		
+				}
+
+				for (id in gameinstances) {
+					
+					var gameinstance = gameinstances[id];	
+					this.gameinstances[gameinstance.id] = new GameInstance(gameinstance);
 				}
 			
 			},

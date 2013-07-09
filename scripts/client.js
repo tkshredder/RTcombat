@@ -50,7 +50,8 @@ define(
 			  data.state.timeStamp = new Date();
 			}
 			
-			//console.log(' --- (client) loading game from current state');
+			console.log(' --- (client) loading game from current state');
+			console.log(' ------ here is the current state: ', data.state);
 			game.load(data.state);
 			
 			// Start looking up active games on the server:
@@ -74,8 +75,9 @@ define(
 			game.addGameInstance(new GameInstance(data.gameinstance));
 
 			// Set game instance on Client:
-			myGameInstanceID = data.gameinstance.gameinstanceID;
+			c.myGameInstanceID = data.gameinstance.gameinstanceID;
 
+			//console.log(' ---- (client.js) setting game instance ID: ' + c.myGameInstanceID + ", " +data.gameinstance.gameinstanceID);
 		});
 
 		socket.on('playerReady', function(data) {
@@ -158,7 +160,7 @@ define(
 			
 			// Add Player to Game Instance
 			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
-
+			
 			// Update client vars:
 			if (data.isme) {
 				c.myPlayerID = data.player.playerID;
@@ -194,7 +196,7 @@ define(
 
 			// Add Player to Game Instance
 			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
-
+			
 			// Look up ships
 			console.log(' --- (client.js) emitting loadShips socket', data)
 			
@@ -230,18 +232,20 @@ define(
 
 		socket.on('addPlayerToGameInstance', function(data) {
 			
-			console.log('addPlayerToGameInstance', data);
+			console.log('Event: addPlayerToGameInstance', data);
 
-			// Update GameInstance:
-			game.addPlayerToGameInstance(data.player.playerID, c.myGameInstanceID);
+			// Add playerID to target GameInstance:
+			game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
 
 		});
 
+		// SHIP EVENTS
 		socket.on('addShipToGameInstance', function(data) {
-			console.log('addShipToGameInstance', data);
+						
+			console.log('Event: addShipToGameInstance', data);
 
-			// Update GameInstance:
-			game.addShipToGameInstance(data.ship.shipID, c.myGameInstanceID);
+			// Add shipID to target GameInstance:
+			game.addShipToGameInstance(data.shipID, data.gameinstanceID);
 
 		});
 
@@ -538,6 +542,15 @@ define(
 				//dbCreateGameInstance();
 				
 				//game.createGameInstance();
+			} else {
+
+				// Update DOM
+				output.enableElement('join');
+				output.setGamesInProgress(activeGameCount);
+
+				// Load up active games:
+				socket.emit('loadActiveGameInstances');
+
 			}
 		},
 

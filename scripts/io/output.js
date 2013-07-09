@@ -63,6 +63,10 @@ define(
 
 			},
 
+			setGamesInProgress: function(count) {
+				$('#gamecount').html(count);
+			},
+
 			chooseCharacter: function(slot, data) {
 
 				// Error check input
@@ -118,6 +122,8 @@ define(
 					}
 				}
 			},
+
+
 
 			enableCreateTeamSubmit: function() {
 				$('#createteam_submit').removeClass('disabled')
@@ -215,6 +221,14 @@ define(
 
 			stopAnimation: function(animationID) {
 				animator.stopAnimation(animationID);
+			},
+
+			enableElement: function(elementID) {
+				$('#' + elementID).removeClass('disabled');
+			},
+
+			disableElement: function(elementID) {
+				$('#' + elementID).addClass('disabled');
 			},
 
 			hideElements: function (list) {

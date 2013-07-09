@@ -139,8 +139,8 @@ requirejs(
 							
 				console.log('addPlayerToGameInstance', data);
 
-				// Update GameInstance:
-				game.addPlayerToGameInstance(data.player.playerID, c.myGameInstanceID);
+				// Add playerID to target GameInstance:
+				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
 
 				socket.emit('addPlayerToGameInstance', data);
 
@@ -216,8 +216,8 @@ requirejs(
 							
 				console.log('addShipToGameInstance', data);
 
-				// Update GameInstance:
-				game.addShipToGameInstance(data.shipID, c.myGameInstanceID);
+				// Add shipID to target GameInstance:
+				game.addShipToGameInstance(data.shipID, data.gameinstanceID);
 
 				socket.emit('addShipToGameInstance', data);
 
@@ -436,7 +436,7 @@ requirejs(
 					console.log('GameInstance could not be saved to the DB.', err);
 				}
 				else {
-					console.log('savedGameInstance saved to DB');
+					console.log('-- (server.js) savedGameInstance saved to DB');
 					
 					// Update gameInstance ID of the original game instance object:
 					newGameInstance.setGameInstanceID("gameinstance"+makePrettyID(savedGameInstance._id));

@@ -238,7 +238,7 @@ define(function(){
 		
 		onCreate: function() {
 
-			console.log(' --- (input.js) onCreate. Client ID: ' + wi.client.getMyPlayerID());
+			//console.log(' --- (input.js) onCreate. Client ID: ' + wi.client.getMyPlayerID());
 
 			if (!this.client.getMyPlayerID()) {
 				

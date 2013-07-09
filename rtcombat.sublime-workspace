@@ -1,0 +1,751 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"addPl",
+				"addPlayerToGameInstance"
+			],
+			[
+				"ga",
+				"gameinstances"
+			],
+			[
+				"game",
+				"gameinstanceID"
+			],
+			[
+				"Ga",
+				"GameInstance"
+			],
+			[
+				"acti",
+				"activeGameCount"
+			],
+			[
+				"gam",
+				"gameinstance"
+			],
+			[
+				"act",
+				"activeGameCount"
+			],
+			[
+				"activ",
+				"activeGameCount"
+			],
+			[
+				"player",
+				"playerIDs"
+			],
+			[
+				"temp",
+				"tempCrewMember"
+			],
+			[
+				"crew",
+				"crewMember"
+			],
+			[
+				"theCrew",
+				"theCrewArray"
+			],
+			[
+				"new",
+				"newCrewMember"
+			],
+			[
+				"getCrew",
+				"getCrewSize"
+			],
+			[
+				"that",
+				"thatPlayer"
+			],
+			[
+				"dbLo",
+				"dbLookUpPlayerByUsername"
+			],
+			[
+				"ani",
+				"animationID"
+			],
+			[
+				"start",
+				"startAnimation"
+			],
+			[
+				"ro",
+				"rotateCharacter"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"cha",
+				"characters"
+			],
+			[
+				"charac",
+				"characterID"
+			],
+			[
+				"c",
+				"courage"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"d",
+				"display"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"get",
+				"getMyID"
+			],
+			[
+				"send",
+				"sendchat"
+			],
+			[
+				"so",
+				"sockets"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"text",
+				"text-transform"
+			],
+			[
+				"font-",
+				"font-family"
+			],
+			[
+				"co",
+				"collapse_text"
+			],
+			[
+				"exp",
+				"expand_text"
+			],
+			[
+				"button",
+				"button_over"
+			],
+			[
+				"n",
+				"no-repeat"
+			],
+			[
+				"BR",
+				"BR_social_gray_texture"
+			],
+			[
+				"background",
+				"background	background-image: url"
+			],
+			[
+				"li",
+				"link	Tag"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "scripts/server.js",
+			"settings":
+			{
+				"buffer_size": 19970,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/client.js",
+			"settings":
+			{
+				"buffer_size": 13626,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/model/game.js",
+			"settings":
+			{
+				"buffer_size": 17988,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/io/input.js",
+			"settings":
+			{
+				"buffer_size": 6946,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/maingame.js",
+			"settings":
+			{
+				"buffer_size": 1625,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/model/ship.js",
+			"settings":
+			{
+				"buffer_size": 1897,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/model/character.js",
+			"settings":
+			{
+				"buffer_size": 1626,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/io/output.js",
+			"settings":
+			{
+				"buffer_size": 9313,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scripts/model/gameinstance.js",
+			"settings":
+			{
+				"buffer_size": 1890,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 5660,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "css/app.css",
+			"settings":
+			{
+				"buffer_size": 8542,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 360.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/H/apps/fceugx/settings.xml",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/game.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/characterfactory.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/player.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/io/entityanimator.js",
+		"/C/Users/Alex/Desktop/jquery.form.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/index.html",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/io/input.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/css/app.css",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/server.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/client.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/io/output.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/ship.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/character.js",
+		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/maingame.js",
+		"/C/Users/Alex/Codedump/Node/RTcombatold/dev/characterselect/css/app.css",
+		"/C/Users/Alex/Codedump/Node/RTcombatold/dev/characterselect/output.js",
+		"/C/Users/Alex/Codedump/Node/RTcombatold/dev/characterselect/client.js",
+		"/C/Users/Alex/Codedump/Node/RTcombatold/dev/characterselect/input.js",
+		"/C/Users/Alex/Codedump/Node/RTcombatold/dev/characterselect/index.html",
+		"/C/Users/Alex/My Sites/brdev/dev/columns/index.html",
+		"/C/Users/Alex/My Sites/bookriotdev.panyamedia.com/wp-content/themes/StandardTheme_272_BR2/loop.php",
+		"/C/Users/Alex/My Sites/brdev/dev/social.html",
+		"/C/Users/Alex/My Sites/brdev/dev/social/index.html",
+		"/C/Users/Alex/My Sites/brdev/dev/jquery.bgFade/index.html",
+		"/C/Users/Alex/Documents/Grohl Tabs",
+		"/C/Users/Alex/My Sites/bookriot.com/wp-content/themes/StandardTheme_272_BR2/lib/standardtheme.php",
+		"/C/Users/Alex/My Sites/bookriot.com/wp-content/themes/StandardTheme_272_BR2/single.php",
+		"/C/Users/Alex/Codedump/Experiments/MyHTMLCanvasProject/index.html",
+		"/C/Users/Alex/Codedump/Experiments/Flixel/Jumper/src/com/panyamedia/jumper/states/PlayState.as",
+		"/C/Users/Alex/My Sites/bookriotdev.panyamedia.com/wp-content/themes/StandardTheme_272_BR2/lib/standardtheme.php",
+		"/C/Users/Alex/My Sites/bookriotdev.panyamedia.com/wp-content/themes/StandardTheme_272_BR2/single.php",
+		"/C/Users/Alex/My Sites/panyamedia.com/dominator/js/mariodk.js",
+		"/C/Users/Alex/My Sites/brdev/wp-content/themes/StandardTheme_272/single.php",
+		"/C/Users/Alex/My Sites/brdev/wp-content/themes/StandardTheme_272/loop.php",
+		"/C/Users/Alex/Codedump/Experiments/Viper Builds/Viper_072212/src/Player.as",
+		"/C/Users/Alex/My Sites/bookriotdev.panyamedia.com/wp-content/themes/StandardTheme_272_BR2/functions.php",
+		"/C/Users/Alex/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"addPlayerToGameInstance",
+			"addShipToGameInstance",
+			"loadShip",
+			"loadShips",
+			"addPlayerToGameInstance",
+			"dbLookUpPlayer",
+			"lookUpActiveGames",
+			"disconnect",
+			"text",
+			"lookUpActiveGames",
+			"masterCommandQueue",
+			"chooseTeam",
+			"dbSaveCrew",
+			"saveCrewAsArray",
+			"updateCrew",
+			"too many",
+			"addPlayer",
+			"Looking up ships",
+			"addPlayer",
+			"addShip",
+			"myShipID",
+			"addShip",
+			"dbInsertShip",
+			"Crew",
+			"joinnew",
+			"dbInsertShip",
+			"new Player",
+			"addPlayer",
+			"dbLookUpPlayer",
+			"getPlayer",
+			"after getPlay",
+			"getNextAvailableCharacterID",
+			"				<",
+			"categories",
+			"64",
+			"currentFrameSize",
+			"author",
+			"enemyWave"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"frameHeight",
+			"frameWidth"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "scripts/server.js",
+					"settings":
+					{
+						"buffer_size": 19970,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5626,
+								5626
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3279.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "scripts/client.js",
+					"settings":
+					{
+						"buffer_size": 13626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6156,
+								6156
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4018.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "scripts/model/game.js",
+					"settings":
+					{
+						"buffer_size": 17988,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4339,
+								4339
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2313.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "scripts/io/input.js",
+					"settings":
+					{
+						"buffer_size": 6946,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6361,
+								6361
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4176.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "scripts/maingame.js",
+					"settings":
+					{
+						"buffer_size": 1625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								652,
+								652
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "scripts/model/ship.js",
+					"settings":
+					{
+						"buffer_size": 1897,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1311,
+								1318
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "scripts/model/character.js",
+					"settings":
+					{
+						"buffer_size": 1626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1056,
+								1056
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "scripts/io/output.js",
+					"settings":
+					{
+						"buffer_size": 9313,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1045.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "scripts/model/gameinstance.js",
+					"settings":
+					{
+						"buffer_size": 1890,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1164,
+								1164
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 171.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 5660,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								880,
+								889
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 342.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "css/app.css",
+					"settings":
+					{
+						"buffer_size": 8542,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3525,
+								3525
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 665.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}

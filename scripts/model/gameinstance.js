@@ -35,6 +35,18 @@ define(function(){
 	// GameInstance class methods
 	GameInstance.prototype = {
 	 
+	 	// Class methods:
+		toJSON: function() { 
+			var gameInstanceObj = {};
+			for (var prop in this) {
+				if (this.hasOwnProperty(prop)) {
+					gameInstanceObj[prop] = this[prop];
+				}
+			}
+			return gameInstanceObj;
+		},
+
+	 	// Accessor functions:
 	 	getGameInstanceID: function() { return this.gameinstanceID; },
 	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
 	 	getIsActive: function() { return this.isActive; },
@@ -49,8 +61,6 @@ define(function(){
 		getCurrentRound: function() { return this.currentRound; },
 		setCurrentRound: function(value) { this.currentRound = value; },
 		incrementCurrentRound: function() { this.currentRound++; },
-
-		
 	};
 	
 	return GameInstance;
