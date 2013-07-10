@@ -140,7 +140,7 @@ requirejs(
 				console.log('addPlayerToGameInstance', data);
 
 				// Add playerID to target GameInstance:
-				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
+				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID, data.startedBy);
 
 				socket.emit('addPlayerToGameInstance', data);
 

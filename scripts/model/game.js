@@ -136,7 +136,7 @@ define(
 				return player.playerID;
 			},
 
-			addPlayerToGameInstance: function(playerID, gameinstanceID) {
+			addPlayerToGameInstance: function(playerID, gameinstanceID, startedBy) {
 				
 				//console.log(' - (game.js) addPlayerToGameInstance: ', playerID +" to " + gameinstanceID);
 				
@@ -150,6 +150,11 @@ define(
 					// Update game instance if possible:
 					if (this.gameinstances[gameinstanceID] != null) {
 						this.gameinstances[gameinstanceID].addPlayerID(playerID);
+
+						if (this.gameinstances[gameinstanceID].getStartedBy() == "") {
+							this.gameinstances[gameinstanceID].setStartedBy(startedBy);
+						}
+
 					} else { 
 						return false;
 					}

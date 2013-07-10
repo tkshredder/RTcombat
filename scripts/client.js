@@ -159,7 +159,7 @@ define(
 			game.addPlayer(data.player);
 			
 			// Add Player to Game Instance
-			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
+			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, startedBy: data.player.name, gameinstanceID: c.myGameInstanceID});
 			
 			// Update client vars:
 			if (data.isme) {
@@ -546,10 +546,12 @@ define(
 
 				// Update DOM
 				output.enableElement('join');
-				output.setGamesInProgress(activeGameCount);
+				output.writeGameInstanceSelection(); // hidden by default
+
+				//output.setGamesInProgress(activeGameCount);
 
 				// Load up active games:
-				socket.emit('loadActiveGameInstances');
+				//socket.emit('loadActiveGameInstances');
 
 			}
 		},

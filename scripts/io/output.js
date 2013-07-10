@@ -10,11 +10,11 @@ define(
 		 * TO DO: migrate display Message X to displayMessages(messages, params).
 		 */
 		
-		function WindowOutput(gameInstance, animator, characterfactory) {
+		function WindowOutput(game, animator, characterfactory) {
 			
-			game = gameInstance;
-			animator = animator;
-			characterfactory = characterfactory;
+			this.game = game;
+			this.animator = animator;
+			this.characterfactory = characterfactory;
 			wo = this;
 			
 			var updateTimer;
@@ -49,7 +49,7 @@ define(
 
 				// Check if we need to animate boat:
 				if (data.animate == true) {
-					animator.floatBoat();
+					wo.animator.floatBoat();
 				}
 
 			},
@@ -185,6 +185,7 @@ define(
 			
 			hidePanels: function (list) {
 				
+				// Hide all panels if method is called with a null input:
 				if(typeof(list) === 'undefined') {
 					$('[id*=panel]').addClass('hidden');
 				}
@@ -306,6 +307,18 @@ define(
 						$('#character_selection').append(this.createCharacterHTML('deadsoldier'));
 						$('#character_selection').append(this.createCharacterHTML('tentacles'));
 						break;
+				}
+			},
+
+			writeGameInstanceSelection: function () {
+				
+				var gameInstances = game.getActiveGameInstances();
+				console.log(' --- (output.js) writeGameInstanceSelection: ', gameInstances);
+
+				for (var id in gameInstances) {
+					var gameInstance = gameInstances[id];
+					var startedBy = "started by" + gameInstance.startedBy;
+					$('#gameinstance_selection').append('<li class="gameinstance">' + startedBy + '</li>');
 				}
 			},
 

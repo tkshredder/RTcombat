@@ -86,6 +86,7 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 #chooseship_panel { width: 64%; float: right;}
 #chooseship_panel, #choosecharacters_panel { background: rgba(243,161,92,0.6); }
 #chooseship_panel h1, #choosecharacters_panel h1 { text-align: center; font-size: 44px; text-transform: uppercase; text-shadow: 3px 3px #333; }
+#choosegameinstance_panel { background: rgba(219,221,203,0.8); }
 #myteam_panel { background: rgba(219,221,203,0.8); }
 
 /* labels */

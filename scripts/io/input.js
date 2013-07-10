@@ -253,15 +253,8 @@ define(function(){
 		onJoin: function() {
 
 			//console.log(' --- (input.js) onJoin. Client ID: ' + this.client.getMyID())
-
-			if (!this.client.getMyPlayerID()) {
-				
-				//console.log('hide welcome show login...');
-
-				output.hidePanels('welcome');
-				output.showPanels('login');
-
-			}
+			output.hidePanels();
+			output.showPanels('choosegameinstances');
 		},
 		
 		onLeave: function() {

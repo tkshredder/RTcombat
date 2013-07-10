@@ -8,6 +8,7 @@ define(function(){
 			params = {};
 			params.gameinstanceID = -1;
 			params.isActive = true;
+			params.startedBy = "";
 			params.playerIDs = {};
 			params.shipIDs = {};
 			params.masterCommandQueue = [];
@@ -51,6 +52,8 @@ define(function(){
 	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
 	 	getIsActive: function() { return this.isActive; },
 		setIsActive: function(isActive) { this.isActive = isActive; },
+		getStartedBy: function() { return this.startedBy; },
+		setStartedBy: function(value) { this.startedBy = value;},
 	 	addPlayerID: function(playerID) { this.playerIDs[playerID] = playerID; },
 		removePlayerID: function(playerID) { delete this.playerIDs[playerID]; },
 		addShipID: function(shipID) { this.shipIDs[shipID] = shipID; },
