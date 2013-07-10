@@ -18,6 +18,7 @@ define(function(){
 
 		this.gameinstanceID = params.gameinstanceID;
 		this.isActive = params.isActive;
+		this.startedBy = params.startedBy;
 		this.playerIDs = params.playerIDs;
 		this.shipIDs = params.shipIDs;
 		this.masterCommandQueue = params.masterCommandQueue;

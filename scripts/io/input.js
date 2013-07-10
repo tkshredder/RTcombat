@@ -21,13 +21,23 @@ define(function(){
 		
 		// DOM event handlers:
 		
+		// Register & Login
+		$('#registerBtn').click(function() {
+			wi.onRegisterOrLogin();
+			//wi.output.setLoginButtonText('Register');
+		});
+
+		$('#loginBtn').click(function() {
+			wi.onRegisterOrLogin();
+		});
+
 		// Create button:	
-		$('#create').click(function() {
+		$('#createBtn').click(function() {
 			wi.onCreate();
 		});
 
 		// Join button:	
-		$('#join').click(function() {
+		$('#joinBtn').click(function() {
 			wi.onJoin();
 		});
 
@@ -35,6 +45,9 @@ define(function(){
 		$('#login').submit(function(e) {
 			
 			e.preventDefault(); // Prevent form from submitting
+			
+			console.log('here', e);
+			
 
 			name = $('#loginname').val();
 			
@@ -184,8 +197,28 @@ define(function(){
 			
 		});
 
+		// GAME INSTANCE SELECTION ///////////////////////////////////////////////////////////////
 
+		// Character Selection Screen:
+		$(document).on('mouseover', '#gameinstance_selection li', function() {
+			
+			// Show game details
+			//output.setCharacter($(this).data());
+			sound.play('menu_tick');
+		});
 
+		// Choose game instance:
+		$(document).on('click', '#gameinstance_selection li', function() {
+			
+			console.log('clicked on a gameinstance! giID: ', this.data('gameinstanceID'));
+			
+			// Send message to server:
+			wi.socket.emit('chooseGameInstance', {gameinstanceID: this.data('gameinstanceID')});
+			
+			// Update DOM:
+			sound.play('cv2_menu_tick');
+
+		});	
 
 		
 		// COMMANDS:
@@ -236,7 +269,7 @@ define(function(){
 	
 	WindowInput.prototype = {
 		
-		onCreate: function() {
+		onRegisterOrLogin: function() {
 
 			//console.log(' --- (input.js) onCreate. Client ID: ' + wi.client.getMyPlayerID());
 
@@ -249,6 +282,20 @@ define(function(){
 
 			}
 		},
+
+		onCreate: function() {
+
+			if (!this.client.getMyPlayerID()) {
+				
+				//console.log('hide welcome show login...');
+
+				output.hidePanels('welcome');
+				output.showPanels('login');
+
+			}
+		},
+
+
 
 		onJoin: function() {
 

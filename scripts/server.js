@@ -94,6 +94,11 @@ requirejs(
 			// Client wants to create a new game instance
 			socket.on('createGameInstance', function(data) {
 				
+				console.log('Event: createGameInstance', data);
+				if (data.message != null) {
+					console.log('-- (server.js) ' + data.message);
+				}
+
 				dbCreateGameInstance();
 
 			});
@@ -137,7 +142,7 @@ requirejs(
 			// PLAYER EVENTS
 			socket.on('addPlayerToGameInstance', function(data) {
 							
-				console.log('addPlayerToGameInstance', data);
+				console.log('Event: addPlayerToGameInstance', data);
 
 				// Add playerID to target GameInstance:
 				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID, data.startedBy);
@@ -688,13 +693,8 @@ requirejs(
 					// This should be just one record, but it gets returned as an array.
 					for (var key in theCrew) {
 
-
 						crewMember = theCrew[key];
-
 						crewMember.setCrewID("crew"+makePrettyID(crewMember._id));
-
-						// Need to update crew Member models in the game...
-						console.log('Need to update crew of temp crewID' + key + '....');
 
 						// Update this crewMembers record to set the crewID
 						db.crew.findAndModify({ 

@@ -687,7 +687,7 @@ define(
 				for (id in gameinstances) {
 					
 					var gameinstance = gameinstances[id];	
-					this.gameinstances[gameinstance.id] = new GameInstance(gameinstance);
+					this.gameinstances[gameinstance.gameinstanceID] = new GameInstance(gameinstance);
 				}
 			
 			},

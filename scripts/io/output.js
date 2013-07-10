@@ -64,7 +64,15 @@ define(
 			},
 
 			setGamesInProgress: function(count) {
-				$('#gamecount').html(count);
+
+				var gameCountAsString;
+				if (count == 1) {
+					gameCountAsString = "There is currently 1 game in progress.";
+				} else {
+					gameCountAsString = "There are currently " + count + " games in progress.";
+				}
+
+				$('#gamecount').html(gameCountAsString);
 			},
 
 			chooseCharacter: function(slot, data) {
@@ -78,6 +86,10 @@ define(
 				//console.log(' --- (output.js) chooseCharacter: ' + slot, data);
 				$('#myteam_'+(slot+1)+' .avatar_image').addClass('character_'+charactername);
 
+			},
+
+			setLoginButtonText: function(value) {
+				$('#loginsubmit').val(value);
 			},
 
 			displayTurnTimer: function() {
@@ -317,8 +329,17 @@ define(
 
 				for (var id in gameInstances) {
 					var gameInstance = gameInstances[id];
-					var startedBy = "started by" + gameInstance.startedBy;
-					$('#gameinstance_selection').append('<li class="gameinstance">' + startedBy + '</li>');
+					var startedBy = "Started by " + gameInstance.startedBy;
+					
+					// Create a new html element to store the gameinstance info
+					// TO DO: 
+					// add additional data to this			
+					var $element = $(document.createElement('li'));
+					$element.addClass('gameinstance');
+					$element.html(startedBy);
+					$element.data('gameinstanceID', gameInstance.gameinstanceID);
+					$element.data('params', gameInstance)
+					$('#gameinstance_selection').append($element);
 				}
 			},
 
@@ -328,9 +349,6 @@ define(
 				var $element = $(document.createElement('li'));
 				$element.addClass('avatar');
 				$element.html('<div class="avatar_image character_'+characterType+'" ></div>');
-				//$element.addClass('avatar_image character_' + characterType);
-				//$element.wrap('<li>').parent();
-				//var $element = $(document.createElement('<li class="avatar"><div class="avatar_image character_'+characterType+'" ></div></li>'));
 				
 				var characterParams = characterfactory.createCharacterData(characterType);
 

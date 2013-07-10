@@ -55,7 +55,7 @@ define(
 			game.load(data.state);
 			
 			// Start looking up active games on the server:
-			c.lookUpActiveGames();
+			//c.lookUpActiveGames();
 
 			// Check if there's a name specified
 			if (window.location.hash) {
@@ -159,7 +159,7 @@ define(
 			game.addPlayer(data.player);
 			
 			// Add Player to Game Instance
-			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, startedBy: data.player.name, gameinstanceID: c.myGameInstanceID});
+			//socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID, startedBy: data.player.name});
 			
 			// Update client vars:
 			if (data.isme) {
@@ -195,7 +195,7 @@ define(
 			game.addPlayer(data.player);
 
 			// Add Player to Game Instance
-			socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID});
+			//socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID, startedBy: data.player.name});
 			
 			// Look up ships
 			console.log(' --- (client.js) emitting loadShips socket', data)
@@ -265,7 +265,7 @@ define(
 			c.myShipID = game.addShip(data.ships[0]);
 
 			// Add Ship to Game Instance
-			socket.emit('addShipToGameInstance', {shipID: submitData.shipID, gameinstanceID: c.myGameInstanceID});
+			//socket.emit('addShipToGameInstance', {shipID: submitData.shipID, gameinstanceID: c.myGameInstanceID});
 
 			// load the crew!
 			socket.emit('loadCrew', submitData);
@@ -281,12 +281,15 @@ define(
 
 			});
 
+			// At this point, the player, ship, and crew is loaded up.
+			// Maybe fire an event to set the player as ready to choose?
 
-			if ((game.getPlayerCount() == 2) && data.isme) {
-				//socket.emit('startGame', {message:"start"}); //game.getCurrentPlayer()
-			} else {
-				output.displayWaitingMessage(data.isme);
-			}
+			output.hidePanels();
+			output.showPanels('chooseGameInstance')
+
+			//output.displayWaitingMessage(data.isme);
+
+			
 
 		});
 
@@ -536,7 +539,7 @@ define(
 			if (activeGameCount == 0) {
 				
 				// Tell server to create a new game instance:
-				socket.emit('createGameInstance', {});
+				socket.emit('createGameInstance', {message: 'No active games in memory.'});
 
 				// Create a new game instance on the DB. GAME ON!!!
 				//dbCreateGameInstance();
@@ -547,8 +550,7 @@ define(
 				// Update DOM
 				output.enableElement('join');
 				output.writeGameInstanceSelection(); // hidden by default
-
-				//output.setGamesInProgress(activeGameCount);
+				output.setGamesInProgress(activeGameCount);
 
 				// Load up active games:
 				//socket.emit('loadActiveGameInstances');

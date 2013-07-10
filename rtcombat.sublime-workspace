@@ -195,7 +195,7 @@
 			"file": "scripts/server.js",
 			"settings":
 			{
-				"buffer_size": 20026,
+				"buffer_size": 19893,
 				"line_ending": "Windows"
 			}
 		},
@@ -220,22 +220,6 @@
 			"settings":
 			{
 				"buffer_size": 5844,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scripts/io/output.js",
-			"settings":
-			{
-				"buffer_size": 10080,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scripts/io/input.js",
-			"settings":
-			{
-				"buffer_size": 6850,
 				"line_ending": "Windows"
 			}
 		},
@@ -307,6 +291,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/abaker/My Code/Node/battle/RTcombat/scripts/io/input.js",
+		"/C/Users/abaker/My Code/Node/battle/RTcombat/scripts/io/output.js",
 		"/C/Users/Alex/Codedump/Node/RTcombat/css/app.css",
 		"/C/Users/Alex/Codedump/Node/RTcombat/index.html",
 		"/C/Users/Alex/Codedump/Node/RTcombat/scripts/model/gameinstance.js",
@@ -349,7 +335,7 @@
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -431,7 +417,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -440,15 +426,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 20026,
+						"buffer_size": 19893,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3755,
-								3755
+								17388,
+								17388
 							]
 						],
 						"settings":
@@ -457,7 +443,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2158.0,
+						"translation.y": 13376.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -475,8 +461,8 @@
 						"selection":
 						[
 							[
-								13607,
-								13607
+								12633,
+								12633
 							]
 						],
 						"settings":
@@ -485,7 +471,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 9737.0,
+						"translation.y": 9931.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -541,69 +527,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1596.0,
+						"translation.y": 716.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "scripts/io/output.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10080,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8139,
-								8162
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 5253.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "scripts/io/input.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6850,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6706,
-								6706
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4399.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
 					"file": "css/app.css",
 					"semi_transient": false,
 					"settings":
@@ -630,7 +560,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 5,
 					"file": "scripts/model/game.js",
 					"semi_transient": false,
 					"settings":
@@ -658,7 +588,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 6,
 					"file": "scripts/model/gameinstance.js",
 					"semi_transient": false,
 					"settings":
@@ -686,7 +616,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 7,
 					"file": "scripts/maingame.js",
 					"semi_transient": false,
 					"settings":
@@ -714,7 +644,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 8,
 					"file": "scripts/model/ship.js",
 					"semi_transient": false,
 					"settings":
@@ -746,7 +676,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -778,7 +708,7 @@
 	"project": "rtcombat.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
