@@ -77,7 +77,21 @@ define(
 			// Set game instance on Client:
 			c.myGameInstanceID = data.gameinstance.gameinstanceID;
 
-			//console.log(' ---- (client.js) setting game instance ID: ' + c.myGameInstanceID + ", " +data.gameinstance.gameinstanceID);
+			//////////////////////////////
+			// Player is ready. Ship is ready. Game Instance is ready. 
+			
+			// Add Player to Game Instance
+			socket.emit('addPlayerToGameInstance', {playerID: c.myPlayerID, gameinstanceID: c.myGameInstanceID, startedBy: game.getPlayerName(c.myPlayerID)});
+			
+			// Add Ship to Game Instance
+			socket.emit('addShipToGameInstance', {shipID: c.myShipID, gameinstanceID: c.myGameInstanceID});
+
+
+			// Update DOM:
+			output.hidePanels();
+			output.showPanels('output');
+			output.displayWaitingMessage(true);
+
 		});
 
 		socket.on('playerReady', function(data) {
@@ -157,9 +171,6 @@ define(
 			
 			// Update Game:
 			game.addPlayer(data.player);
-			
-			// Add Player to Game Instance
-			//socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID, startedBy: data.player.name});
 			
 			// Update client vars:
 			if (data.isme) {
@@ -264,9 +275,6 @@ define(
 			// Add Ship to game and save ID:
 			c.myShipID = game.addShip(data.ships[0]);
 
-			// Add Ship to Game Instance
-			//socket.emit('addShipToGameInstance', {shipID: submitData.shipID, gameinstanceID: c.myGameInstanceID});
-
 			// load the crew!
 			socket.emit('loadCrew', submitData);
 		});
@@ -281,16 +289,8 @@ define(
 
 			});
 
-			// At this point, the player, ship, and crew is loaded up.
-			// Maybe fire an event to set the player as ready to choose?
-
-			output.hidePanels();
-			output.showPanels('chooseGameInstance')
-
-			//output.displayWaitingMessage(data.isme);
-
-			
-
+			// Next piece
+			c.handleGameSelection();
 		});
 
 
@@ -351,34 +351,12 @@ define(
 
 			// Update the game:
 			game.chooseTeam(data.playerID);
-			
-			//console.log(' --- (client.js) calling update crew. Convert to characters --');
-
-
-
 			game.updateCrew(data.shipID, data.crew);
 
-			// Debug:
-			//console.log('Player '+data.playerID+' team chosen.');
-
-			// Update DOM:
-			output.hidePanels(['choosecharacters', 'myteam']);
-			output.showPanels('output');
-			output.stopAnimation('character');
+			// Next piece - handle game selection
+			c.handleGameSelection();
 
 		});
-
-
-
-
-
-
-
-
-
-
-
-
 		
 		// Event: startGame
 		// Description: Fires when a new game starts. Updates client, game, output
@@ -527,6 +505,17 @@ define(
 			animator.addAnimationAndPlay(anim);
 		},
 
+		handleGameSelection: function() {
+
+			// Look up the active games
+			c.lookUpActiveGames();
+			
+			// Update DOM:
+			output.hidePanels();
+			output.showPanels('choosegame')
+			
+		},
+
 		lookUpActiveGames: function() {
 
 			// look up active games
@@ -538,13 +527,8 @@ define(
 			// Check if no active games:
 			if (activeGameCount == 0) {
 				
-				// Tell server to create a new game instance:
-				socket.emit('createGameInstance', {message: 'No active games in memory.'});
+				// DO NOTHING. Player must create a new game instance.
 
-				// Create a new game instance on the DB. GAME ON!!!
-				//dbCreateGameInstance();
-				
-				//game.createGameInstance();
 			} else {
 
 				// Update DOM

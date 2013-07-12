@@ -285,17 +285,8 @@ define(function(){
 
 		onCreate: function() {
 
-			if (!this.client.getMyPlayerID()) {
-				
-				//console.log('hide welcome show login...');
-
-				output.hidePanels('welcome');
-				output.showPanels('login');
-
-			}
+			wi.socket.emit('createGameInstance', {message: 'User creating a new game.'});
 		},
-
-
 
 		onJoin: function() {
 
