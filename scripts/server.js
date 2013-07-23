@@ -216,6 +216,30 @@ requirejs(
 				}
 			});
 
+			socket.on('chooseGameInstance', function(data) {
+				console.log('Event: chooseGameInstance', data);
+
+				// Add player and ship to the game:
+				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
+				game.addShipToGameInstance(data.shipID, data.gameinstanceID);
+
+				// Update DB instance:			
+				// TO DO
+
+				socket.emit('chooseGameInstance', data);
+				socket.broadcast.emit('chooseGameInstance', data);
+
+				// Check if we have two players and both players are ready:
+				if (game.getGameInstancePlayerCount(data.gameinstanceID) == 2) {
+					
+					socket.emit('startGame', {message:"start"});
+					socket.broadcast.emit('startGame', {message:"start"});
+						
+					startNextTurn();	
+				}
+			});
+
+
 			// SHIP EVENTS
 			socket.on('addShipToGameInstance', function(data) {
 							
@@ -246,6 +270,9 @@ requirejs(
 				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
 				
 				var newShip = new Ship(data);
+
+				// Update player model:
+				game.setPlayerShipID(data.playerID, data.shipID);
 
 				//shipID = game.addShip(data);
 				//console.log(' --- shipID after join: ' + shipID);
@@ -462,6 +489,20 @@ requirejs(
 					);
 				}
 			});
+		}
+
+		function dbUpdateGameInstance(data) {
+
+			db.gameinstances.findAndModify({
+				query: { gameinstanceID: data.gameinstanceID},
+				update: { $set: { playerIDs: data.playerIDs, shipIDs: data.shipIDs}}},
+				function (err, updatedGameInstance) {
+					// Game Instance updated!
+				}
+			);
+
+			
+
 		}
 
 		function dbLookUpPlayer(player) {

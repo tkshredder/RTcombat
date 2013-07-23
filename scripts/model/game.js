@@ -243,6 +243,21 @@ define(
 				
 			},
 
+			/**
+			 * Called when a player chooses a game instance to join
+			 */
+			chooseGameInstance: function(gameinstanceID) {
+				
+				console.log(' --- (game.js) chooseGameInstance', gameinstanceID);
+				
+				// TO DO:
+				// Add error checking for size of team (this.crew[playerID].length) vs max team size
+				
+				// Set the player's team chosen flag:
+				this.players[playerID].setTeamChosen(true);
+				
+			},
+
 			updateCrew: function(shipID, crewObject) {
 				
 				//console.log('updateCrewIDs -- ', crewObject);
@@ -378,6 +393,8 @@ define(
 				// Add the player's ship to the game:
 				this.addShip(data.playerID, data);
 				
+				game.setPlayerShipID(data.playerID, data.shipID);
+
 			},
 
 			chooseCrewMember: function(data) {
@@ -402,7 +419,9 @@ define(
 			
 			},
 			
-			
+			setPlayerShipModel: function(playerID, shipID) {
+				this.players[playerID].setShipID(shipID);
+			},
 			
 			
 			/**
@@ -510,6 +529,9 @@ define(
 				//console.log(' -- (game.js) getTeamID for ship ' + shipID, this.ships[shipID]);
 				return this.ships[shipID].getTeamID(); 
 			},
+			getGameInstancePlayerCount: function(gameinstanceID) {
+				return this.gameinstances[gameinstanceID].getPlayerCount();
+			},
 			getPlayerCount: function() { return Object.keys(this.players).length;},
 			getRemainingTime: function() { return this.currentTurnTimeRemaining; },
 			getOpponentID: function(playerID) {
@@ -548,9 +570,9 @@ define(
 				// For now, all actions are available.
 
 				var charActions, allActions = [];
-				var playersShipID = this.players[playerID].currentShipID;
+				var playersShipID = this.players[playerID].getShipID();
 
-				console.log('--- (game.js) getPossibleCommands for player ', playerID);
+				console.log('--- (game.js) getPossibleCommands for player ', playerID, playersShipID);
 
 				// Loop through crew
 				var shipCrew = this.ships[playersShipID].getCrew();

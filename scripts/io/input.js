@@ -210,10 +210,12 @@ define(function(){
 		// Choose game instance:
 		$(document).on('click', '#gameinstance_selection li', function() {
 			
-			console.log('clicked on a gameinstance! giID: ', this.data('gameinstanceID'));
+			var gameinstanceID = $(this).data('gameinstanceID');
+
+			console.log('clicked on a gameinstance! giID: ', gameinstanceID);
 			
 			// Send message to server:
-			wi.socket.emit('chooseGameInstance', {gameinstanceID: this.data('gameinstanceID')});
+			wi.socket.emit('chooseGameInstance', {gameinstanceID: gameinstanceID, playerID: wi.client.getMyPlayerID(), shipID: wi.client.getMyShipID()});
 			
 			// Update DOM:
 			sound.play('cv2_menu_tick');

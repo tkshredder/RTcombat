@@ -250,6 +250,14 @@ define(
 
 		});
 
+		socket.on('chooseGameInstance', function(data) {
+			console.log('Event: chooseGameInstance', data);
+
+			// Add player and ship to the game:
+			game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
+			game.addShipToGameInstance(data.shipID, data.gameinstanceID);
+		});
+
 		// SHIP EVENTS
 		socket.on('addShipToGameInstance', function(data) {
 						
@@ -302,6 +310,9 @@ define(
 
 			// Add the ship to the game, and store the shipID in Client:
 			c.myShipID = game.addShip(data);
+
+			// Update player model:
+			game.setPlayerShipID(data.playerID, data.shipID);
 
 			var theTeamID = game.getTeamID(c.myShipID);
 			//console.log('- (client.js) theTeamID: ' + theTeamID);
@@ -532,7 +543,7 @@ define(
 			} else {
 
 				// Update DOM
-				output.enableElement('join');
+				output.enableElement('joinBtn');
 				output.writeGameInstanceSelection(); // hidden by default
 				output.setGamesInProgress(activeGameCount);
 

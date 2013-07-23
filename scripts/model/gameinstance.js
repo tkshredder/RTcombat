@@ -51,6 +51,7 @@ define(function(){
 	 	// Accessor functions:
 	 	getGameInstanceID: function() { return this.gameinstanceID; },
 	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
+	 	getPlayerCount: function() { return Object.keys(this.playerIDs).length},
 	 	getIsActive: function() { return this.isActive; },
 		setIsActive: function(isActive) { this.isActive = isActive; },
 		getStartedBy: function() { return this.startedBy; },
