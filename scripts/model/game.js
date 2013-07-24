@@ -23,7 +23,9 @@ define(
 			this.currentRound = 0;
 			
 			this.turnTimer;
+			this.commenceTimer;
 			this.currentTurnTimeRemaining;
+			this.currentCommenceTimeRemaining;
 			this.lastTimeStamp;
 			
 			// STATIC VARS
@@ -31,6 +33,7 @@ define(
 			this.commandDelay = 2000;
 			this.turnFinishDelay = 3000;
 			
+			this.COMMENCE_TIME = 10;
 			this.TURN_TIME = 30;
 			this.UPDATE_INTERVAL = Math.round(1000 / 30);
 			this.TARGET_LATENCY = 1000; // Maximum latency skew.
@@ -57,7 +60,21 @@ define(
 				
 				//console.log('timer event, ' + this.currentTurnTimeRemaining);
 				
+			},
+
+			// Need to figure out a listener for output 
+			this.updateRemainingCommenceTime = function() {
+				
+				// Decrement timer and clear interval if needed
+				this.currentCommenceTimeRemaining -= 1;
+				if (this.currentCommenceTimeRemaining <= 0) {
+					
+					clearInterval(this.commenceTimer);
+					
+					socket.emit('commenceCombat', {});
+				}				
 			}
+
 						
 			return this;
 		}
@@ -87,6 +104,18 @@ define(
 				}
 
 				return activeGames;
+			},
+
+			getActiveGameInstancesCount: function() {
+				var activeGameCount = 0;
+
+				for (var gid in this.gameinstances) {
+					if (this.gameinstances[gid].getIsActive()) {
+						activeGameCount++;
+					}
+				}
+
+				return activeGameCount;
 			},
 
 			/**
@@ -433,9 +462,18 @@ define(
 				this.currentRound = data.currentRound;
 			},
 			
-			
-			
-			
+			/**
+			 * Called when a starting combat
+			 */
+			combatCommence: function(data) {
+				
+				// Setup timer for the turn:
+				this.currentCommenceTimeRemaining = this.COMMENCE_TIME;
+				this.commenceTimer = setInterval(function() { 
+					//console.log(g);
+					g.updateRemainingCommenceTime(); 
+					}, 1000);
+			},
 			
 			/**
 			 * Called when a player performs an action
@@ -528,6 +566,7 @@ define(
 			},
 			getPlayerCount: function() { return Object.keys(this.players).length;},
 			getRemainingTime: function() { return this.currentTurnTimeRemaining; },
+			getRemainingCommenceTime: function() { return this.currentCommenceTimeRemaining; },
 			getOpponentID: function(playerID) {
 				
 				// TO DO:

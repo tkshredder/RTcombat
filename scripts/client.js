@@ -50,12 +50,13 @@ define(
 			  data.state.timeStamp = new Date();
 			}
 			
-			console.log(' --- (client) loading game from current state');
-			console.log(' ------ here is the current state: ', data.state);
+			//console.log(' --- (client) loading game from current state');
+			//console.log(' ------ here is the current state: ', data.state);
 			game.load(data.state);
 			
-			// Start looking up active games on the server:
-			//c.lookUpActiveGames();
+			// Update nav bar:
+			output.setPlayersOnline(Object.keys(data.state.players).length);
+			output.setGamesInProgress(game.getActiveGameInstancesCount());
 
 			// Check if there's a name specified
 			if (window.location.hash) {
@@ -255,9 +256,25 @@ define(
 		socket.on('chooseGameInstance', function(data) {
 			console.log('Event: chooseGameInstance', data);
 
-			// Add player and ship to the game:
-			game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
-			game.addShipToGameInstance(data.shipID, data.gameinstanceID);
+			// Update gameinstanceID for client if just joined:
+			if (data.isme) {
+				c.myGameInstanceID = data.gameinstanceID;
+			}
+
+			// Add player and ship only if relevant:
+			// This prevents other browsers from getting bogged down with unrelated game data.
+			if (c.myGameInstanceID == data.gameinstanceID) {
+				
+				// Set opponent ID:
+				if (!data.isme) {
+					c.opponentPlayerID = data.playerID;
+				} else {
+					c.opponentPlayerID = game.gameinstances[data.gameinstanceID].getOpponentID(data.playerID);
+				}
+
+				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
+				game.addShipToGameInstance(data.shipID, data.gameinstanceID);
+			}
 		});
 
 		// SHIP EVENTS
@@ -381,17 +398,14 @@ define(
 			
 			console.log('Event: startGame', data);
 			
-			// (This client only) Set the opponentPlayerID if not already set:
-			if (c.opponentPlayerID == null) {
-				c.opponentPlayerID = game.getopponentPlayerID(c.myPlayerID);
-			}
-			
 			// Update game:
 			game.startGame(data.name);
 			
 			// Update DOM:
-			output.hidePanels(["welcome","login"]);
-			output.setNames({myPlayerID: c.myPlayerID, opponentPlayerID: c.opponentPlayerID});
+			output.hidePanels();
+			output.showPanels('startcombat');
+			output.displayCommenceTimer();
+			
 			output.updateCommandsAvailable(c.myPlayerID);
 			output.setBoatBG(game.getTeamID(c.myPlayerID));
 
@@ -408,7 +422,6 @@ define(
 			
 			// Update DOM:
 			output.displayTurnMessage();
-			
 			output.displayTurnTimer();
 			
 		});
@@ -529,6 +542,7 @@ define(
 			
 			// Update DOM:
 			output.hidePanels();
+			output.hideCharacters();
 			output.showPanels('choosegame')
 			
 		},

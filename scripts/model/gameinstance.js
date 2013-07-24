@@ -51,6 +51,12 @@ define(function(){
 	 	// Accessor functions:
 	 	getGameInstanceID: function() { return this.gameinstanceID; },
 	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
+	 	getOpponentID: function(playerID) { 
+	 		var opponentID;
+	 		opponentID = this.playerIDs[0];
+
+	 		// TO DO: expand this for 1:N combat
+	 	},
 	 	getPlayerCount: function() { return Object.keys(this.playerIDs).length},
 	 	getIsActive: function() { return this.isActive; },
 		setIsActive: function(isActive) { this.isActive = isActive; },

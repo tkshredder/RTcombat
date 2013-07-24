@@ -49,7 +49,7 @@ define(
 						characterParams.attack = 5;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
-						characterParams.dodge = 6;
+						characterParams.dodge = 4;
 
 						// Add actions:
 						characterParams.actions = [];
@@ -61,10 +61,10 @@ define(
 					case "drowarcher":
 						characterParams.name = "Drow Archer";
 						characterParams.class = "drowarcher";
-						characterParams.attack = 5;
+						characterParams.attack = 6;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
-						characterParams.dodge = 6;
+						characterParams.dodge = 2;
 
 						// Add actions:
 						characterParams.actions = [];
@@ -75,10 +75,10 @@ define(
 					case "centipede":
 						characterParams.name = "Centipede";
 						characterParams.class = "centipede";
-						characterParams.attack = 5;
-						characterParams.defense = 3;
+						characterParams.attack = 4;
+						characterParams.defense = 4;
 						characterParams.courage = 0;
-						characterParams.dodge = 6;
+						characterParams.dodge = 3;
 
 						// Add actions:
 						characterParams.actions = [];
@@ -89,7 +89,7 @@ define(
 					case "tentacles":
 						characterParams.name = "Tentacles";
 						characterParams.class = "tentacles";
-						characterParams.attack = 5;
+						characterParams.attack = 6;
 						characterParams.defense = 3;
 						characterParams.courage = 0;
 						characterParams.dodge = 6;
@@ -104,9 +104,9 @@ define(
 						characterParams.name = "Dead Soldier";
 						characterParams.class = "deadsoldier";
 						characterParams.attack = 5;
-						characterParams.defense = 3;
+						characterParams.defense = 5;
 						characterParams.courage = 0;
-						characterParams.dodge = 6;
+						characterParams.dodge = 2;
 
 						// Add actions:
 						characterParams.actions = [];
@@ -117,10 +117,10 @@ define(
 					case "skeleshark":
 						characterParams.name = "Skeleshark";
 						characterParams.class = "skeleshark";
-						characterParams.attack = 5;
-						characterParams.defense = 3;
+						characterParams.attack = 7;
+						characterParams.defense = 4;
 						characterParams.courage = 0;
-						characterParams.dodge = 6;
+						characterParams.dodge = 1;
 
 						// Add actions:
 						characterParams.actions = [];

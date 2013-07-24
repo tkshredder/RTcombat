@@ -25,6 +25,7 @@ define(
 			this.update = function() {
 				
 				$('#remainingtime').html(game.getRemainingTime());
+				$('#remainingCommenceTime').html(game.getRemainingCommenceTime());
 				setTimeout(function() { wo.update(); }, 100);
 			}
 					
@@ -67,7 +68,7 @@ define(
 			},
 
 			writeCharacterStats: function(data) {
-				console.log('writeCharacterStats: ', data.params)
+				//console.log('writeCharacterStats: ', data.params)
 				$('#character_stats #attack .label').html(data.params.attack);
 				$('#character_stats #defense .label').html(data.params.defense);
 				$('#character_stats #courage .label').html(data.params.courage);
@@ -79,9 +80,9 @@ define(
 
 				var gameCountAsString;
 				if (count == 1) {
-					gameCountAsString = "There is currently 1 game in progress.";
+					gameCountAsString = "1 game";
 				} else {
-					gameCountAsString = "There are currently " + count + " games in progress.";
+					gameCountAsString = count + " games in progress.";
 				}
 
 				$('#gamecount').html(gameCountAsString);
@@ -107,6 +108,14 @@ define(
 			displayTurnTimer: function() {
 				
 				$('#remainingtime').html(game.getRemainingTime());
+				
+				// start a timer here as well?
+				setTimeout(function() { wo.update(); }, 100);
+			},
+
+			displayCommenceTimer: function() {
+				
+				$('#remainingCommenceTime').html(game.getRemainingCommenceTime());
 				
 				// start a timer here as well?
 				setTimeout(function() { wo.update(); }, 100);
@@ -178,6 +187,12 @@ define(
 			setBoatBG: function (teamID) {
 				$('#boat_bg').removeClass().addClass('boatbg_' + teamID);
 			},
+
+			setPlayersOnline: function (value) {
+				$('#currentPlayerCount').html(value);
+			},
+
+
 			
 			/*setCharacter: function (charactername) {
 				$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
@@ -205,6 +220,12 @@ define(
 
 			hideVitals: function () {
 				$('#vitals').addClass('hidden');
+			},
+
+			hideCharacters: function() {
+				$('#active_character').addClass('hidden');
+				$('#character_stats').addClass('hidden');
+				$('#active_entity_label').addClass('hidden');
 			},
 			
 			hidePanels: function (list) {

@@ -17,6 +17,14 @@
 
 <body>
 
+	<nav id="navbar">RTCombat v0.1
+		<span id="currentlyOnline">
+			Players Online: <span id="currentPlayerCount">1</span>
+			Games In Progress: <span id="currentActiveGameInstancesCount">1</span>
+		</span>
+
+	</nav>
+
 	<div id="page_bg">
 	</div>
 
@@ -42,6 +50,12 @@
 			<h1 id="choosegame_headline">Aye, what will it be?</h1>
 			<a class="button bigcentered" id="createBtn">Create Game</a>
 			<a class="button bigcentered disabled" id="joinBtn">Join Game</a>
+		</div>
+
+		<div id="startcombat_panel" class="centerpanel panel hidden">
+			<h1 id="startcombat_headline">Enemy Ship Sited! Prepare for combat!</h1>
+			<div id="startcombat_output">You have spotted an opponent's ship. Time to take action!</div>
+			<span>Combat will commence in: </span><span id="remainingCommenceTime">10</span>
 		</div>
 
 		<div id="center_panel" class="centerpanel panel hidden">

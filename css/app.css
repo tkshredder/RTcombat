@@ -8,6 +8,9 @@ body {	background:#000; }
 #header { position:absolute; top: 0; left: 0; z-index:10000; background:rgba(0,0,0,0.5); padding: 5px;}
 #outer { position: relative; }
 
+nav#navbar { position: fixed; top: 0; left: 0; z-index: 10000; background: #333; padding: 5px; color: #FFF; font-size: 10px; font-family: Verdana; font-weight: bold; width: 100%;}
+#currentlyOnline { margin-left: 40px; display: inline-block;}
+
 /* panels */
 #screen { width: 845px; padding: 15px; color: #FFF; position: absolute; right: 0; top: 0; }
 .panel { padding: 20px 10px 20px 20px; border: 5px solid #FFF; background: rgba(0,0,0,0.7); }
@@ -64,9 +67,11 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .command { display: none; }
 
 .stat { font-size: 41px;  font-weight: bold;}
+.stat .label { position: relative; top: -20px;}
 .amount { display: inline-block; float: right; }
 .hidden { display: none; }
 .info-row { display: block; }
+
 
 /* output */
 #output, #welcome_output { font-size: 23px; }
@@ -122,7 +127,7 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .avatar_image.character_centipede { zoom: 0.52; top: -37px; left: -57px; }
 
 /* icons */
-#character_stats { position: absolute; top: 100px; width: 600px; height: 70px;}
+#character_stats { position: absolute; top: 100px; left: 100px; z-index: 12000; width: 600px; height: 70px;}
 .stat { width: 100px; display: inline-block; vertical-align: top; color: #D8D800; text-shadow: 2px 2px rgba(0,0,0,0.7);}
 .icon { width: 48px; height: 48px; margin-right: 15px; display: inline-block;}
 .icon.attack 	{ background: url(../images/icons.png) no-repeat; background-position: 0 0;}
