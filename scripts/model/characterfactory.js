@@ -53,9 +53,9 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "Voodoo Coward", type: "magic", effect: "4 damage", successRate: 85});
-						characterParams.actions.push({actionname: "Flamegarden", type: "magic", elemental: "fire", effect: "5 damage", successRate: 70});
-						characterParams.actions.push({actionname: "Thunderstood",type: "magic", elemental: "thunder", effect: "8 damage", successRate: 100});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Voodoo Coward", type: "magic", effect: "4 damage", successRate: 85});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Flamegarden", type: "magic", elemental: "fire", effect: "5 damage", successRate: 70});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Thunderstood",type: "magic", elemental: "thunder", effect: "8 damage", successRate: 100});
 			
 						break;
 					case "drowarcher":
@@ -68,8 +68,8 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "Arrow", type: "attack", effect: "10 damage", successRate: 20});
-						characterParams.actions.push({actionname: "Arterial Rupture", type: "attack", effect: "6 damage", successRate: 60});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Arrow", type: "attack", effect: "10 damage", successRate: 20});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Arterial Rupture", type: "attack", effect: "6 damage", successRate: 60});
 			
 						break;
 					case "centipede":
@@ -82,8 +82,8 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "100 Legs", type: "attack", effect: "8 damage", successRate: 40});
-						characterParams.actions.push({actionname: "Jump Ship", type: "attack", effect: "3 damage", successRate: 100});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "100 Legs", type: "attack", effect: "8 damage", successRate: 40});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Jump Ship", type: "attack", effect: "3 damage", successRate: 100});
 			
 						break;
 					case "tentacles":
@@ -96,8 +96,8 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "Tentacle Face", type: "attack", effect: "4 damage", successRate: 85});
-						characterParams.actions.push({actionname: "Stripper", type: "attack", effect: "5 damage", successRate: 70});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Tentacle Face", type: "attack", effect: "4 damage", successRate: 85});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Stripper", type: "attack", effect: "5 damage", successRate: 70});
 			
 						break;
 					case "deadsoldier":
@@ -110,8 +110,8 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "Shrapnel", type: "attack", effect: "8 damage", successRate: 40});
-						characterParams.actions.push({actionname: "Shreik", type: "attack", effect: "3 damage", successRate: 100});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Shrapnel", type: "attack", effect: "8 damage", successRate: 40});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Shreik", type: "attack", effect: "3 damage", successRate: 100});
 			
 						break;
 					case "skeleshark":
@@ -124,8 +124,8 @@ define(
 
 						// Add actions:
 						characterParams.actions = [];
-						characterParams.actions.push({actionname: "Hull Chomper", type: "attack", effect: "4 damage", successRate: 80});
-						characterParams.actions.push({actionname: "Line Snapper", type: "attack", effect: "6 damage", successRate: 60});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Hull Chomper", type: "attack", effect: "4 damage", successRate: 80});
+						characterParams.actions.push({charactername: characterParams.name, actionname: "Line Snapper", type: "attack", effect: "6 damage", successRate: 60});
 			
 						break;
 

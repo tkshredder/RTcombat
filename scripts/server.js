@@ -159,7 +159,7 @@ requirejs(
 				// Save chosen characters to DB:
 				var crew = game.getShipsCrew(data.shipID);
 
-				console.log(' -- (server.js) crew: ', crew);
+				//console.log(' -- (server.js) crew: ', crew);
 
 				dbSaveCrew(crew);
 
@@ -270,6 +270,10 @@ requirejs(
 				//      since the shipID and playerID are no longer 1:1 (i.e., one player could have multiple ships)
 				
 				var newShip = new Ship(data);
+
+				console.log('uh oh');
+				console.log(game);
+				console.log(newShip);
 
 				// Update player model:
 				game.setPlayerShipID(data.playerID, data.shipID);
@@ -714,7 +718,7 @@ requirejs(
 			var crewMember;
 			var counter = 0;
 
-			console.log('--- (server.js) dbSaveCrew ', crewObject);
+			//console.log('--- (server.js) dbSaveCrew ', crewObject);
 
 			// TODO:
 			// Convert crewObject to an Array

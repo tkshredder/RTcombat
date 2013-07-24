@@ -121,21 +121,14 @@ define(
 					this.players[player.playerID] = new Player(player);
 				}
 
-				// Update game instance:
-
-				//console.log('')
-				//this.gameinstances[gameinstanceID];
-				//this.gameinstances[gameinstanceID].addPlayerID(player.playerID);
-
-				// TEST:
-				// add a new player
-				//this.players["test"] = new Player({playerID: "player99999", name:"test"});
-				
-				console.log('-- (game.js) end of addPlayer. game.players: ', this.players);
-
 				return player.playerID;
 			},
 
+
+			/**
+			 * Description: Called when adding a player to an existing game instance
+			 * Prerequisite: gameinstances[gameinstanceID] must be a valid GameInstance
+			 */
 			addPlayerToGameInstance: function(playerID, gameinstanceID, startedBy) {
 				
 				//console.log(' - (game.js) addPlayerToGameInstance: ', playerID +" to " + gameinstanceID);
@@ -344,7 +337,7 @@ define(
 				}
 				
 				// Update the Master Command queue (ie, all the commands this turn)
-				this.masterCommandQueue.push(data.command);
+				this.gameinstances[data.gameinstanceID].addCommand(data.command);
 				
 				// Add this command to the player's command queue 
 				var player = this.players[data.playerID];
@@ -393,7 +386,8 @@ define(
 				// Add the player's ship to the game:
 				this.addShip(data.playerID, data);
 				
-				game.setPlayerShipID(data.playerID, data.shipID);
+				// Update the player's character's ship ID to this ship.
+				this.setPlayerShipID(data.playerID, data.shipID);
 
 			},
 
@@ -419,7 +413,7 @@ define(
 			
 			},
 			
-			setPlayerShipModel: function(playerID, shipID) {
+			setPlayerShipID: function(playerID, shipID) {
 				this.players[playerID].setShipID(shipID);
 			},
 			
@@ -581,11 +575,11 @@ define(
 					
 					// Get the crew available actions:
 
-					console.log(shipCrew[crewID]);
+					//console.log(shipCrew[crewID]);
 
 					charActions = shipCrew[crewID].getActions();
 
-					console.log('--- (game.js) char actions for crew member ' + crewID + ': ', charActions);
+					//console.log('--- (game.js) char actions for crew member ' + crewID + ': ', charActions);
 
 					// Loop through the crew array of actions and add them to the master array:
 					for (actionID in charActions) {

@@ -88,6 +88,8 @@ define(
 
 
 			// Update DOM:
+			// TO DO: 
+			// Add an option to method showPanels to hide all other panels if true (default false aka leave panels showing)
 			output.hidePanels();
 			output.showPanels('output');
 			output.displayWaitingMessage(true);
@@ -113,7 +115,7 @@ define(
 			}
 
 			if (game.waitingOnPlayers() == false) {
-				output.hidePanels('center');
+				output.hidePanels();
 				output.showPanels('output');
 			}
 
@@ -318,13 +320,15 @@ define(
 			//console.log('- (client.js) theTeamID: ' + theTeamID);
 
 			// Update DOM
-			output.writeCharacterSelection(theTeamID);
-			output.hidePanels('chooseship');
-			output.hideElements('active_ship');
-			output.showPanels(['choosecharacters','myteam']);
-			output.showElements('active_character');
-			output.stopAnimation('ship');
-			//output.startAnimation('character');
+			if (data.isme) {
+				output.writeCharacterSelection(theTeamID);
+				output.hidePanels('chooseship');
+				output.hideElements('active_ship');
+				output.showPanels(['choosecharacters','myteam']);
+				output.showElements('active_character');
+				output.stopAnimation('ship');
+				//output.startAnimation('character');
+			}
 		});
 
 
@@ -364,9 +368,11 @@ define(
 			game.chooseTeam(data.playerID);
 			game.updateCrew(data.shipID, data.crew);
 
-			// Next piece - handle game selection
-			c.handleGameSelection();
-
+			// Next Logical Handler
+			// Handle game selection only if we are the new client
+			if (data.isme) {
+				c.handleGameSelection();
+			}
 		});
 		
 		// Event: startGame
@@ -425,7 +431,7 @@ define(
 			game.setPossibleCommands(c.myPlayerID);
 
 			// Update DOM:
-			output.drawCommands(c.myPlayerID);
+			output.writeCurrentCommands(c.myPlayerID);
 			output.showCommands();
 			
 		});

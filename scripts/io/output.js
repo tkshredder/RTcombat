@@ -60,7 +60,19 @@ define(
 				
 				$('#active_entity_label').html(data.name);
 				$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
+				
+				this.writeCharacterStats(data);
+				$('#character_stats').removeClass('hidden');
 
+			},
+
+			writeCharacterStats: function(data) {
+				console.log('writeCharacterStats: ', data.params)
+				$('#character_stats #attack .label').html(data.params.attack);
+				$('#character_stats #defense .label').html(data.params.defense);
+				$('#character_stats #courage .label').html(data.params.courage);
+				$('#character_stats #dodge .label').html(data.params.dodge);
+					
 			},
 
 			setGamesInProgress: function(count) {
@@ -147,17 +159,17 @@ define(
 				$('#commands').addClass('commandschosen');
 			},
 			
-			drawCommands: function (playerID) {
+			writeCurrentCommands: function (playerID) {
 				
 				$("#commands").empty();
 				
 				var possibleCommands = game.getPossibleCommands(playerID);
 				
-				//console.log('possibleCommands: ', possibleCommands);			
+				console.log('possibleCommands: ', possibleCommands);			
 				
 				for (var i = 0; i < possibleCommands.length; i++) {
 					command = possibleCommands[i];
-					$("#commands").append('<li><span class="type">'+command.charactername+'</span><span class="name">' + command.actionname + '</span><span class="type">' + command.type + '</span><span class="effect">' + command.effect + '</span><span class="successRate">' + command.successRate + '% success</span><span class="order"></span></li>');
+					$("#commands").append('<li><span class="charactername">'+command.charactername+'</span><span class="name">' + command.actionname + '</span><span class="type">' + command.type + '</span><span class="effect">' + command.effect + '</span><span class="successRate">' + command.successRate + '% success</span><span class="order"></span></li>');
 					$('#commands li:last-child').data('command', command);
 					$('#commands li:last-child').data('character', command.charactername);
 				}

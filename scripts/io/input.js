@@ -167,6 +167,7 @@ define(function(){
 			
 			// Set character
 			output.setCharacter($(this).data());
+			
 			sound.play('menu_tick');
 		});
 
@@ -259,8 +260,8 @@ define(function(){
 		});
 		
 		$(document).on('mouseover', '#commands:not(.commandschosen) li', function() {
-			var cname = $(this).data('character').trim().replace(/\s/g, '');;
-			output.setCharacter(cname);
+			//var cname = $(this).data('character').trim().replace(/\s/g, '');;
+			output.setCharacter($(this).data());
 		});
 		
 		
