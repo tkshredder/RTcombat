@@ -366,6 +366,9 @@ define(
 				}
 				
 				// Update the Master Command queue (ie, all the commands this turn)
+				console.log('--- (game.js) addCommand in gameinstance ' + data.gameinstanceID);
+				console.log(this.gameinstances[data.gameinstanceID]);
+
 				this.gameinstances[data.gameinstanceID].addCommand(data.command);
 				
 				// Add this command to the player's command queue 
@@ -558,7 +561,7 @@ define(
 			getPlayer: function(playerID) { return this.players[playerID]; },
 			getShip: function(shipID) { return this.ships[shipID]; },
 			getTeamID: function(shipID) { 
-				//console.log(' -- (game.js) getTeamID for ship ' + shipID, this.ships[shipID]);
+				console.log(' -- (game.js) getTeamID for ship ' + shipID, this.ships[shipID]);
 				return this.ships[shipID].getTeamID(); 
 			},
 			getGameInstancePlayerCount: function(gameinstanceID) {
@@ -596,24 +599,21 @@ define(
 			getExecutedCommands: function(playerID) { return this.players[playerID].getExecutedCommands(); },
 			setExecutedCommands: function(value) { this.players[playerID].setExecutedCommands = value; },
 			
-			getPossibleCommands: function(playerID) { 
+			getPossibleCommands: function(shipID) { 
 				
 				// TO DO:
 				// Factor in disabled / busy crew.
 				// For now, all actions are available.
 
 				var charActions, allActions = [];
-				var playersShipID = this.players[playerID].getShipID();
-
-				console.log('--- (game.js) getPossibleCommands for player ', playerID, playersShipID);
+				var shipCrew = this.ships[shipID].getCrew();
+				
+				console.log('--- (game.js) getPossibleCommands for ship ', shipID);
 
 				// Loop through crew
-				var shipCrew = this.ships[playersShipID].getCrew();
-
 				for (crewID in shipCrew) {
 					
 					// Get the crew available actions:
-
 					//console.log(shipCrew[crewID]);
 
 					charActions = shipCrew[crewID].getActions();
@@ -630,10 +630,11 @@ define(
 				return allActions;
 			
 			},
-			setPossibleCommands: function(playerID) { 
+
+			setPossibleCommands: function(playerID, shipID) { 
 				
 				// Build a composite list of available commands:
-				var availableActions = this.getPossibleCommands(playerID);
+				var availableActions = this.getPossibleCommands(shipID);
 
 				console.log('--- (game.js) setPossibleCommands: ', availableActions);
 
@@ -652,7 +653,7 @@ define(
 			setTurnFinishDelay: function (value) { this.turnFinishDelay = value; },
 			getCurrentRound: function() { return this.currentRound; },
 			
-			getPlayerName: function(playerID){ return this.players[playerID].getName() },			
+			getPlayerName: function(playerID){ if (this.players[playerID]) return this.players[playerID].getName() },			
 			setPlayerName: function(playerID, value) { this.players[playerID].setName(value) },
 			
 			/*getPlayersCrewActions: function(playerID) {

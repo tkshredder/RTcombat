@@ -103,7 +103,7 @@ define(function(){
 			this.target = '#active_character';
 			this.timeline = new TimelineLite({paused:true});
 			
-			//console.log(' ------- (ca.js) ', this.timeline, this.target);
+			console.log(' ------- (entityanimator.js) ', this.timeline, this.target);
 			
 			// Here's the full animation. Each key part of animation is chained together
 			this.timeline
@@ -116,6 +116,52 @@ define(function(){
 				.to(this.target, 0, {delay:3, onComplete:this.playNext});
 		
 		},
+
+		animateActiveCharacter: function(character) {
+			
+			this.target = '#active_character';
+			if (this.timeline) {
+				this.timeline.clear();
+			}
+			
+			this.timeline = new TimelineMax({repeat: -1});
+			
+			var characterWidth = this.lookupCharacterWidth(character);
+
+			console.log(' ------- (entityanimator.js) animateCharacter. character: ' + character + ', Width: ' + characterWidth);
+			
+			// Toggle back and forth 
+			this.timeline
+				.to(this.target, 0, {backgroundPosition: -characterWidth + "px 0px", delay: 0.2})
+				.to(this.target, 0, {backgroundPosition: "0px 0px", delay: 0.2})
+				.to(this.target, 0, {backgroundPosition: -characterWidth + "px 0px", delay: 0.2})
+				.to(this.target, 0, {backgroundPosition: "0px 0px", delay: 0.2})
+				.to(this.target, 0, {delay:3})
+				
+			this.timeline.play();
+		
+		},
+
+		lookupCharacterWidth: function(character) {
+			
+			switch (character) {
+				case "skeleshark":
+					return 697; break;
+				case "deadsoldier":
+					return 624; break;
+				case "centipede":
+					return 547; break;
+				case "drowarcher":
+					return 560; break;
+				case "tentacles":
+					return 647; break;
+				case "shaman":
+					return 608; break;
+			}
+			return 608;
+
+		},
+
 
 		floatBoat: function () {
 			this.target = document.getElementById("active_ship");//'#active_ship';

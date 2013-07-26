@@ -56,24 +56,27 @@ define(
 			},
 
 			setCharacter: function(data) {
+				
+				console.log('--- output.js setCharacter: ', data)
+
 				//$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
 				var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
 				
+				// Set character
 				$('#active_entity_label').html(data.name);
 				$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
-				
-				this.writeCharacterStats(data);
-				$('#character_stats').removeClass('hidden');
 
-			},
+				if (data.showStats) {		
+					// Write character stats:
+					$('#character_stats #attack .label').html(data.params.attack);
+					$('#character_stats #defense .label').html(data.params.defense);
+					$('#character_stats #courage .label').html(data.params.courage);
+					$('#character_stats #dodge .label').html(data.params.dodge);
+					$('#character_stats').removeClass('hidden');
+				}
 
-			writeCharacterStats: function(data) {
-				//console.log('writeCharacterStats: ', data.params)
-				$('#character_stats #attack .label').html(data.params.attack);
-				$('#character_stats #defense .label').html(data.params.defense);
-				$('#character_stats #courage .label').html(data.params.courage);
-				$('#character_stats #dodge .label').html(data.params.dodge);
-					
+				// Animate active character:
+				wo.animator.animateActiveCharacter(charactername);
 			},
 
 			setGamesInProgress: function(count) {
@@ -168,11 +171,13 @@ define(
 				$('#commands').addClass('commandschosen');
 			},
 			
-			writeCurrentCommands: function (playerID) {
+			writeCurrentCommands: function (shipID) {
 				
 				$("#commands").empty();
 				
-				var possibleCommands = game.getPossibleCommands(playerID);
+				console.log('-- (output.js): writeCurrentCommands', shipID)
+
+				var possibleCommands = game.getPossibleCommands(shipID);
 				
 				console.log('possibleCommands: ', possibleCommands);			
 				
@@ -180,7 +185,7 @@ define(
 					command = possibleCommands[i];
 					$("#commands").append('<li><span class="charactername">'+command.charactername+'</span><span class="name">' + command.actionname + '</span><span class="type">' + command.type + '</span><span class="effect">' + command.effect + '</span><span class="successRate">' + command.successRate + '% success</span><span class="order"></span></li>');
 					$('#commands li:last-child').data('command', command);
-					$('#commands li:last-child').data('character', command.charactername);
+					$('#commands li:last-child').data('name', command.charactername);
 				}
 			},
 			
@@ -371,7 +376,8 @@ define(
 					$element.addClass('gameinstance');
 					$element.html(startedBy);
 					$element.data('gameinstanceID', gameInstance.gameinstanceID);
-					$element.data('params', gameInstance)
+					$element.data('params', gameInstance);
+					$element.data('showStats', true);
 					$('#gameinstance_selection').append($element);
 				}
 			},

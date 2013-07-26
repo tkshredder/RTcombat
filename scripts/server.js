@@ -234,8 +234,10 @@ requirejs(
 					
 					socket.emit('startGame', {message:"start"});
 					socket.broadcast.emit('startGame', {message:"start"});
-						
-					startNextTurn();	
+					
+					//combatCommence
+					timer = setTimeout(function() { startNextTurn(); }, 2000);
+					//startNextTurn();	
 				}
 			});
 
@@ -429,7 +431,7 @@ requirejs(
 				observerCount--;
 				game.leave(playerID);
 				data.timeStamp = new Date();
-				// Broadcast that client has joined
+				// Broadcast that client has left
 				io.sockets.emit('leave', data);
 			});
 		

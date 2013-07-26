@@ -46,9 +46,6 @@ define(function(){
 			
 			e.preventDefault(); // Prevent form from submitting
 			
-			console.log('here', e);
-			
-
 			name = $('#loginname').val();
 			
 			if (name != '') {
@@ -249,7 +246,7 @@ define(function(){
 					return;
 				
 				// Emit addCommand event to SERVER:
-				wi.socket.emit('addCommand', {command: currentCommand, playerID: wi.client.getMyPlayerID(), targetID: wi.client.getOpponentPlayerID()});
+				wi.socket.emit('addCommand', {command: currentCommand, gameinstanceID: wi.client.getMyGameInstanceID(), playerID: wi.client.getMyPlayerID(), targetID: wi.client.getOpponentPlayerID()});
 				
 				// Update DOM:
 				$(this).addClass('chosen');

@@ -36,7 +36,7 @@ text-align: center; position: absolute;top: 50%; left: 0px; width: 100%; height:
 
 h1, h2 { margin: 0; }
 ul { padding: 0; margin: 0;}
-li { list-style:none; display: inline-block; background: #039; padding: 20px; width: 350px; margin: 20px 20px 0 0; cursor: pointer; position: relative; border: 3px solid #039;}
+li { list-style:none; display: inline-block; background: #039; padding: 20px; width: 320px; margin: 20px 20px 0 0; cursor: pointer; position: relative; border: 3px solid #039;}
 li.chosen { background: #0A4; border: 3px solid #0FF; }
 li:hover:not(.chosen) { background: #06F; border: 3px solid #0FF;}
 li.disabled { cursor: default !important; }
@@ -109,11 +109,11 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 #active_character { position: absolute; z-index: 1000;}
 .character { position: absolute; left: 10px; z-index:999;}
 .character_shaman 		{ background:url(../images/character_shaman_608x900.png) no-repeat; width: 608px; height: 900px; }
-.character_centipede 	{ background:url(../images/character_centipede_600x923.png) no-repeat; width: 600px; height: 923px; }
-.character_skeleshark 	{ background:url(../images/character_skeleshark_717x900.png) no-repeat; width: 717px; height: 900px; }
-.character_drowarcher 	{ background:url(../images/character_drowarcher_550x900.png) no-repeat; width: 550px; height: 900px; }
-.character_tentacles 	{ background:url(../images/character_tentacles_752x900.png) no-repeat; width: 752px; height: 900px; }
-.character_deadsoldier 	{ background:url(../images/character_deadsoldier_667x900.png) no-repeat; width: 667px; height: 900px; }
+.character_centipede 	{ background:url(../images/character_centipede_898.png) no-repeat; width: 547px; height: 898px; }
+.character_skeleshark 	{ background:url(../images/character_skeleshark_894.png) no-repeat; width: 717px; height: 894px; }
+.character_drowarcher 	{ background:url(../images/character_drowarcher_904.png) no-repeat; width: 550px; height: 904px; }
+.character_tentacles 	{ background:url(../images/character_tentacles_990.png) no-repeat; width: 752px; height: 990px; }
+.character_deadsoldier 	{ background:url(../images/character_deadsoldier_899.png) no-repeat; width: 667px; height: 899px; }
 .character_unknown { background: url(../images/lock.png) no-repeat; width: 256px; height: 256px;}
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); /*filter: url(images/shadow.svg#drop-shadow); */}
 

@@ -214,11 +214,10 @@ define(
 			// Look up ships
 			console.log(' --- (client.js) emitting loadShips socket', data)
 			
-			socket.emit('loadShips', data.player);
-
+			
 			// Update client vars:
 			if (data.isme) {
-				c.myPlayerID = data.playerID;
+				c.myPlayerID = data.player.playerID;
 				// Set the hash in the address bar:
 				window.location.hash = '#' + data.player.name;
 			} else {
@@ -232,6 +231,9 @@ define(
 				output.showPanels('output');
 				output.displayMessage('loading ship data....');
 			}
+
+			socket.emit('loadShips', data.player);
+
 
 			/*
 			
@@ -407,7 +409,7 @@ define(
 			output.displayCommenceTimer();
 			
 			output.updateCommandsAvailable(c.myPlayerID);
-			output.setBoatBG(game.getTeamID(c.myPlayerID));
+			output.setBoatBG(game.getTeamID(c.myShipID));
 
 		});
 		
@@ -421,6 +423,8 @@ define(
 			game.playerTurn(data);
 			
 			// Update DOM:
+			output.hidePanels();
+			output.showPanels('output', 'commands');
 			output.displayTurnMessage();
 			output.displayTurnTimer();
 			
@@ -441,10 +445,10 @@ define(
 			// Update game:
 			// To do: need to process this on the server?
 			//game.loadPlayerCommands(c.myPlayerID);
-			game.setPossibleCommands(c.myPlayerID);
+			game.setPossibleCommands(c.myPlayerID, c.myShipID);
 
 			// Update DOM:
-			output.writeCurrentCommands(c.myPlayerID);
+			output.writeCurrentCommands(c.myShipID);
 			output.showCommands();
 			
 		});
@@ -482,7 +486,7 @@ define(
 		});
 		
 		socket.on('playerTurnFinish', function (data) {
-			console.log("recv playerTurnFinish", data);
+			console.log("Event: playerTurnFinish", data);
 			$('#output').html('Turn finished.');
 			game.playerTurnFinish(data);
 		});
