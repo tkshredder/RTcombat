@@ -15,6 +15,7 @@ define(function(){
 		this.courage = params.courage;
 		this.dodge = params.dodge;
 		this.actions = params.actions;
+		this.isActive = params.isActive;
 
 		return(this);
 	}
@@ -41,7 +42,9 @@ define(function(){
 		getDodge: function() {return( this.dodge ); },
 		setDodge: function(value) { this.dodge = value; },
 		getActions: function() { return this.actions; },
-		setActions: function(actions) { this.actions = actions; }
+		setActions: function(actions) { this.actions = actions; },
+		getIsActive: function() { return this.isActive; },
+		setIsActive: function(value) { this.isActive = value;}
 	};
 	
 	return Character;

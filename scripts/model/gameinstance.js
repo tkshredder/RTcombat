@@ -57,7 +57,8 @@ define(function(){
 
 	 		// TO DO: expand this for 1:N combat
 	 	},
-	 	getPlayerCount: function() { return Object.keys(this.playerIDs).length},
+	 	
+		getPlayerCount: function() { return Object.keys(this.playerIDs).length},
 	 	getIsActive: function() { return this.isActive; },
 		setIsActive: function(isActive) { this.isActive = isActive; },
 		getStartedBy: function() { return this.startedBy; },
@@ -66,8 +67,10 @@ define(function(){
 		removePlayerID: function(playerID) { delete this.playerIDs[playerID]; },
 		addShipID: function(shipID) { this.shipIDs[shipID] = shipID; },
 		removeShipID: function(shipID) { delete this.shipIDs[shipID]; },
+		getShipIDs: function() { return this.shipIDs; },
 		addCommand: function(command) { this.masterCommandQueue.push(command); },
 		getCurrentCommand: function() { return this.masterCommandQueue[0]; },
+		getCommandQueueSize: function() { return this.masterCommandQueue.length; },
 		shiftCommand: function() { this.masterCommandQueue.shift(); },
 		getCurrentRound: function() { return this.currentRound; },
 		setCurrentRound: function(value) { this.currentRound = value; },

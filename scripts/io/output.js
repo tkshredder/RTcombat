@@ -57,7 +57,7 @@ define(
 
 			setCharacter: function(data) {
 				
-				console.log('--- output.js setCharacter: ', data)
+				//console.log('--- output.js setCharacter: ', data)
 
 				//$('#active_character').removeClass().addClass('character_'+charactername).addClass('shadowfilter');
 				var charactername = data.name.trim().replace(/\s/g, '').toLowerCase();
@@ -76,7 +76,7 @@ define(
 				}
 
 				// Animate active character:
-				wo.animator.animateActiveCharacter(charactername);
+				//wo.animator.animateActiveCharacter(charactername);
 			},
 
 			setGamesInProgress: function(count) {
@@ -219,6 +219,14 @@ define(
 			hideCommands: function () {
 				$('#commands_panel').addClass('hidden');
 			},
+			hideCharacterCommands: function(charactername) {
+				$('#commands li').each(function(i) {
+					if ($(this).data('name') == charactername) {
+						$(this).addClass('disabled');
+					}
+				});
+			},
+
 			showVitals: function () {
 				$('#vitals').removeClass('hidden');
 			},

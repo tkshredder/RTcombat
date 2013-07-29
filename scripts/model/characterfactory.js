@@ -36,9 +36,11 @@ define(
 			createCharacterData: function (characterType) {
 				
 				//console.log('---- (characterfactory.js) createCharacterData: ', characterType)
+				
+				// Create a new Object to store params in. Any default values can go in here.
 
-				var characterParams = {};
-
+				var characterParams = {isActive: true};
+				
 				// TO DO: 
 				// Move this into an external file?
 				switch (characterType) {
@@ -130,6 +132,7 @@ define(
 						break;
 
 				} // end of switch
+
 
 				return characterParams;
 

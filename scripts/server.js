@@ -128,7 +128,9 @@ requirejs(
 				//  ... all we know is the player username
 				var newPlayer = new Player(data);
 
-				console.log("new player: ", newPlayer);
+				//console.log("new player: ", newPlayer);
+
+				//console.log('|||| socket connected to: ', socket.id)
 
 				// Look up to see if player exists
 				// Note: this function will automatically save a new player if no record is found.
@@ -226,18 +228,37 @@ requirejs(
 				// Update DB instance:			
 				// TO DO
 
-				socket.emit('chooseGameInstance', data);
+				//data.playerName = game.getPlayerName(data.playerID);
+				
+				player = game.getPlayer(data.playerID);
+				ship = game.getShip(data.shipID);
+
+
+				// Get clients a copy of this ship and player:
+				socket.broadcast.emit('addPlayer', player);
+				socket.broadcast.emit('addShip', ship);
 				socket.broadcast.emit('chooseGameInstance', data);
 
+				// Update player who just selected a game instance:
+				data.isme = true;
+				//socket.emit('addPlayer', data);
+				//socket.emit('addShip', data);
+				socket.emit('chooseGameInstance', data);
+
+				// TO DO --
+				// resolve this. Currently, the second client will have all existing players available to him
+				// this will get very large if there are several people online.
+				
 				// Check if we have two players and both players are ready:
 				if (game.getGameInstancePlayerCount(data.gameinstanceID) == 2) {
 					
+					// Send notice the game is starting
 					socket.emit('startGame', {message:"start"});
 					socket.broadcast.emit('startGame', {message:"start"});
 					
-					//combatCommence
+					// Start the next (first) turn of combat:
 					timer = setTimeout(function() { startNextTurn(); }, 2000);
-					//startNextTurn();	
+					
 				}
 			});
 
@@ -331,11 +352,17 @@ requirejs(
 				console.log('Event:  addCommand', data);
 				
 				// Update the game on the SERVER:
-				game.addCommand(data);
+				var allCommandsSelected = game.addCommand(data);
 				
 				// Broadcast action for CLIENTS:
 				data.timeStamp = (new Date()).valueOf();
 				io.sockets.emit('addCommand', data);
+
+				// If allCommands have been selected, we are ready for combat to resolve.
+				if (allCommandsSelected == true) {
+					executeNextAction();
+				}
+
 			});
 			
 			socket.on('removeCommand', function(data) {
@@ -541,7 +568,7 @@ requirejs(
 						// This should be just one record, but it gets returned as an array.
 						players.forEach( function (player) {
 
-							console.log("Found player in DB. ", player);
+							//console.log("Found player in DB. ", player);
 							thatPlayer = player;
 
 							// Update game on server:
@@ -549,7 +576,7 @@ requirejs(
 
 							var data = {};
 							data.player = thatPlayer;
-
+							
 							// Broadcast that an existing player has joined:
 							broadcast('joinexisting', data);
 							
@@ -765,9 +792,13 @@ requirejs(
 			
 			//console.log(' (broadcast): ', eventName, data);
 
-			globalSocket.broadcast.emit(eventName, data);
+			//globalSocket.broadcast.emit(eventName, data);
+			//data.isme = true;
+
+			//console.log('Broadcast event ' + eventName, globalSocket)
 			data.isme = true;
 			globalSocket.emit(eventName, data);
+
 		}
 
 		function makePrettyID(mongoObjectID) {

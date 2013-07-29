@@ -250,6 +250,9 @@ define(function(){
 				
 				// Update DOM:
 				$(this).addClass('chosen');
+				output.hideCommands(currentCommand.charactername);
+				//console.log('');
+
 			}
 
 			sound.play('damage_poison');

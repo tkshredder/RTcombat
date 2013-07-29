@@ -140,9 +140,9 @@ define(
 			
 			// Update DOM, if applicable:
 			if (data.playerID == c.myPlayerID) {
-				output.activateExecutionButton(c.myPlayerID);
+				//output.activateExecutionButton(c.myPlayerID);
 				//output.disableCommandRolloverUpdate();
-				output.updateCommandOrder(c.myPlayerID);
+				//output.updateCommandOrder(c.myPlayerID);
 				output.updateCommandsAvailable(c.myPlayerID);
 			}
 		});
@@ -208,29 +208,26 @@ define(
 			// Add player to the game:
 			game.addPlayer(data.player);
 
-			// Add Player to Game Instance
-			//socket.emit('addPlayerToGameInstance', {playerID: data.player.playerID, gameinstanceID: c.myGameInstanceID, startedBy: data.player.name});
-			
-			// Look up ships
-			console.log(' --- (client.js) emitting loadShips socket', data)
-			
-			
 			// Update client vars:
-			if (data.isme) {
+			c.myPlayerID = data.player.playerID;
+			
+			// Set the hash in the address bar:
+			window.location.hash = '#' + data.player.name;
+			/*if (data.isme) {
 				c.myPlayerID = data.player.playerID;
 				// Set the hash in the address bar:
 				window.location.hash = '#' + data.player.name;
 			} else {
 				// Someone else has joined.
 				c.opponentPlayerID = data.player.playerID;
-			}
+			}*/
 			
 			// Update DOM:
-			if (data.isme) {
+			//if (data.isme) {
 				output.hidePanels();
 				output.showPanels('output');
 				output.displayMessage('loading ship data....');
-			}
+			//}
 
 			socket.emit('loadShips', data.player);
 
@@ -243,6 +240,13 @@ define(
 				output.displayWaitingMessage(data.isme);
 			}
 			*/
+
+		});
+
+		socket.on('addPlayer', function(playerData) {
+
+			// Add player to the game:
+			game.addPlayer(playerData);
 
 		});
 
@@ -280,6 +284,16 @@ define(
 		});
 
 		// SHIP EVENTS
+
+		socket.on('addShip', function(shipData) {
+
+			console.log(' -- (client.js) addShip ', shipData);
+	
+			// Add ship to the game:
+			game.addShip(shipData);
+
+		});
+
 		socket.on('addShipToGameInstance', function(data) {
 						
 			console.log('Event: addShipToGameInstance', data);
@@ -557,7 +571,7 @@ define(
 			var activeGames = game.getActiveGameInstances();
 			var activeGameCount = Object.keys(activeGames).length;
 
-			console.log('--- (client.js) lookUpActiveGames. Count: ' + activeGameCount)
+			//console.log('--- (client.js) lookUpActiveGames. Count: ' + activeGameCount)
 
 			// Check if no active games:
 			if (activeGameCount == 0) {

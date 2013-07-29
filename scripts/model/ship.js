@@ -16,6 +16,13 @@ define(
 		this.health = 20; // TO DO: set this based on the ship's size etc.
 		this.crew = {};
 
+		if (params.crew) {
+			for (var crewID in params.crew) {
+				this.crew[crewID] = new Character(params.crew[crewID]);
+			}
+		}
+
+
 		return(this);
 	}
 	 

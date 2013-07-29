@@ -86,13 +86,13 @@ define(
 			 */
 			getActiveGameInstances: function() {
 
-				console.log(' -- (game.js) getActiveGameInstances -- all game instances: ', this.gameinstances);
+				//console.log(' -- (game.js) getActiveGameInstances -- all game instances: ', this.gameinstances);
 
 				// Check if there are any game instances:
 				var activeGameCount = Object.keys(this.gameinstances).length;
 				var activeGames = {};
 
-				console.log(' -- (game.js) getActiveGameInstances. count: ' + activeGameCount);
+				//console.log(' -- (game.js) getActiveGameInstances. count: ' + activeGameCount);
 
 				if (activeGameCount > 0) {
 					
@@ -137,7 +137,7 @@ define(
 			 */
 			addPlayer: function(player) {
 				
-				console.log(' - (game.js) addPlayer', player);
+				//console.log(' - (game.js) addPlayer', player);
 				
 				// Check if we have a playerID (e.g., loading a saved game)
 				if (player.playerID == null) {
@@ -364,16 +364,49 @@ define(
 					console.log("ERROR: cannot add a null command!");
 					return;
 				}
+
+				var allCommandsSelected = false;
 				
 				// Update the Master Command queue (ie, all the commands this turn)
 				console.log('--- (game.js) addCommand in gameinstance ' + data.gameinstanceID);
 				console.log(this.gameinstances[data.gameinstanceID]);
 
+				// Add the command to this game instance's command queue:
 				this.gameinstances[data.gameinstanceID].addCommand(data.command);
 				
+				// Check if the command queue is full:
+				// Get active crew  --
+				var activeCrewCount = 0, shipCrew, shipIDs = this.gameinstances[data.gameinstanceID].getShipIDs();
+			 	
+			 	console.log(' --- (game.js) addCommand. ship IDs: ', shipIDs)
+
+
+			 	for (var shipID in shipIDs) {
+
+			 		console.log('getting crew for ship ' + shipID)
+
+			 		shipCrew = this.ships[shipID].getCrew();
+			 		for (var crewMember in shipCrew) {
+			 			if (shipCrew[crewMember].getIsActive()) {
+			 				activeCrewCount++;
+			 			}
+			 		}
+			 	}
+
+			 	console.log("Active crew count: " + activeCrewCount);
+			 	console.log('current command queue size: ' + this.gameinstances[data.gameinstanceID].getCommandQueueSize());
+			 	console.log('allCommandsSelected: ' + allCommandsSelected);
+
+			 	// Check if the current queue size is equal to the activeCrewCount:
+				if (this.gameinstances[data.gameinstanceID].getCommandQueueSize() == activeCrewCount) {
+					allCommandsSelected = true;
+				}
+
 				// Add this command to the player's command queue 
 				var player = this.players[data.playerID];
 				player.addCommand(data.command);
+
+				return allCommandsSelected;
 			},
 			
 			/**

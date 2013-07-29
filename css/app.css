@@ -110,10 +110,10 @@ input.dark.chat { font-family: courier, sans; text-transform: none; font-size: 1
 .character { position: absolute; left: 10px; z-index:999;}
 .character_shaman 		{ background:url(../images/character_shaman_608x900.png) no-repeat; width: 608px; height: 900px; }
 .character_centipede 	{ background:url(../images/character_centipede_898.png) no-repeat; width: 547px; height: 898px; }
-.character_skeleshark 	{ background:url(../images/character_skeleshark_894.png) no-repeat; width: 717px; height: 894px; }
+.character_skeleshark 	{ background:url(../images/character_skeleshark_894.png) no-repeat; width: 698px; height: 894px; }
 .character_drowarcher 	{ background:url(../images/character_drowarcher_904.png) no-repeat; width: 550px; height: 904px; }
-.character_tentacles 	{ background:url(../images/character_tentacles_990.png) no-repeat; width: 752px; height: 990px; }
-.character_deadsoldier 	{ background:url(../images/character_deadsoldier_899.png) no-repeat; width: 667px; height: 899px; }
+.character_tentacles 	{ background:url(../images/character_tentacles_990.png) no-repeat; width: 648px; height: 990px; }
+.character_deadsoldier 	{ background:url(../images/character_deadsoldier_899.png) no-repeat; width: 620px; height: 899px; }
 .character_unknown { background: url(../images/lock.png) no-repeat; width: 256px; height: 256px;}
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); /*filter: url(images/shadow.svg#drop-shadow); */}
 
