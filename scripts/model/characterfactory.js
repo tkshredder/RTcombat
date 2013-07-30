@@ -25,6 +25,8 @@ define(
 				for (var attrname in basicParams) {
 					characterParams[attrname] = basicParams[attrname];
 				}
+
+				characterParams.isActive = true;
 				
 				// Create a new character based on the character data:
 				newCharacter = new Character(characterParams);
@@ -39,7 +41,8 @@ define(
 				
 				// Create a new Object to store params in. Any default values can go in here.
 
-				var characterParams = {isActive: true};
+				var characterParams = {};
+				characterParams.isActive = true;
 				
 				// TO DO: 
 				// Move this into an external file?

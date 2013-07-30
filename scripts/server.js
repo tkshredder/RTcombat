@@ -227,12 +227,9 @@ requirejs(
 
 				// Update DB instance:			
 				// TO DO
-
-				//data.playerName = game.getPlayerName(data.playerID);
 				
 				player = game.getPlayer(data.playerID);
 				ship = game.getShip(data.shipID);
-
 
 				// Get clients a copy of this ship and player:
 				socket.broadcast.emit('addPlayer', player);
@@ -257,7 +254,7 @@ requirejs(
 					socket.broadcast.emit('startGame', {message:"start"});
 					
 					// Start the next (first) turn of combat:
-					timer = setTimeout(function() { startNextTurn(); }, 2000);
+					timer = setTimeout(function() { startNextTurn(data.gameinstanceID); }, 2000);
 					
 				}
 			});
@@ -360,7 +357,7 @@ requirejs(
 
 				// If allCommands have been selected, we are ready for combat to resolve.
 				if (allCommandsSelected == true) {
-					executeNextAction();
+					executeNextAction(data.gameinstanceID);
 				}
 
 			});
@@ -389,7 +386,7 @@ requirejs(
 				data.success = success;
 				io.sockets.emit('action', data);
 				
-				setTimeout(function() { executeNextAction(); }, game.getCommandDelay());
+				setTimeout(function() { executeNextAction(data.gameinstanceID); }, game.getCommandDelay());
 				
 				//io.sockets.emit('playerTurnFinish', {playerID: playerID, message: "player " + playerID + "'s turn is over."});
 				
@@ -817,16 +814,18 @@ requirejs(
 		// TO DO:
 		// Move these into a server core file?
 		
-		function executeNextAction() {
+		function executeNextAction(gameinstanceID) {
 			
-			var nextAction = game.getNextAction();
+			var nextAction = game.getNextAction(gameinstanceID);
 			
-			console.log('------ execute next command');
+			console.log('||------ execute next command for game instance ' + gameinstanceID);
 			
 			if (nextAction != null) {
+				
 				var data = {};
 				data.command = nextAction;
-				
+				data.gameinstanceID = gameinstanceID;
+
 				// Perform the action for the game instance on the SERVER:
 				success = game.performAction(data);
 				
@@ -836,22 +835,23 @@ requirejs(
 				io.sockets.emit('action', data);
 				
 				// Set timer to fire next action, as long as its not the last action
-				var isLastAction = (game.getMasterCommandQueue().length == 0) ? true : false;
+				var isLastAction = (game.getCommandQueueSize(gameinstanceID).length == 0) ? true : false;
+
 				if (! isLastAction) {
-					timer = setTimeout(function() { executeNextAction(); }, game.getCommandDelay());
+					timer = setTimeout(function() { executeNextAction(gameinstanceID); }, game.getCommandDelay());
 				} else {
-					timer = setTimeout(function() { startNextTurn(); }, 5000);
+					timer = setTimeout(function() { startNextTurn(gameinstanceID); }, 5000);
 				}
 				
 			}
 		}
 		
-		function startNextTurn() {
+		function startNextTurn(gameinstanceID) {
 			
-			console.log('------ start next turn.');
+			console.log('------ start next turn for game instance ' + gameinstanceID);
 			
 			// Create data for this turn:
-			var data = {currentRound: game.getCurrentRound()+1};
+			var data = {currentRound: game.getCurrentRound(gameinstanceID)+1};
 			game.playerTurn(data);
 			
 			data.timeStamp = new Date();

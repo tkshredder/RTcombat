@@ -52,10 +52,23 @@ define(function(){
 	 	getGameInstanceID: function() { return this.gameinstanceID; },
 	 	setGameInstanceID: function(value) { this.gameinstanceID = value; },
 	 	getOpponentID: function(playerID) { 
-	 		var opponentID;
-	 		opponentID = this.playerIDs[0];
-
 	 		// TO DO: expand this for 1:N combat
+	 		for (var pid in this.playerIDs) {
+	 			if (pid != playerID)
+	 				return pid;
+	 		}
+
+	 		return -1;	 		
+	 	},
+	 	getOpponentShipID: function(shipID) { 
+	 		// TO DO: expand this for 1:N combat
+	 		
+	 		for (var sid in this.shipIDs) {
+	 			if (sid != shipID)
+	 				return sid;
+	 		}
+
+	 		return -1;	 	 		
 	 	},
 	 	
 		getPlayerCount: function() { return Object.keys(this.playerIDs).length},
@@ -69,7 +82,7 @@ define(function(){
 		removeShipID: function(shipID) { delete this.shipIDs[shipID]; },
 		getShipIDs: function() { return this.shipIDs; },
 		addCommand: function(command) { this.masterCommandQueue.push(command); },
-		getCurrentCommand: function() { return this.masterCommandQueue[0]; },
+		getCurrentAction: function() { return this.masterCommandQueue[0]; },
 		getCommandQueueSize: function() { return this.masterCommandQueue.length; },
 		shiftCommand: function() { this.masterCommandQueue.shift(); },
 		getCurrentRound: function() { return this.currentRound; },

@@ -274,8 +274,12 @@ define(
 				// Set opponent ID:
 				if (!data.isme) {
 					c.opponentPlayerID = data.playerID;
-				} else {
+					c.opponentShipID = data.shipID;
+				}
+				else {
+					
 					c.opponentPlayerID = game.gameinstances[data.gameinstanceID].getOpponentID(data.playerID);
+					c.opponentShipID = game.gameinstances[data.gameinstanceID].getOpponentShipID(data.shipID);
 				}
 
 				game.addPlayerToGameInstance(data.playerID, data.gameinstanceID);
@@ -470,7 +474,7 @@ define(
 		// A client performs an action
 		socket.on('action', function(data) {
 			console.log('Event: action', data);
-			console.log(' --- action was successful: ', data.success);
+			//console.log(' --- action was successful: ', data.success);
 			
 			// Execute the action.
 			// Maybe pass in just the command? ie data.command

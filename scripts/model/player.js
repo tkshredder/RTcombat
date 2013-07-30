@@ -71,9 +71,12 @@ define(function(){
 		},
 		
 		performAction: function(command) {
-			console.log(" -- Player perform action - command name, command queue [0] name: ", command.name, this.commandQueue[0].name);
-			if (command.name == this.commandQueue[0].name) 
-				this.executedCommands.push(this.commandQueue.shift()); // 2 for 1 !
+			
+			this.executedCommands.push(command);
+
+			//console.log(" -- Player perform action - command name, command queue [0] name: ", command.name, this.commandQueue[0].name);
+			//if (command.name == this.commandQueue[0].name) 
+			//	this.executedCommands.push(this.commandQueue.shift()); // 2 for 1 !
 		},
 		
 		computeState: function(delta) {

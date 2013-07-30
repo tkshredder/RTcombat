@@ -368,8 +368,8 @@ define(
 				var allCommandsSelected = false;
 				
 				// Update the Master Command queue (ie, all the commands this turn)
-				console.log('--- (game.js) addCommand in gameinstance ' + data.gameinstanceID);
-				console.log(this.gameinstances[data.gameinstanceID]);
+				//console.log('--- (game.js) addCommand in gameinstance ' + data.gameinstanceID);
+				//console.log(this.gameinstances[data.gameinstanceID]);
 
 				// Add the command to this game instance's command queue:
 				this.gameinstances[data.gameinstanceID].addCommand(data.command);
@@ -378,29 +378,32 @@ define(
 				// Get active crew  --
 				var activeCrewCount = 0, shipCrew, shipIDs = this.gameinstances[data.gameinstanceID].getShipIDs();
 			 	
-			 	console.log(' --- (game.js) addCommand. ship IDs: ', shipIDs)
-
-
+			 	//console.log(' --- (game.js) addCommand. ship IDs: ', shipIDs)
 			 	for (var shipID in shipIDs) {
 
-			 		console.log('getting crew for ship ' + shipID)
+			 		//console.log('getting crew for ship ' + shipID)
 
 			 		shipCrew = this.ships[shipID].getCrew();
 			 		for (var crewMember in shipCrew) {
+
+			 			//console.log('crewMember: ', crewMember)
+
 			 			if (shipCrew[crewMember].getIsActive()) {
 			 				activeCrewCount++;
 			 			}
 			 		}
 			 	}
 
-			 	console.log("Active crew count: " + activeCrewCount);
-			 	console.log('current command queue size: ' + this.gameinstances[data.gameinstanceID].getCommandQueueSize());
-			 	console.log('allCommandsSelected: ' + allCommandsSelected);
+			 	//console.log("Active crew count: " + activeCrewCount);
+			 	//console.log('current command queue size: ' + this.gameinstances[data.gameinstanceID].getCommandQueueSize());
+			 	//console.log('allCommandsSelected: ' + allCommandsSelected);
 
 			 	// Check if the current queue size is equal to the activeCrewCount:
 				if (this.gameinstances[data.gameinstanceID].getCommandQueueSize() == activeCrewCount) {
 					allCommandsSelected = true;
 				}
+
+				console.log(' -- (game.js) addCommand. allCommandsSelected: ' + allCommandsSelected);
 
 				// Add this command to the player's command queue 
 				var player = this.players[data.playerID];
@@ -535,14 +538,14 @@ define(
 				switch(command.effect.substring(2)) {
 					case "damage":
 						if (success == true) {
-							console.log('dealing damage to target ' + data.command.targetID, this.ships[data.command.targetID]);
-							this.ships[data.command.targetID].damage(amount); 
+							console.log('dealing damage to target ' + data.command.targetShipID);
+							this.ships[data.command.targetShipID].damage(amount); 
 						}
 						break;
 				}
 				
 				// Shift this command off the master queue:
-				this.masterCommandQueue.shift();
+				this.gameinstances[data.gameinstanceID].shiftCommand();
 				
 				// Player performs the Action:
 				this.players[data.command.playerID].performAction(data.command);
@@ -626,6 +629,7 @@ define(
 			
 			getPlayerTeamChosen: function(playerID) { return this.players[playerID].getTeamChosen(); },
 			getMasterCommandQueue: function() { return this.masterCommandQueue; },
+			getCommandQueueSize: function(gameinstanceID) { return this.gameinstances[gameinstanceID].getCommandQueueSize(); },
 			setCommandQueue: function(playerID, value) { this.players[playerID].setCommandQueue = value; },
 			getCommandQueue: function(playerID) { return this.players[playerID].getCommandQueue(); },			
 			
@@ -677,14 +681,14 @@ define(
 
 			getCommandsAvailable: function(playerID) { return this.players[playerID].getCommandsAvailable(); },
 			
-			getNextAction: function() { return this.masterCommandQueue[0]; },
+			getNextAction: function(gameinstanceID) { return this.gameinstances[gameinstanceID].getCurrentAction(); },
 			
 			// Again -- move these??
 			getCommandDelay: function() { return this.commandDelay; },
 			setCommandDelay: function(value) { this.commandDelay = value; },
 			getTurnFinishDelay: function () { return this.turnFinishDelay; },
 			setTurnFinishDelay: function (value) { this.turnFinishDelay = value; },
-			getCurrentRound: function() { return this.currentRound; },
+			getCurrentRound: function(gameinstanceID) { return this.gameinstances[gameinstanceID].getCurrentRound(); },
 			
 			getPlayerName: function(playerID){ if (this.players[playerID]) return this.players[playerID].getName() },			
 			setPlayerName: function(playerID, value) { this.players[playerID].setName(value) },

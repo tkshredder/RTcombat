@@ -230,7 +230,9 @@ define(function(){
 			// These should be assigned on the server
 			currentCommand.playerID = wi.client.getMyPlayerID();
 			currentCommand.targetID = wi.client.getOpponentPlayerID();
-			
+			currentCommand.shipID = wi.client.getMyShipID();
+			currentCommand.targetShipID = wi.client.getOpponentShipID();
+
 			// TO DO: 
 			// Clean this up for healing spells (targetID could be a single character or group of characters....
 			
@@ -242,15 +244,15 @@ define(function(){
 				wi.socket.emit('removeCommand', {command: currentCommand});
 			} else {
 				// Break out if no more commands are available:
-				if (game.getCommandsAvailable(wi.client.getMyPlayerID()) <= 0)
-					return;
+				//if (game.getCommandsAvailable(wi.client.getMyPlayerID()) <= 0)
+				//	return;
 				
 				// Emit addCommand event to SERVER:
 				wi.socket.emit('addCommand', {command: currentCommand, gameinstanceID: wi.client.getMyGameInstanceID(), playerID: wi.client.getMyPlayerID(), targetID: wi.client.getOpponentPlayerID()});
 				
 				// Update DOM:
 				$(this).addClass('chosen');
-				output.hideCommands(currentCommand.charactername);
+				output.hideCharacterCommands(currentCommand.charactername);
 				//console.log('');
 
 			}
