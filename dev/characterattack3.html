@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<title>Character Attack demo 3</title>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.6/TweenMax.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" href="../css/app.css">
+
+<style>
+body { overflow: hidden; }
+#wrapper { position: relative; width: 110%; min-height: 110%; left: -5%; }
+.abs { position: absolute; }
+#start { position: fixed; z-index: 10000; cursor: pointer;}
+#shipBG { 
+	width: 100%; min-height: 100%;
+	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center; 
+	background-size: cover;
+}
+
+#shipFG { 
+	width: 100%;
+	height: 100%;
+	background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom;
+	background-size: 100%;
+}
+#character { 
+	width: 100%;
+	height: 93%;
+	background: url(../images/character_centipede_898.png) no-repeat center bottom;
+	background-size: 37%;
+}
+#rect {
+	width: 40%;
+	height: 900px;
+	background: #990000 no-repeat center bottom;
+	background-size: 35%;
+}
+</style>
+<script>
+$(document).ready(function() {
+	
+	var shakeCount, shakeMax = 20, speed = 20, top, left, distance = -5;
+	
+	$('#start').click(function() {
+		shakeCount = shakeMax;
+		moveIt();
+	});
+	
+	function moveIt() {
+		shakeCount--;
+		if (shakeCount > 0) {
+			top = (Math.random() * distance) +"%", 
+			left = (Math.random() * distance) + "%";
+
+			$('#wrapper').animate({top: top, left:left}, speed, function() { moveIt(); });
+		} else {
+			$('#wrapper').animate({top: "-5%", left:"-5%"}, speed);
+		}
+		
+	}
+});
+
+</script>
+</head>
+
+<body class="combat">
+<div id="wrapper">
+	<a id="start">SHAKE</a>
+	<div id="shipBG" class="abs"></div>
+	<div id="character" class="abs"></div>	
+	<div id="shipFG" class="abs"></div>
+	
+</div>
+</body>
+</html>

@@ -2,6 +2,13 @@
 html, body { margin: 0; height: 100%; font-family: 'IM Fell DW Pica SC', serif; color: #fff; }
 body {	background:#000; }
 
+
+
+
+
+
+
+
 /* logo */
 #logo { margin: 10px auto; width: 500px; height: 30px; color: white; text-align: center; /*background: url(../images/header_logo.png) no-repeat;*/ }
 #logo .right { float: right; padding-top: 7px;}
