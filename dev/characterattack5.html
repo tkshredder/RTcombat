@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+<title>Character Attack demo 5</title>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.6/TweenMax.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="attack.js"></script>
+
+<link rel="stylesheet" href="../css/app.css">
+
+<style>
+body { overflow: hidden; font-family: Verdana, Geneva, sans-serif;}
+#wrapper { position: relative; width: 110%; min-height: 110%; left: -5%; }
+.abs { position: absolute; }
+#start { position: fixed; z-index: 10000; cursor: pointer;}
+#animate { position: fixed; left: 100px; z-index: 10001; cursor: pointer;}
+#charlabel { position: fixed; z-index: 10002; top: 30px; }
+#blastlabel { position: fixed; z-index: 10003; top: 60px; }
+#shipBG { 
+	width: 100%; min-height: 100%;
+	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center; 
+	background-size: cover;
+}
+
+#shipFG { 
+	width: 100%;
+	height: 100%;
+	background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom;
+	background-size: 100%;
+	z-index: 1000;
+}
+#characterWrapper {
+	width: 32%;
+	height: 100%;
+	left: 31%;
+	bottom: 10%;
+}
+#characterWrapper.centipede { width: 31%; left: 33%; }
+#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 35%; left: 31%; }
+#characterWrapper.tentacles { width: 38%; bottom: 3%; }
+#characterWrapper.skeleshark { width: 38%; bottom: 11%; }
+#characterWrapper.drowarcher { width: 30%; left: 35%; bottom: 11%; }
+
+.centipede1 { 
+	background: url(../images/character_centipede_865a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.centipede2 { 
+	background: url(../images/character_centipede_865b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.shaman1 { 
+	background: url(../images/character_shaman_900a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.shaman2 { 
+	background: url(../images/character_shaman_900b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.deadsoldier1 { 
+	background: url(../images/character_deadsoldier_900a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.deadsoldier2 { 
+	background: url(../images/character_deadsoldier_900b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.tentacles1 { 
+	background: url(../images/character_tentacles_900a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.tentacles2 { 
+	background: url(../images/character_tentacles_900b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.drowarcher1 { 
+	background: url(../images/character_drowarcher_900a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.drowarcher2 { 
+	background: url(../images/character_drowarcher_900b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.skeleshark1 { 
+	background: url(../images/character_skeleshark_900a.png) no-repeat left bottom;
+	background-size: contain;
+}
+.skeleshark2 { 
+	background: url(../images/character_skeleshark_900b.png) no-repeat left bottom;
+	background-size: contain;
+}
+.character { 
+	height: 93%;
+	width: 100%;
+}
+#rect {
+	width: 40%;
+	height: 900px;
+	background: #990000 no-repeat center bottom;
+	background-size: 35%;
+}
+#blast {
+	width: 100%; min-height: 100%;
+	opacity: 0;
+	z-index: 1001;
+}
+#blast.arch { 
+	background: url(../images/blast_arch.png) no-repeat center center fixed; 
+	background-size: cover;
+}
+#blast.slash {
+	background: url(../images/blast_slash.png) no-repeat center center fixed; 
+	background-size: cover;
+}
+#blast.wave {
+	background: url(../images/blast_wave.png) no-repeat center center fixed; 
+	background-size: cover;
+}
+#blast.arrow {
+	background: url(../images/blast_arrow.png) no-repeat center center fixed; 
+	background-size: cover;
+}
+
+.hidden { display: none; }
+.shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); }
+</style>
+</head>
+
+<body class="combat">
+<div id="wrapper">
+	
+	<a id="start">SHAKE</a>
+	<a id="animate">ANIMATE</a>
+	<span id="charlabel">Character: <span id="charname"></span></span>
+	<span id="blastlabel">Blast: <span id="blastname"></span></span>
+	
+	<div id="shipBG" class="abs"></div>
+	<div id="characterWrapper" class="abs">
+		<div id="frame1" class="character shadowfilter centipede1"></div>
+		<div id="frame2" class="character shadowfilter centipede2 hidden "></div>
+	</div>	
+	<div id="shipFG" class="abs"></div>
+	<div id="blast" class="abs arch"></div>
+</div>
+</body>
+</html>
