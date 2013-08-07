@@ -1,45 +1,31 @@
 <!doctype html>
 <html>
 <head>
-<title>Character Attack demo 5</title>
+<title>Character Attack demo 7</title>
 
+<link href="../css/app.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.6/TweenMax.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="attack.js"></script>
 
-<link rel="stylesheet" href="../css/app.css">
-
 <style>
 body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
 #wrapper { position: relative; width: 110%; min-height: 110%; left: -5%; }
-.abs { position: absolute; }
-#start { position: fixed; z-index: 10000; cursor: pointer;}
-#animate { position: fixed; left: 100px; z-index: 10001; cursor: pointer;}
-#charlabel { position: fixed; z-index: 10002; top: 30px; }
-#blastlabel { position: fixed; z-index: 10003; top: 60px; }
-#shipBG { width: 100%; min-height: 100%; }
-#shipFG { 
-	width: 100%;
-	height: 100%;
-	z-index: 1000;
-}
-#shipBG.deadblimp {
-	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center; 
-	background-size: cover;
-}
-#shipBG.drowcruiser {
-	background: url(../images/ship_drowcruiser_view_BG.jpg) no-repeat center center; 
-	background-size: cover;
-}
-#shipFG.deadblimp {
-	background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom;
-	background-size: 100%;
-}
-#shipFG.drowcruiser {
-	background: url(../images/ship_drowcruiser_view_FG.png) no-repeat center bottom;
-	background-size: 100%;
-}
+#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white;}
+#infobox a { display: block; cursor: pointer; transition: all 0.3s}
+#infobox a:hover { background: #333; }
+#infobox a:last-child { margin-bottom: 30px; }
+#infobox label { display: block; } 
+input { display: inline-block; }
 
+#shipBG { width: 100%; min-height: 100%; }
+#shipFG { width: 100%; height: 100%; z-index: 1000; }
+#shipBG.deadblimp {	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center;  background-size: cover; }
+#shipFG.deadblimp { background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom; background-size: 100%; }
+#shipBG.drowcruiser { background: url(../images/ship_drowcruiser_view_BG.jpg) no-repeat center center; 	background-size: cover; }
+#shipFG.drowcruiser { background: url(../images/ship_drowcruiser_view_FG.png) no-repeat center bottom; background-size: 100%; }
+#shipBG.sunset { background: url(../images/ship_sunset_view_BG.jpg) no-repeat center center; background-size: cover; }
+#shipFG.sunset { background: url(../images/ship_sunset_view_FG.png) no-repeat center bottom; background-size: 100%; }
 
 #characterWrapper {
 	width: 32%;
@@ -135,16 +121,25 @@ body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
 
 .hidden { display: none; }
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); }
+.zoom { width: 25px; }
+.abs { position: absolute; }
 </style>
 </head>
 
 <body class="combat">
 <div id="wrapper">
 	
-	<a id="start">SHAKE</a>
-	<a id="animate">ANIMATE</a>
-	<span id="charlabel">Character: <span id="charname"></span></span>
-	<span id="blastlabel">Blast: <span id="blastname"></span></span>
+	<div id="infobox">
+		<a id="shake">SHAKE</a>
+		<a id="animate">ANIMATE</a>
+		<a id="fullsequence">FULL SEQUENCE</a>
+	
+		<label id="charlabel">Character: <span id="charname"></span></label>
+		<label id="blastlabel">Blast: <span id="blastname"></span></label>
+		<label id="locationlabel">Location: <span id="locname"></span></label>
+		<span id="zoomlabel">Zoom: [min] <input id="zoommin" class="zoom" value="110"> [max] <input id="zoommax" class="zoom" value="125"></span>
+		
+	</div>	
 	
 	<div id="shipBG" class="abs drowcruiser"></div>
 	<div id="characterWrapper" class="abs">
