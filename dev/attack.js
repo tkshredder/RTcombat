@@ -14,7 +14,10 @@ $(document).ready(function() {
 	var blasts = ["arch", "slash", "wave", "arrow"], bIndex = 0;
 	var locations = ["drowcruiser", "deadblimp", "sunset"], locIndex = 0;
 	var fg, fgTM, bg, bgTM, ch, chTM;
-	var actions = [{character:"centipede", location:"drowcruiser"}, {character:"shaman", location:"deadblimp"}, {character:"tentacles", location:"sunset"}, {character:"deadsoldier", location:"deadblimp"}, {character:"skeleshark", location:"deadblimp"}, {character:"drowarcher", location:"drowcruiser"}];
+	var actions = [{character:"centipede", location:"drowcruiser", blast:"arch"}, {character:"shaman", location:"deadblimp", blast:"slash"}, {character:"tentacles", location:"sunset", blast:"wave"}, {character:"deadsoldier", location:"deadblimp", blast:"wave"}, {character:"skeleshark", location:"deadblimp", blast:"arch"}, {character:"drowarcher", location:"drowcruiser", blast:"arrow"}];
+	var previewMode, isAnimating = false;
+	
+	var completedActions = [];
 	
 	// Update labels:
 	$('#charname').html(characters[0]);
@@ -23,7 +26,9 @@ $(document).ready(function() {
 	
 	// Start the float animation:
 	// NOTE: this makes grabbing elements from the DOM difficult to grab
-	//floatBoat();
+	if ($('#floating').is(":checked")) {
+		floatBoat(true);
+	}
 	
 	// Click handlers:
 	$('#shake').click(function() {
@@ -32,11 +37,26 @@ $(document).ready(function() {
 	});
 	
 	$('#animate').click(function() {
+		if (isAnimating) return; 
+		
 		startAnimation();
+		
+		previewMode = "single";
 	});
 	
 	$('#fullsequence').click(function() {
+		
+		previewMode = "full";
+		
+		// Reset, if needed.
+		if (actions.length == 0)
+			actions = completedActions;
+		
 		animateNextItemInQ();
+	});
+	
+	$('#floating').change(function() {
+		($('#floating').is(":checked")) ? floatBoat(true) : floatBoat(false);
 	});
 	
 	// Key Press Handlers
@@ -109,6 +129,7 @@ $(document).ready(function() {
 	});
 	
 	function startAnimation() {
+		isAnimating = true; 
 		$.playSound('../audio/dq4/attack_melee.mp3');
 		zoomMax = $('#zoommax').val();
 		zoomEffect(zoomMax);
@@ -118,17 +139,20 @@ $(document).ready(function() {
 	
 	function animateNextItemInQ() {
 		var currentAction = actions.shift(); // "pops" off 1st element of array
+		completedActions.push(currentAction); // push the currentAction into the completeActions queue
 		
 		if (currentAction != null) {
 			var newCharIndex = characters.indexOf(currentAction.character);
 			var newLocationIndex = locations.indexOf(currentAction.location);
+			var newBlastIndex = blasts.indexOf(currentAction.blast);
 		} else {
 			return;
 		}
 		
 		if ((newCharIndex != -1) && newLocationIndex != -1) {		
 			updateCharacterClass(cIndex, newCharIndex);
-			updateBGClass(bIndex, newLocationIndex);
+			updateBlastClass(bIndex, newLocationIndex);
+			updateBGClass(locIndex, newLocationIndex);
 			
 			startAnimation();
 		}
@@ -153,7 +177,15 @@ $(document).ready(function() {
 		locIndex = newIndex;
 	}
 	
-	function floatBoat(){
+	function floatBoat(value){
+		
+		if (value == false) {
+			if (fgTM) fgTM.stop();
+			if (bgTM) bgTM.stop();
+			if (chTM) chTM.stop();
+			
+			return;
+		} 
 		
 		fg = document.getElementById("shipFG");
 		fgTM = new TimelineMax({paused:true});		
@@ -172,6 +204,7 @@ $(document).ready(function() {
 		chTM.to(ch, 3, {y:"20px", ease:Power1.easeInOut}).to(ch, 3, {y:"0px", ease:Power1.easeInOut});
 		chTM.repeat(-1);
 		chTM.play();
+		
 	}
 	
 	function zoomEffect(percent, duration) {
@@ -222,7 +255,12 @@ $(document).ready(function() {
 	}
 	
 	function blastIt() {
-		$('#blast').removeClass('hidden').css({opacity: 1}).animate({opacity:0}, 2000, function() { animateNextItemInQ() });
+		$('#blast').removeClass('hidden').css({opacity: 1}).animate({opacity:0}, 2000, function() { 
+			isAnimating = false; 
+			if (previewMode == "full") { 
+				animateNextItemInQ();
+			}
+		});
 	}
 	
 	
