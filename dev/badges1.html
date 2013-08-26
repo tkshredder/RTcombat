@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<title>Badge Demo 1</title>
+
+<link href="../css/app.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.6/TweenMax.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="badge.js"></script>
+
+<style>
+body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
+#wrapper { position: relative; width: 110%; min-height: 110%; left: -5%; }
+
+
+#shipBG { width: 100%; min-height: 100%; }
+#shipFG { width: 100%; height: 100%; z-index: 1000; }
+#shipBG.deadblimp {	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center;  background-size: cover; }
+#shipFG.deadblimp { background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom; background-size: 100%; }
+#shipBG.drowcruiser { background: url(../images/ship_drowcruiser_view_BG.jpg) no-repeat center center; 	background-size: cover; }
+#shipFG.drowcruiser { background: url(../images/ship_drowcruiser_view_FG_ext.png) no-repeat center bottom; background-size: 100%; }
+#shipBG.sunset { background: url(../images/ship_sunset_view_BG.jpg) no-repeat center center; background-size: cover; }
+#shipFG.sunset { background: url(../images/ship_sunset_view_FG.png) no-repeat center bottom; background-size: 100%; }
+
+#badgeWrapper {
+	width: 400px;
+	height: 400px;
+	left: 37%;
+	top: 150px;
+	position: relative;
+}
+
+#badgeIcon { position: absolute; }
+
+.badge { width: 100%; height: 100%; }
+.badge.trunkfin { background: url(../images/badge_trunkfin.png) no-repeat center center;  }
+.badge.egyptian { background: url(../images/badge_egyptian.png) no-repeat center center;  }
+.badge.crown { background: url(../images/badge_crown.png) no-repeat center center;  }
+
+#badgeRingWrapper { width: 400px; height: 400px; position: absolute; }
+#badgeRing { width: 100%; height: 100%; }
+.ring.trunkfin { background: url(../images/badge_trunkfin_ring.png) no-repeat center center; background-size: cover; }
+.ring.egyptian { background: none; }
+.ring.crown { background: none; }
+
+.hidden { display: none; }
+.shadowfilter { -webkit-filter: drop-shadow(4px 5px 5px rgba(201,44,70,2)); }
+.zoom { width: 25px; }
+.abs { position: absolute; }
+
+/* UI */
+/* @font-face kit by Fonts2u (http://www.fonts2u.com) */ @font-face {font-family:"Final Fantasy 3/6 Font Regular";src:url("ff3/final_fantasy_36_font.eot?") format("eot"),url("ff3/final_fantasy_36_font.woff") format("woff"),url("ff3/final_fantasy_36_font.ttf") format("truetype"),url("ff3/final_fantasy_36_font.svg#Final-Fantasy-3/6-Font") format("svg");font-weight:normal;font-style:normal;}
+
+#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white; 	font-family: "Final Fantasy 3/6 Font Regular"; min-width: 388px}
+#infobox a { display: block; cursor: pointer; transition: all 0.3s; padding: 0 10px;}
+#infobox a:hover { background: #09F; }
+#infobox label { display: block; } 
+input { display: inline-block; }
+
+fieldset { 
+	border: 6px solid;
+	box-shadow: 2px 2px 0px #333;
+	background: rgba(33,33,33,0.5);
+	padding: 0;
+	margin-left: 10px;
+}
+fieldset#commands { background: rgba(33,133,140,0.5); }
+fieldset#controls { background: rgba(255,119,16,0.7); }
+fieldset label { margin-left: 10px; margin-right: 10px; }
+legend { margin-left: 9px; }
+#infobox * { font-size: 35px; text-shadow: 2px 2px #333; }
+#infobox label.inline { display: inline-block; }
+
+input[type=range].vHorizon {
+    -webkit-appearance: none;
+    background-color: pink;
+    height: 10px;
+    width:120px;
+
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+}
+#infobox .group { display: block; margin-left: 20px;}
+</style>
+</head>
+
+<body class="combat">
+<div id="wrapper">
+	
+	<div id="infobox">
+		<fieldset id="commands">
+  			<legend>Commands</legend>
+            <a id="rotate">Rotate</a>
+            <a id="explode">Explode</a>
+            <a id="reset">Reset</a>
+            <!--<a id="shake">SHAKE</a>
+            <a id="animate">ANIMATE</a>
+            <a id="fullsequence">FULL SEQUENCE</a>
+            -->
+        </fieldset>
+		
+        <fieldset id="controls">
+        	<legend>Controls</legend>
+            <label id="badgelabel">Badge: <span id="badgename"></span></label>
+            <label id="locationlabel">Location: <span id="locname"></span></label>
+            <label>Zoom:</label>
+            <span class="group">
+                <label class="inline">MIN</label>
+                <input id="zoommin" type="range" class="vHorizon range inline" min="100" max="200" value="110"/>
+                <label id="zoomminlabel" class="inline">110</label>
+            </span>
+            <span class="group">
+                <label class="inline">MAX</label>
+                <input id="zoommax" type="range" class="vHorizon range inline" min="100" max="200" value="110"/>
+                <label id="zoommaxlabel" class="inline">125</label>
+            </span>
+            <label>Rotation:</label>
+            <span class="group">
+                <label id="rottimelabel" class="inline">Duration</label>
+                <input id="rotationduration" type="range" class="vHorizon range" min="1" max="2000" value="700"/>
+                <label id="rottimelabel" class="inline">700</label>
+            </span>
+		</fieldset>
+	</div>	
+	
+	<div id="shipBG" class="abs drowcruiser"></div>
+	<div id="badgeWrapper" class="abs">
+		<div id="badgeIcon" class="badge shadowfilter trunkfin"></div>
+        <div id="badgeRingWrapper">
+        	<div id="badgeRing" class="ring trunkfin "></div>
+        </div>
+	</div>	
+	<!--<div id="shipFG" class="abs drowcruiser"></div>-->
+</div>
+</body>
+</html>
