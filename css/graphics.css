@@ -1,16 +1,95 @@
-body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
+html, body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; background: #000; margin: 0; height: 100%; color: #fff; }
 #wrapper { position: relative; width: 110%; min-height: 110%; left: -5%; }
 
+/* UI */
+@font-face {font-family:"Final Fantasy 3/6 Font Regular";src:url("ff3/final_fantasy_36_font.eot?") format("eot"),url("ff3/final_fantasy_36_font.woff") format("woff"),url("ff3/final_fantasy_36_font.ttf") format("truetype"),url("ff3/final_fantasy_36_font.svg#Final-Fantasy-3/6-Font") format("svg");font-weight:normal;font-style:normal;}
+#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white; 	font-family: "Final Fantasy 3/6 Font Regular"; min-width: 388px}
+#infobox * { font-size: 35px; text-shadow: 2px 2px #333; }
+#infobox a { display: block; cursor: pointer; transition: all 0.3s; padding: 0 10px;}
+#infobox a:hover { background: #09F; }
+#infobox label { display: block; } 
+#infobox label.inline { display: inline-block; }
+#infobox .group { display: block; }
+fieldset { 
+	border: 6px solid;
+	box-shadow: 2px 2px 0px #333;
+	background: rgba(33,33,33,0.5);
+	padding: 0;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+fieldset#commands { background: rgba(33,133,140,0.5); }
+fieldset#controls { background: rgba(50,100,50,0.9); }
+fieldset label { margin-left: 10px; margin-right: 10px; }
+legend { margin-left: 9px; }
+input { display: inline-block; }
+input[type=range].vHorizon { -webkit-appearance: none; background-color: #DEDEDE; width:120px; height: 10px; cursor: pointer;}
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #1491CD; width: 20px; height: 20px; }
+.tabs { padding: 0; margin: 0; }
+.tabs li { display: inline-block; list-style:none; transition: all 0.2s; cursor: pointer; padding: 6px;}
+.tabs li:hover { background: #09F; }
+.tabs li.active { background: #36C; }
 
-#shipBG { width: 100%; min-height: 100%; }
-#shipFG { width: 100%; height: 100%; z-index: 1000; }
-#shipBG.deadblimp {	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center;  background-size: cover; }
-#shipFG.deadblimp { background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom; background-size: 100%; }
-#shipBG.drowcruiser { background: url(../images/ship_drowcruiser_view_BG.jpg) no-repeat center center; 	background-size: cover; }
-#shipFG.drowcruiser { background: url(../images/ship_drowcruiser_view_FG_ext.png) no-repeat center bottom; background-size: 100%; }
-#shipBG.sunset { background: url(../images/ship_sunset_view_BG.jpg) no-repeat center center; background-size: cover; }
-#shipFG.sunset { background: url(../images/ship_sunset_view_FG.png) no-repeat center bottom; background-size: 100%; }
+/* CREW */
+#characterWrapper {
+	width: 25%;
+	height: 100%;
+	left: 37%;
+	bottom: 10%;
+}
 
+.character { height: 93%; width: 100%; }
+
+#characterWrapper.centipede { width: 31%; left: 33%; }
+#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 35%; left: 31%; }
+#characterWrapper.tentacles { width: 38%; bottom: 3%; }
+#characterWrapper.skeleshark { width: 38%; bottom: 11%; }
+#characterWrapper.drowarcher { width: 30%; left: 35%; bottom: 11%; }
+
+.centipede1 { background: url(../images/character_centipede_865a.png) no-repeat left bottom; background-size: contain; }
+.centipede2 { background: url(../images/character_centipede_865b.png) no-repeat left bottom; background-size: contain; }
+.shaman1 { background: url(../images/character_shaman_900a.png) no-repeat left bottom; background-size: contain; }
+.shaman2 { background: url(../images/character_shaman_900b.png) no-repeat left bottom; background-size: contain; }
+.deadsoldier1 { background: url(../images/character_deadsoldier_900a.png) no-repeat left bottom; background-size: contain; }
+.deadsoldier2 { background: url(../images/character_deadsoldier_900b.png) no-repeat left bottom; background-size: contain; }
+.tentacles1 { background: url(../images/character_tentacles_900a.png) no-repeat left bottom; background-size: contain; }
+.tentacles2 { background: url(../images/character_tentacles_900b.png) no-repeat left bottom; background-size: contain; }
+.drowarcher1 { background: url(../images/character_drowarcher_900a.png) no-repeat left bottom; background-size: contain; }
+.drowarcher2 { background: url(../images/character_drowarcher_900b.png) no-repeat left bottom; background-size: contain; }
+.skeleshark1 { background: url(../images/character_skeleshark_900a.png) no-repeat left bottom; background-size: contain; }
+.skeleshark2 { background: url(../images/character_skeleshark_900b.png) no-repeat left bottom; background-size: contain; }
+
+#rect {
+	width: 40%;
+	height: 900px;
+	background: #990000 no-repeat center bottom;
+	background-size: 35%;
+}
+
+/* LOCATIONS */
+#locationBG { width: 100%; min-height: 100%; }
+#locationFG { width: 100%; height: 100%; z-index: 1000; }
+#locationBG.deadblimp {	background: url(../images/ship_deadblimp_view_BG.jpg) no-repeat center center;  background-size: cover; }
+#locationFG.deadblimp { background: url(../images/ship_deadblimp_view_FG.png) no-repeat center bottom; background-size: 100%; }
+#locationBG.drowcruiser { background: url(../images/ship_drowcruiser_view_BG.jpg) no-repeat center center; 	background-size: cover; }
+#locationFG.drowcruiser { background: url(../images/ship_drowcruiser_view_FG_ext.png) no-repeat center bottom; background-size: 100%; }
+#locationBG.sunset { background: url(../images/ship_sunset_view_BG.jpg) no-repeat center center; background-size: cover; }
+#locationFG.sunset { background: url(../images/ship_sunset_view_FG.png) no-repeat center bottom; background-size: 100%; }
+
+/* BLASTS */
+#blast {
+	width: 100%; min-height: 100%;
+	opacity: 0;
+	z-index: 1001;
+}
+#blast.arch { background: url(../images/blast_arch.png) no-repeat center center fixed; background-size: cover; }
+#blast.slash { background: url(../images/blast_slash.png) no-repeat center center fixed; background-size: cover; }
+#blast.wave { background: url(../images/blast_wave.png) no-repeat center center fixed; background-size: cover; }
+#blast.arrow { background: url(../images/blast_arrow.png) no-repeat center center fixed; background-size: cover; }
+
+/* BADGES */
 #badgeWrapper {
 	width: 400px;
 	height: 400px;
@@ -18,9 +97,7 @@ body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
 	top: 150px;
 	position: relative;
 }
-
 #badgeIcon { position: absolute; }
-
 .badge { width: 100%; height: 100%; }
 .badge.trunkfin { background: url(../images/badge_trunkfin.png) no-repeat center center;  }
 .badge.egyptian { background: url(../images/badge_egyptian.png) no-repeat center center;  }
@@ -32,57 +109,13 @@ body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; }
 .ring.egyptian { background: none; }
 .ring.crown { background: none; }
 
+/* MISC STYLES */
 .hidden { display: none; }
-.shadowfilter { -webkit-filter: drop-shadow(4px 5px 5px rgba(201,44,70,2)); }
 .zoom { width: 25px; }
 .abs { position: absolute; }
 
-/* UI */
-/* @font-face kit by Fonts2u (http://www.fonts2u.com) */ @font-face {font-family:"Final Fantasy 3/6 Font Regular";src:url("ff3/final_fantasy_36_font.eot?") format("eot"),url("ff3/final_fantasy_36_font.woff") format("woff"),url("ff3/final_fantasy_36_font.ttf") format("truetype"),url("ff3/final_fantasy_36_font.svg#Final-Fantasy-3/6-Font") format("svg");font-weight:normal;font-style:normal;}
-
-#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white; 	font-family: "Final Fantasy 3/6 Font Regular"; min-width: 388px}
-#infobox a { display: block; cursor: pointer; transition: all 0.3s; padding: 0 10px;}
-#infobox a:hover { background: #09F; }
-#infobox label { display: block; } 
-input { display: inline-block; }
-
-fieldset { 
-	border: 6px solid;
-	box-shadow: 2px 2px 0px #333;
-	background: rgba(33,33,33,0.5);
-	padding: 0;
-	margin-left: 10px;
-}
-fieldset#commands { background: rgba(33,133,140,0.5); }
-fieldset#controls { background: rgba(255,119,16,0.7); }
-fieldset label { margin-left: 10px; margin-right: 10px; }
-legend { margin-left: 9px; }
-#infobox * { font-size: 35px; text-shadow: 2px 2px #333; }
-#infobox label.inline { display: inline-block; }
-
-input[type=range].vHorizon {
-    -webkit-appearance: none;
-    background-color: #DEDEDE;
-    height: 10px;
-    width:120px;
-
-}
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background-color: #1491CD;
-    width: 20px;
-    height: 20px;
-}
-input[type="checkbox"] {
-	 background-color: #DEDEDE;
-	 width: 20px; 
-	 height: 20px;
-	 cursor: pointer;
-}
-input[type="checkbox"]:checked {
-	background-color: #090;
-	
-}
+/* FILTERS */
+.glowfilter { -webkit-filter: drop-shadow(4px 5px 5px rgba(201,44,70,2)); }
+.shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); }
 
 
-#infobox .group { display: block; margin-left: 20px;}
