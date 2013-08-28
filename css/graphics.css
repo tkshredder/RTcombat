@@ -3,7 +3,7 @@ html, body { overflow: hidden; font-family: Verdana, Geneva, sans-serif; backgro
 
 /* UI */
 @font-face {font-family:"Final Fantasy 3/6 Font Regular";src:url("ff3/final_fantasy_36_font.eot?") format("eot"),url("ff3/final_fantasy_36_font.woff") format("woff"),url("ff3/final_fantasy_36_font.ttf") format("truetype"),url("ff3/final_fantasy_36_font.svg#Final-Fantasy-3/6-Font") format("svg");font-weight:normal;font-style:normal;}
-#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white; 	font-family: "Final Fantasy 3/6 Font Regular"; min-width: 388px}
+#infobox { position: fixed; z-index: 10002; top: 0; font-size: 16px; color: white; 	font-family: "Final Fantasy 3/6 Font Regular"; width: 100%; }
 #infobox * { font-size: 35px; text-shadow: 2px 2px #333; }
 #infobox a { display: block; cursor: pointer; transition: all 0.3s; padding: 0 10px;}
 #infobox a:hover { background: #09F; }
@@ -27,10 +27,11 @@ legend { margin-left: 9px; }
 input { display: inline-block; }
 input[type=range].vHorizon { -webkit-appearance: none; background-color: #DEDEDE; width:120px; height: 10px; cursor: pointer;}
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #1491CD; width: 20px; height: 20px; }
-.tabs { padding: 0; margin: 0; }
+.tabs { padding: 0; margin: 0 0 15px; background: #AAA }
 .tabs li { display: inline-block; list-style:none; transition: all 0.2s; cursor: pointer; padding: 6px;}
-.tabs li:hover { background: #09F; }
+.tabs li:hover:not(.disabled) { background: #09F; }
 .tabs li.active { background: #36C; }
+.tabs li.disabled { color: #DEDEDE; cursor: default; }
 
 /* CREW */
 #characterWrapper {
@@ -42,11 +43,11 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; background
 
 .character { height: 93%; width: 100%; }
 
-#characterWrapper.centipede { width: 31%; left: 33%; }
-#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 35%; left: 31%; }
-#characterWrapper.tentacles { width: 38%; bottom: 3%; }
-#characterWrapper.skeleshark { width: 38%; bottom: 11%; }
-#characterWrapper.drowarcher { width: 30%; left: 35%; bottom: 11%; }
+#characterWrapper.centipede { width: 25%; left: 36%; }
+#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 29%; left: 35%; }
+#characterWrapper.tentacles { width: 33%; left: 34%; bottom: 3%; }
+#characterWrapper.skeleshark { width: 30%; bottom: 11%; }
+#characterWrapper.drowarcher { width: 25%; left: 35%; bottom: 11%; }
 
 .centipede1 { background: url(../images/character_centipede_865a.png) no-repeat left bottom; background-size: contain; }
 .centipede2 { background: url(../images/character_centipede_865b.png) no-repeat left bottom; background-size: contain; }

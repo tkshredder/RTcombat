@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
-	var shakeCount, shakeMax = 10, speed = 5, top, left, distance = -5, currentFrame = 0, charZoomDuration, currentZoom = 110, blastDuration = 2000;
-	var previewMode, isAnimating = false;
+	var shakeCounter, shakeCount, speed = 5, top, left, distance = -5, currentFrame = 0, charZoomDuration, currentZoom = 110, blastDuration = 2000;
+	var previewMode, isAnimating = false, showUI = true;
 	
 	var crew = ["centipede", "shaman", "deadsoldier", "tentacles", "skeleshark", "drowarcher"], crewIndex = 0;
 	var blasts = ["arch", "slash", "wave", "arrow"], blastIndex = 0;
@@ -11,37 +11,30 @@ $(document).ready(function() {
 	var fg, fgTM, bg, bgTM, ch, chTM;
 	
 	var actions = [
-		{character:"centipede", location:"drowcruiser", blast:"arch"}, 
-		{character:"shaman", location:"deadblimp", blast:"slash"}, 
-		{character:"tentacles", location:"sunset", blast:"wave"}, 
-		{character:"deadsoldier", location:"deadblimp", blast:"wave"}, 
-		{character:"skeleshark", location:"deadblimp", blast:"arch"}, 
-		{character:"drowarcher", location:"drowcruiser", blast:"arrow"}];
+		{character:"centipede", location:"drowcruiser", blast:"arch", success:true}, 
+		{character:"shaman", location:"deadblimp", blast:"slash", success:false}, 
+		{character:"tentacles", location:"sunset", blast:"wave", success:true}, 
+		{character:"deadsoldier", location:"deadblimp", blast:"wave", success:true}, 
+		{character:"skeleshark", location:"deadblimp", blast:"arch", success:false}, 
+		{character:"drowarcher", location:"drowcruiser", blast:"arrow", success:true}];
 	var completedActions = [];
 		
 	// Update labels:
 	$('#charname').html(crew[0]);
 	$('#blastname').html(blasts[0]);
 	$('#locname').html(locations[0]);
-	
-	charZoomDuration = $('#charZoomDuration').val();
-	
-	// Start the float animation:
-	// NOTE: this makes grabbing elements from the DOM difficult to grab
-	if ($('#floating').is(":checked")) {
-		floatBoat(true);
-	}
-	
+		
 	initEventHandlers();
 	initKeyHandlers();
 	initAudio();
+	updateValsFromControls();
 	
 	function initEventHandlers() {
 		
 		// MENU NAV
-		$('.tabs li').click(function() {
+		$('.tabs li:not(.disabled)').click(function() {
 			var currentItem = $(this).data('menuitem');
-			$('.tabs li').removeClass(); 
+			$('.tabs li').removeClass('active'); 
 			$(this).addClass('active');
 			$('.panel').addClass('hidden');
 			$('#'+currentItem+'_panel').removeClass('hidden');
@@ -49,9 +42,30 @@ $(document).ready(function() {
 		
 		// CHARACTER PANEL:
 		$('#charZoomDuration').on('change', function() {
-			charZoomDuration = $(this).val();
+			charZoomDuration = Number($(this).val());
 			$('#charZoomLabel').html(charZoomDuration);
 		});
+		
+		// LOCATION PANEL:
+		$('#floatingCB').change(function() {
+			($('#floatingCB').is(":checked")) ? floatBoat(true) : floatBoat(false);
+		});
+		
+		// BLASTS PANEL
+		$('#blastDuration').on('change', function() {
+			blastDuration = Number($(this).val());
+			$('#blastDurationLabel').html(blastDuration);
+		});
+		
+		// SCREEN PANEL
+		$('#shakeCount').on('change', function() {
+			shakeCount = Number($(this).val());
+			$('#shakeCountLabel').html(shakeCount);
+		});
+		
+		
+		
+		
 		
 		$('#zoommin').on('change', function() {
 			zoomMin = $(this).val();
@@ -68,19 +82,10 @@ $(document).ready(function() {
 			
 		});
 		
-		$('#floating').change(function() {
-			($('#floating').is(":checked")) ? floatBoat(true) : floatBoat(false);
-		});
 		
 		// COMMANDS:
 		$('#charZoomInOutCommand').click(function() {
-			zoomAmount = (currentZoom == 110) ? 120 : 110;
-			zoomEffect(zoomAmount, charZoomDuration);
-			if (currentZoom == 110) {
-				$('#charZoomInOut').html('Crew Zoom In');
-			} else {
-				$('#charZoomInOut').html('Crew Zoom Out');
-			}
+			zoomInOut();
 		});
 		
 		$('#blastCommand').click(function() {
@@ -88,30 +93,21 @@ $(document).ready(function() {
 		});
 		
 		$('#shakeCommand').click(function() {
-			shakeCount = shakeMax;
-			moveIt();
+			shakeScreen();
 		});
 		
 		$('#animateCommand').click(function() {
 			if (isAnimating) return; 
 			
-			startAnimation();
+			startAnimation({success:true});
 			
 			previewMode = "single";
 		});
 		
-		$('#fullsequenceCommand').click(function() {
+		$('#fullSequenceCommand').click(function() {
 			
-			previewMode = "full";
-			
-			// Reset, if needed.
-			if (actions.length == 0)
-				actions = completedActions;
-			
-			animateNextItemInQ();
-		});
-		
-		
+			startFullSequence();
+		});	
 	}
 	
 	function initKeyHandlers() {
@@ -154,6 +150,24 @@ $(document).ready(function() {
 				updateClass(attributeToChange, oldIndex, targetIndex);
 			}
 			
+			// [S]
+			if (code == 83) { shakeScreen(); }
+			
+			// [A]
+			if (code == 65) { startAnimation(); }
+			
+			// [F]
+			if (code == 70) { startFullSequence(); }
+			
+			// [B]
+			if (code == 66) { blastIt(); }
+			
+			// [Z]
+			if (code == 90) { zoomInOut(); }
+			
+			// [H]
+			if (code == 72) { toggleUI(); }
+			
 			/*
 			// [[] key:
 			if (code == 221) {
@@ -177,8 +191,26 @@ $(document).ready(function() {
 	
 	
 	function initAudio() {
+		createjs.Sound.registerSound({id:"attack_melee", src:"../audio/dq4/attack_melee.mp3"});
+		createjs.Sound.registerSound({id:"attack_dodge", src:"../audio/dq4/attack_dodge.mp3"});
+		
+		createjs.Sound.registerSound({id:"crunch_comp1b", src:"../audio/crunch_comp1b.mp3"});
+		
 		createjs.Sound.registerSound({id:"summon_chirp", src:"../audio/som/summon_chirp.mp3"});
 		createjs.Sound.registerSound({id:"magic_blast", src:"../audio/som/magic_blast.mp3"});
+	}
+	
+	function updateValsFromControls() {
+		
+		// Preset vars based on control values:
+		charZoomDuration = Number($('#charZoomDuration').val());
+		blastDuration = Number($('#blastDuration').val());
+		shakeCount = Number($('#shakeCount').val());
+		
+		// Start the float animation:
+		if ($('#floatingCB').is(":checked")) {
+			floatBoat(true);
+		}
 	}
 	
 	function getTargetIndex(attribute) {
@@ -209,13 +241,30 @@ $(document).ready(function() {
 		return -1;
 	}
 	
-	function startAnimation() {
+	function startAnimation(action) {
+		currentAction = action;
+		
 		isAnimating = true; 
-		$.playSound('../audio/dq4/attack_melee.mp3');
-		zoomMax = $('#zoommax').val();
-		zoomEffect(zoomMax);
+		createjs.Sound.play('attack_melee');
+		zoomEffect(120, charZoomDuration);
+		
 		setTimeout(advanceCharacterAnimation, 200);
-		setTimeout(resolve, 500);
+		setTimeout(resolve, 500+charZoomDuration, action);
+		setTimeout(function(){ 
+			isAnimating = false;
+			if (previewMode == "full") { 
+				animateNextItemInQ();
+			}
+		}, 2500);
+	}
+	function startFullSequence() {
+		previewMode = "full";
+			
+		// Reset, if needed.
+		if (actions.length == 0)
+			actions = completedActions;
+		
+		animateNextItemInQ();
 	}
 	
 	function animateNextItemInQ() {
@@ -231,11 +280,12 @@ $(document).ready(function() {
 		}
 		
 		if ((newCharIndex != -1) && newLocationIndex != -1) {		
+			
 			updateCharacterClass(crewIndex, newCharIndex);
 			updateBlastClass(blastIndex, newLocationIndex);
-			updateBGClass(locrewIndex, newLocationIndex);
+			updateLocationClass(locationIndex, newLocationIndex);
 			
-			startAnimation();
+			startAnimation(currentAction);
 		}
 	}
 	
@@ -283,9 +333,8 @@ $(document).ready(function() {
 			if (fgTM) fgTM.stop();
 			if (bgTM) bgTM.stop();
 			if (chTM) chTM.stop();
-			
 			return;
-		} 
+		}
 		
 		fg = document.getElementById("locationFG");
 		fgTM = new TimelineMax({paused:true});		
@@ -307,6 +356,27 @@ $(document).ready(function() {
 		
 	}
 	
+	function toggleUI() {
+		showUI = !showUI;
+		if (showUI == true) {
+			$('#infobox').show();
+		} else {
+			$('#infobox').hide();
+		}
+		
+	}
+	
+	function zoomInOut() {
+		zoomAmount = (currentZoom == 110) ? 120 : 110;
+		if (currentZoom == 110) {
+			$('#charZoomInOutCommand').html('Zoom In');
+		} else {
+			$('#charZoomInOutCommand').html('Zoom Out');
+		}
+		zoomEffect(zoomAmount, charZoomDuration);
+		
+	}
+	
 	function zoomEffect(percent, duration) {
 		leftAmount = (percent >= 100) ? (percent-100) / 2 : 0;
 		currentZoom = percent;
@@ -315,13 +385,22 @@ $(document).ready(function() {
 		$('#wrapper').animate({width:percent+'%', left:'-'+leftAmount+'%'}, duration);
 	}
 	
-	function resolve() {
-		$.playSound('../audio/crunch_comp1b.mp3');
-		zoomEffect(110, 0);
+	function resolve(action) {
+		
+		if (action != null && action.success == true) {
+			// success related:
+			createjs.Sound.play('crunch_comp1b');
+			shakeScreen();
+			blastIt();
+		}
+		
+		if (action != null && action.success == false) {
+			createjs.Sound.play('attack_dodge');
+		}
+		
+		// These happen regardless of attack:
 		advanceCharacterAnimation();
-		shakeCount = shakeMax;
-		moveIt();
-		blastIt();	
+		zoomEffect(110, 0);
 	}
 	
 	function advanceCharacterAnimation() {
@@ -343,9 +422,14 @@ $(document).ready(function() {
 		}
 	}
 	
+	function shakeScreen() {
+		shakeCounter = shakeCount;
+		moveIt();
+	}
+	
 	function moveIt() {
-		shakeCount--;
-		if (shakeCount > 0) {
+		shakeCounter--;
+		if (shakeCounter > 0) {
 			top = (Math.random() * distance) +"%", 
 			left = (Math.random() * distance) + "%";
 
@@ -356,13 +440,6 @@ $(document).ready(function() {
 	}
 	
 	function blastIt() {
-		$('#blast').removeClass('hidden').css({opacity: 1}).animate({opacity:0}, blastDuration, function() { 
-			/*isAnimating = false; 
-			if (previewMode == "full") { 
-				animateNextItemInQ();
-			}*/
-		});
+		$('#blast').removeClass('hidden').css({opacity: 1}).animate({opacity:0}, blastDuration);
 	}
-	
-	
 });

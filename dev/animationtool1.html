@@ -19,14 +19,15 @@
 	<div id="infobox">
 		<fieldset id="commands">
   			<legend>Commands</legend>
-            <a id="charZoomInOutCommand">Crew Zoom In</a>
+            <a id="charZoomInOutCommand">Zoom In</a>
             <a id="shakeCommand">Shake</a>
             <a id="blastCommand">Blast</a>
-		    <!--<a id="rotate">Rotate</a>
+		    <a id="animateCommand">Animate</a>
+			<a id="fullSequenceCommand">Full Sequence</a>
+			
+            <!--<a id="rotate">Rotate</a>
             <a id="explode">Explode</a>
-            <a id="animate">Animate</a>
-            <a id="fullsequence">Full Sequence</a>
-			<a id="reset">Reset</a>
+            <a id="reset">Reset</a>
             -->
         </fieldset>
 		
@@ -37,8 +38,8 @@
 				<li data-menuitem="locations">Location</li>
 				<li data-menuitem="blasts">Blasts</li>
 				<li data-menuitem="screen">Screen</li>
-				<li data-menuitem="badges">Badges</li>
-				<li data-menuitem="weather">Weather</li>
+				<li data-menuitem="badges" class="disabled">Badges</li>
+				<li data-menuitem="weather" class="disabled">Weather</li>
 			</ul>
 			
 			<div id="crew_panel" class="panel">
@@ -52,6 +53,7 @@
 			
 			<div id="locations_panel" class="panel hidden">
 				<label id="locationlabel">Location: <span id="locname"></span></label>
+				<label>Floating: <input id="floatingCB" type="checkbox" ></label>
 			</div>
 			
 			<div id="blasts_panel" class="panel hidden">
@@ -63,29 +65,16 @@
 				</span>
 			</div>
 			
-			<!--
-			<label id="charlabel">Character: <span id="charname"></span></label>
-			<label id="blastlabel">Blast: <span id="blastname"></span></label>
-			<label id="locationlabel">Location: <span id="locname"></span></label>
-			<label>Zoom:</label>
-            <span class="group">
-                <label class="inline">MIN</label>
-                <input id="zoommin" type="range" class="vHorizon range inline" min="100" max="200" value="110"/>
-                <label id="zoomminlabel" class="inline">110</label>
-            </span>
-            <span class="group">
-                <label class="inline">MAX</label>
-                <input id="zoommax" type="range" class="vHorizon range inline" min="100" max="200" value="110"/>
-                <label id="zoommaxlabel" class="inline">125</label>
-            </span>
-            <label>Rotation:</label>
-            <span class="group">
-                <label class="inline">Duration</label>
-                <input id="rotationduration" type="range" class="vHorizon range" min="1" max="2000" value="700"/>
-                <label id="rottimelabel" class="inline">700</label>
-            </span>
+			<div id="screen_panel" class="panel hidden">
+				<span class="group">
+					<label class="inline">Shake Count: </label>
+					<input id="shakeCount" type="range" class="vHorizon range" min="1" max="50" value="10" step="1"/>
+					<label id="shakeCountLabel" class="inline">10</label>
+				</span>
+
+			</div>
 			
-			<label>Floating: <input id="floatingCB" type="checkbox" checked="checked"></label>
+			<!--			
 			<label>Sound: <input id="soundCB" type="checkbox" checked="checked"/></label>
 			-->
 		</fieldset><!-- /#controls -->
