@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Chain Test 2</title>
+<link href="../css/graphics.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="jquery.sequence.js"></script>
+<script src="jquery.transform.js"></script>
+<script>
+$(document).ready(function() {
+	
+	$(document).sequencer();
+	
+	$('#getProps').click(function() {
+		console.log($(document).data('plugin_sequencer').options);
+	});
+	
+	$('#animateCommand').click(function() {
+		
+		var success = true; 
+		
+		$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1.2, duration:300})
+			.sequencer('advanceAnimation', {frame: 2})
+			.sequencer('advanceAnimation', {delay:1000, frame: 1})
+			.sequencer('callback', {delay: 1000, callback: function() { 
+				if (success) {
+					$(document).sequencer('blast', {duration:1000}).sequencer('shakeScreen');
+				} else {
+					console.log('fail!');
+				}
+			}
+		});
+			
+		
+		//.sequencer('shakeScreen');
+		
+	});
+});
+
+</script>
+
+<style>
+</style>
+</head>
+<body>
+
+
+<div id="wrapper">
+	<div id="infobox">
+		<fieldset id="commands">
+  			<legend>Commands</legend>
+            <a id="animateCommand">Animate</a>
+			<a id="getProps">Get Props</a>
+        </fieldset>
+	</div>	
+	
+	<div id="locationBG" class="abs drowcruiser"></div>
+	<div id="characterWrapper" class="abs">
+		<div id="frame1" class="character shadowfilter centipede1"></div>
+		<div id="frame2" class="character shadowfilter centipede2 hidden "></div>
+	</div>	
+	<div id="locationFG" class="abs drowcruiser"></div>
+	<div id="blast" class="abs arch"></div>
+</div>
+</body>
+</html>
