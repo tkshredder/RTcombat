@@ -38,16 +38,15 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; background
 	left: 0;
 	right: 0;
 	top: 0;
-	/*bottom: 0;*/
 	margin: auto;
 	width: 20%;
-	height: 88%;
+	height: 80%;
 }
 
 .character { height: 93%; width: 100%; }
 
 #characterWrapper.centipede { }
-#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 29%; left: 35%; }
+#characterWrapper.shaman, #characterWrapper.deadsoldier { width: 25%; }
 #characterWrapper.tentacles { width: 33%; left: 34%; bottom: 3%; }
 #characterWrapper.skeleshark { width: 30%; bottom: 11%; }
 #characterWrapper.drowarcher { width: 25%; left: 35%; bottom: 11%; }

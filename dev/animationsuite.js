@@ -203,9 +203,9 @@ $(document).ready(function() {
 	function updateValsFromControls() {
 		
 		// Preset vars based on control values:
-		charZoomDuration = Number($('#charZoomDuration').val());
-		blastDuration = Number($('#blastDuration').val());
-		shakeCount = Number($('#shakeCount').val());
+		$(document).data('plugin_sequencer').options.charZoomDuration = Number($('#charZoomDuration').val());
+		$(document).data('plugin_sequencer').options.blastDuration = Number($('#blastDuration').val());
+		$(document).data('plugin_sequencer').options.shakeCount = Number($('#shakeCount').val());
 		
 		// Start the float animation:
 		if ($('#floatingCB').is(":checked")) {
@@ -243,15 +243,18 @@ $(document).ready(function() {
 	
 	function startAnimation(action) {
 		currentAction = action;
-		isAnimating = true; 
+		//isAnimating = true;
+		success = true;
 		createjs.Sound.play('attack_melee');
+		
+		$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1, duration:0});
 		
 		$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1.2, duration:300})
 			.sequencer('advanceAnimation', {frame: 2})
 			.sequencer('advanceAnimation', {delay:1000, frame: 1})
 			.sequencer('callback', {delay: 1000, callback: function() { 
 				if (success) {
-					$(document).addEffect('blast', {duration:1000}).addEffect('shakeScreen');
+					$(document).sequencer('blast', {duration:1000}).sequencer('shakeScreen');
 				} else {
 					console.log('fail!');
 				}
