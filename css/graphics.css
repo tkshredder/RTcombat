@@ -33,6 +33,17 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; background
 .tabs li.active { background: #36C; }
 .tabs li.disabled { color: #DEDEDE; cursor: default; }
 
+#tool {
+	left: 0; right: 0; top: 0; bottom: 0; width: 400px; height: 100px;
+	margin: auto;
+	position: absolute;
+}
+
+input[type=range].healthbar { -webkit-appearance: none; background-color: #DEDEDE; width:120px; height: 10px; cursor: pointer; width: 100%;}
+input[type="range"].healthbar::-webkit-slider-thumb { -webkit-appearance: none; background: url(../images/ui_healthbars.png); width: 100px; height: 149px; }
+
+
+
 /* CREW */
 #characterWrapper {
 	left: 0;
