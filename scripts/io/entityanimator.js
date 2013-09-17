@@ -6,7 +6,7 @@ define(function(){
 	 * Requires: GSAP
 	 */
 	
-	function EntityAnimator(game, $, gsap) {
+	function EntityAnimator(game, $, gsap, sequence) {
 		
 		ca = this;
 		
@@ -24,6 +24,11 @@ define(function(){
 		
 		// Queue of actions:
 		this.actions = [];
+
+		// Add the sequencer to the document:
+		$(document).sequencer();
+
+
 		
 		return (this);	
 	}
@@ -31,6 +36,34 @@ define(function(){
 	// EntityAnimator class methods:
 	EntityAnimator.prototype = {
 	
+		playAnimationSequence: function(action) {
+			currentAction = action;
+			//isAnimating = true;
+			success = true;
+
+			// TO DO: pop out the previous character class
+
+			$('#frame1').addClass(action.target);
+			$('#frame2').addClass(action.target);
+			$('#characterWrapper').removeClass().addClass(action.target);
+
+			createjs.Sound.play('attack_melee');
+			
+			$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1, duration:0});
+			
+			$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1.2, duration:300})
+				.sequencer('advanceAnimation', {frame: 2})
+				.sequencer('advanceAnimation', {delay:1000, frame: 1})
+				.sequencer('callback', {delay: 1000, callback: function() { 
+					if (success) {
+						$(document).sequencer('blast', {duration:1000}).sequencer('shakeScreen');
+					} else {
+						console.log('fail!');
+					}
+				}
+			});
+		},
+
 		play: function() {
 			console.log('timeline: ', this.timeline);
 			this.timeline.restart();

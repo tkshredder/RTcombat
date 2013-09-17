@@ -11,10 +11,12 @@
 -->
 <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/app.css">
+<!--<link rel="stylesheet" href="css/graphics.css">-->
 
 </head>
 
 <body>
+<div id="wrapper">
 
 	<nav id="navbar">RTCombat v0.1
 		<span id="currentlyOnline">
@@ -24,184 +26,186 @@
 
 	</nav>
 
-	<div id="page_bg">
-	</div>
+	<div id="locationBG" class="abs drowcruiser"></div>
 
 
-	<div id="horizon">
-		
-		<div id="welcome_panel" class="centerpanel panel">
-			<h1 id="welcome_headline">Ahoy! Welcome to Sea Combat, Matey!</h1>
-			<div id="welcome_output">Register a new player account or login to begin.</div>
-			<a class="button bigcentered" id="registerBtn">Register</a>
-			<a class="button bigcentered" id="loginBtn">Login</a>
-		</div>
-
-		<div id="login_panel" class="centerpanel panel hidden">
-			<h1>Avast! Enter yer name.</h1>
-			<form id="login">
-				<input id="loginname" class="dark">
-				<input id="loginSubmitBtn" class="button" value="Login" type="submit">
-			</form>
-		</div>
-		
-		<div id="choosegame_panel" class="centerpanel panel hidden">
-			<h1 id="choosegame_headline">Aye, what will it be?</h1>
-			<a class="button bigcentered" id="createBtn">Create Game</a>
-			<a class="button bigcentered disabled" id="joinBtn">Join Game</a>
-		</div>
-
-		<div id="startcombat_panel" class="centerpanel panel hidden">
-			<h1 id="startcombat_headline">Enemy Ship Sited! Prepare for combat!</h1>
-			<div id="startcombat_output">You have spotted an opponent's ship. Time to take action!</div>
-			<span>Combat will commence in: </span><span id="remainingCommenceTime">10</span>
-		</div>
-
-		<div id="center_panel" class="centerpanel panel hidden">
-			<h1 id="center_headline"></h1>
-			<div id="center_output"></div>
-		</div>
-
-	</div>
-
-<div id="outer">
-	<div id="chat_panel" class="poppanel panelhidden">
-		<span id="chat_toggle" class="panelcontrol">X</span>
-		<h2>Chat</h2>
-		<form id="chat">
-			<input id="chatinput" class="dark chat">
-		</form>
-		<div id="chatlog"></div>
-		
-	</div>
-
-  	<!-- Left Panels -->
-	<div id="boat_bg" class="boatbg_1 hidden"></div>
-
-	<div id="active_entity_label"></div>
-
-	<div id="active_ship" class="ship ship_drowcruiser shadowfilter hidden"></div>
-	<div id="active_character" class="character character_shaman shadowfilter hidden"></div>
-	
-	<div id="character_stats" class="hidden">
-		<!-- this content is dynamic, based on current character -->
-		<span id="attack" class="stat"><span class="icon attack"></span><span class="label">7</span></span>
-		<span id="defense" class="stat"><span class="icon defense"></span><span class="label">6</span></span>
-		<span id="courage" class="stat"><span class="icon courage"></span><span class="label">5</span></span>
-		<span id="dodge" class="stat"><span class="icon dodge"></span><span class="label">3</span></span>		
-	</div>
-
-	<!-- Right Panels -->
-	<div id="screen">
-
-		<!-- Ship selection - need to load dynamically -->
-		<div id="chooseship_panel" class="panel hidden">
-			<h1>Choose a ship</h1>
-
-			<ul id="ship_selection" >
-				<li class="avatar" data-name="Drow Cruiser" data-team="1">
-					<div class="avatar_image ship_drowcruiser" ></div>
-				</li>
-				<li class="avatar" data-name="Dead Blimp" data-team="2">
-					<div class="avatar_image ship_deadblimp" ></div>
-				</li>
-				<li class="avatar unknown" data-name="??????">
-					<div class="avatar_image ship_unknown" ></div>
-				</li>
-				<li class="avatar unknown" data-name="??????">
-					<div class="avatar_image ship_unknown" ></div>
-				</li>
-			</ul>
-		</div>
-		
-		<!-- Character selection - need to load dynamically -->
-		<div id="choosecharacters_panel" class="panel hidden">
-			<h1>Select a Character</h1>
-			<ul id="character_selection">
-			</ul>
-		</div>
-
-		<!-- Choose Game Instance -->
-		<div id="choosegameinstances_panel" class="panel hidden">
-			<h1>Select a Game Instance</h1>
-			<ul id="gameinstance_selection">
-			</ul>
-		</div>
-
-		<div id="myteam_panel" class="panel hidden">
-			<h1 class="textshadow">Your Team</h1>
-			<ul>
-				<li id="myteam_1" class="avatar_small">
-					<div class="avatar_image"></div>
-				</li>
-				<li id="myteam_2" class="avatar_small">
-					<div class="avatar_image"></div>
-				</li>
-				<li id="myteam_3" class="avatar_small">
-					<div class="avatar_image"></div>
-				</li>
-			</ul>
-			<form id="createteam">
-				<input id="createteam_submit" class="button disabled" value="Create" type="submit">
-			</form>
-		</div>
-
-
-		<div id="output_panel" class="panel hidden">
-			<h1 id="output_headline"></h1>
-			<div id="output"></div>
+	<div id="inner_wrapper">
+		<div id="graphics_panel">
 			<span id="action_name" class="result_text"></span>
-			<span id="action_results" class="result_text"></span>
+			<div id="characterWrapper" class="abs">
+				<div id="frame1" class="character shadowfilter centipede1"></div>
+				<div id="frame2" class="character shadowfilter centipede2 hidden "></div>
+			</div>
+			<div id="locationFG" class="abs drowcruiser"></div>
+			<div id="blast" class="abs arch"></div>
 		</div>
+
+		<div id="horizon">
+			
+			<div id="welcome_panel" class="centerpanel panel">
+				<h1 id="welcome_headline">Ahoy! Welcome to Sea Combat, Matey!</h1>
+				<div id="welcome_output">Register a new player account or login to begin.</div>
+				<a class="button bigcentered" id="registerBtn">Register</a>
+				<a class="button bigcentered" id="loginBtn">Login</a>
+			</div>
+
+			<div id="login_panel" class="centerpanel panel hidden">
+				<h1>Avast! Enter yer name.</h1>
+				<form id="login">
+					<input id="loginname" class="dark">
+					<input id="loginSubmitBtn" class="button" value="Login" type="submit">
+				</form>
+			</div>
+			
+			<div id="choosegame_panel" class="centerpanel panel hidden">
+				<h1 id="choosegame_headline">Aye, what will it be?</h1>
+				<a class="button bigcentered" id="createBtn">Create Game</a>
+				<a class="button bigcentered disabled" id="joinBtn">Join Game</a>
+			</div>
+
+			<div id="startcombat_panel" class="centerpanel panel hidden">
+				<h1 id="startcombat_headline">Enemy Ship Sited! Prepare for combat!</h1>
+				<div id="startcombat_output">You have spotted an opponent's ship. Time to take action!</div>
+				<span>Combat will commence in: </span><span id="remainingCommenceTime">10</span>
+			</div>
+
+			<div id="center_panel" class="centerpanel panel hidden">
+				<h1 id="center_headline"></h1>
+				<div id="center_output"></div>
+			</div>
+
+		</div>
+
+	
+
+		<div id="outer">
+			<div id="chat_panel" class="poppanel panelhidden">
+				<span id="chat_toggle" class="panelcontrol">X</span>
+				<h2>Chat</h2>
+				<form id="chat">
+					<input id="chatinput" class="dark chat">
+				</form>
+				<div id="chatlog"></div>
 				
-		<div id="animationtest_panel" class="panel hidden">
-			<h1>Animation Test</h1>
-			<a class="button" id="animtest">Play</a>
-		</div>
-		
-		<div id="soundtest_panel" class="panel hidden">
-			<h1>Soundtest</h1>
-			<div id="filelist">
-				<a onClick='createjs.Sound.play("attack_critical")' >attack_critical</a>
-				<a onClick='createjs.Sound.play("attack_damage")' >attack_damage</a>
-				<a onClick='createjs.Sound.play("attack_dodge")' >attack_dodge</a>
-				<a onClick='createjs.Sound.play("attack_melee")' >attack_melee</a>
-				<a onClick='createjs.Sound.play("attack_melee2")' >attack_melee2</a>
-				<a onClick='createjs.Sound.play("magic_cast")' >magic_cast</a>
 			</div>
-		</div>
-		
-		<div id="commands_panel" class="panel hidden">
-			<h1>Choose <span id="commandsAvailable">#</span> Actions<br>
-			Time: <span id="remainingtime"></span>
-			</h1>
-			<ul id="commands"></ul>
-			<!--<a class="button disabled bigcentered" id="execute">GO!</a>-->
-		</div>
-		
-		<div id="vitals_panel" class="panel hidden">
-			<div class="vitals myinfo">
-				<h3><span id="myname"></span> HEALTH <span id="myhealth">0</span></h3>
-			</div>
-		
-			<div class="vitals opponent">
-				<h3><span id="opponentname"></span> HEALTH <span id="opponenthealth">0</span></h3>
-			</div>
-		</div><!-- /#vitals -->
-		
-		
-	</div><!-- /#screen -->
 
-	
-	
-	<div id="hud">
-		<div id="info">
-			<span class="info-row"><span id="player-count">0</span> players.</span>
-			<span class="info-row"><span id="observer-count">0</span> observers.</span>
-			<span class="info-row"><span id="average-lag">0</span> ms lag.</span>
-		</div>
-	</div><!-- /#hud -->
-</div>
+		  	<!-- Left Panels -->
+			<div id="boat_bg" class="boatbg_1 hidden"></div>
 
+			<div id="active_entity_label"></div>
+
+			<div id="active_ship" class="ship ship_drowcruiser shadowfilter hidden"></div>
+			<div id="active_character" class="character character_shaman shadowfilter hidden"></div>
+			
+			<div id="character_stats" class="hidden">
+				<!-- this content is dynamic, based on current character -->
+				<span id="attack" class="stat"><span class="icon attack"></span><span class="label">7</span></span>
+				<span id="defense" class="stat"><span class="icon defense"></span><span class="label">6</span></span>
+				<span id="courage" class="stat"><span class="icon courage"></span><span class="label">5</span></span>
+				<span id="dodge" class="stat"><span class="icon dodge"></span><span class="label">3</span></span>		
+			</div>
+
+			<!-- Right Panels -->
+			<div id="screen">
+
+				<!-- Ship selection - need to load dynamically -->
+				<div id="chooseship_panel" class="panel hidden">
+					<h1>Choose a ship</h1>
+
+					<ul id="ship_selection" >
+						<li class="avatar" data-name="Drow Cruiser" data-team="1">
+							<div class="avatar_image ship_drowcruiser" ></div>
+						</li>
+						<li class="avatar" data-name="Dead Blimp" data-team="2">
+							<div class="avatar_image ship_deadblimp" ></div>
+						</li>
+						<li class="avatar unknown" data-name="??????">
+							<div class="avatar_image ship_unknown" ></div>
+						</li>
+						<li class="avatar unknown" data-name="??????">
+							<div class="avatar_image ship_unknown" ></div>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- Character selection - need to load dynamically -->
+				<div id="choosecharacters_panel" class="panel hidden">
+					<h1>Select a Character</h1>
+					<ul id="character_selection">
+					</ul>
+				</div>
+
+				<!-- Choose Game Instance -->
+				<div id="choosegameinstances_panel" class="panel hidden">
+					<h1>Select a Game Instance</h1>
+					<ul id="gameinstance_selection">
+					</ul>
+				</div>
+
+				<div id="myteam_panel" class="panel hidden">
+					<h1 class="textshadow">Your Team</h1>
+					<ul>
+						<li id="myteam_1" class="avatar_small">
+							<div class="avatar_image"></div>
+						</li>
+						<li id="myteam_2" class="avatar_small">
+							<div class="avatar_image"></div>
+						</li>
+						<li id="myteam_3" class="avatar_small">
+							<div class="avatar_image"></div>
+						</li>
+					</ul>
+					<form id="createteam">
+						<input id="createteam_submit" class="button disabled" value="Create" type="submit">
+					</form>
+				</div>
+
+
+				<div id="output_panel" class="panel hidden">
+					<h1 id="output_headline"></h1>
+					<div id="output"></div>
+					<!--<span id="action_name" class="result_text"></span>-->
+					<span id="action_results" class="result_text"></span>
+				</div>
+						
+				<div id="animationtest_panel" class="panel hidden">
+					<h1>Animation Test</h1>
+					<a class="button" id="animtest">Play</a>
+				</div>
+				
+				<div id="commands_panel" class="panel hidden">
+					<h1>Choose <span id="commandsAvailable">#</span> Actions<br>
+					Time: <span id="remainingtime"></span>
+					</h1>
+					<ul id="commands"></ul>
+					<!--<a class="button disabled bigcentered" id="execute">GO!</a>-->
+				</div>
+				
+				<div id="vitals_panel" class="panel hidden">
+					<div class="vitals myinfo">
+						<h3><span id="myname"></span> HEALTH <span id="myhealth">0</span></h3>
+					</div>
+				
+					<div class="vitals opponent">
+						<h3><span id="opponentname"></span> HEALTH <span id="opponenthealth">0</span></h3>
+					</div>
+				</div><!-- /#vitals -->
+				
+				
+			</div><!-- /#screen -->
+			
+
+			
+			<div id="hud">
+				<div id="info">
+					<span class="info-row"><span id="player-count">0</span> players.</span>
+					<span class="info-row"><span id="observer-count">0</span> observers.</span>
+					<span class="info-row"><span id="average-lag">0</span> ms lag.</span>
+				</div>
+			</div><!-- /#hud -->
+		</div><!-- #outer -->
+	</div><!-- #inner_wrapper -->
+
+</div><!-- /#wrapper -->
 </body>
 </html>

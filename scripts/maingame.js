@@ -6,7 +6,9 @@ requirejs.config({
 		},
 		gsap: {
 			exports: 'gsap'
-		}
+		},
+		//"jquery.healthbar": ["jquery"]
+		"lib/jquery.transform": ["jquery", document]
 	},
 	paths: {
 		'gsap'   : 'http://cdnjs.cloudflare.com/ajax/libs/gsap/1.9.6/TweenMax.min',
@@ -32,7 +34,10 @@ require(
 	"client",
 	"jquery",
 	"gsap",
-	"soundjs"
+	"soundjs",
+	"lib/jquery.healthbar",
+	"lib/jquery.sequence",
+	"lib/jquery.transform"
 	],
 	function(Game, CharacterFactory, SocketIO, EntityAnimator, Input, Output, Sound, Client, $, GSAP, SoundJS){
 		

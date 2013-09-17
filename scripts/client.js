@@ -196,9 +196,9 @@ define(
 
 			// Update DOM for me:
 			if (data.isme) {
-				output.hidePanels(['login', 'welcome']);
+				output.hidePanels(['login', 'welcome', 'graphics']);
 				output.showPanels('chooseship');
-				output.setShip({name:'Drow Cruiser', animate: true});
+				output.setShip({name:'Drow Cruiser', animate: false});
 			}			
 		});
 
@@ -473,6 +473,11 @@ define(
 		
 		// A client performs an action
 		socket.on('action', function(data) {
+
+			output.hidePanels();
+			output.showPanels('graphics');
+
+
 			console.log('Event: action', data);
 			//console.log(' --- action was successful: ', data.success);
 			
@@ -550,11 +555,15 @@ define(
 		
 		playAnimation: function(command) {
 			var anim = {};
-			anim.target = "character_" + command.charactername.trim();
+			anim.target = command.charactername.trim();
+			//anim.target = "character_" + command.charactername.trim();
 			anim.charactername = command.charactername;
 			anim.actionname = command.actionname;
 			//anim.results = successText;
-			animator.addAnimationAndPlay(anim);
+			//animator.addAnimationAndPlay(anim);
+
+			animator.playAnimationSequence(anim);
+
 		},
 
 		handleGameSelection: function() {

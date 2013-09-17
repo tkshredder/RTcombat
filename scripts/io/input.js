@@ -109,7 +109,7 @@ define(function(){
 		});
 		
 		// General button roll-over sound:
-		$(document).on('mouseenter', '.button:not(.disabled):not(.submit)', function() {
+		$(document).on('click', '.button:not(.disabled):not(.submit)', function() {
 			sound.play('cv2_menu_tick');
 		});
 
