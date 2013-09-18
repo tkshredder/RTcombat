@@ -30,7 +30,7 @@ define(
 			
 			// STATIC VARS
 			// TO DO -- move this to output?
-			this.commandDelay = 2000;
+			this.commandDelay = 5000;
 			this.turnFinishDelay = 3000;
 			
 			this.COMMENCE_TIME = 10;

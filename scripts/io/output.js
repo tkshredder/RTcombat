@@ -28,7 +28,14 @@ define(
 				$('#remainingCommenceTime').html(game.getRemainingCommenceTime());
 				setTimeout(function() { wo.update(); }, 100);
 			}
-					
+			
+			// Create Healthbars
+			$('#player1healthbar').healthbar();
+			$('#player2healthbar').healthbar();
+
+			$('#player1healthbar').healthbar('updateHealthBar');
+			$('#player1healthbar').healthbar('updateHealthBar');
+
 			return this;
 		}
 		

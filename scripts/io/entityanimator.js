@@ -37,15 +37,22 @@ define(function(){
 	EntityAnimator.prototype = {
 	
 		playAnimationSequence: function(action) {
+			
+			console.log('playAnimationSequence: ', action)
+
 			currentAction = action;
 			//isAnimating = true;
 			success = true;
 
 			// TO DO: pop out the previous character class
 
-			$('#frame1').addClass(action.target);
-			$('#frame2').addClass(action.target);
-			$('#characterWrapper').removeClass().addClass(action.target);
+
+			// Remove the current character class on the frames	
+			$('#frame1').removeClass(this.characterName).addClass(action.target+'1');
+			$('#frame2').removeClass(this.characterName).addClass(action.target+'2');
+			$('#characterWrapper').removeClass(this.characterName).addClass(action.target);
+
+			this.characterName = action.target;
 
 			createjs.Sound.play('attack_melee');
 			

@@ -555,7 +555,7 @@ define(
 		
 		playAnimation: function(command) {
 			var anim = {};
-			anim.target = command.charactername.trim();
+			anim.target = command.charactername.trim().toLowerCase();
 			//anim.target = "character_" + command.charactername.trim();
 			anim.charactername = command.charactername;
 			anim.actionname = command.actionname;

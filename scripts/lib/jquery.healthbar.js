@@ -74,10 +74,10 @@ define(["jquery"], function ($) {
             var hpRatio = currentHP / maxHP;
             var hbWidth = $('.hb_gauge').width();
             var offset = -(hbWidth - (hpRatio * hbWidth));
-            $('.hb_gauge').stop(true).animate({left: offset}, animSpeed);
+            $('.hb_gauge').stop(true).animate({left: offset}, this.options.animSpeed);
             
             if ($('.hb_avatar').hasClass('fixed') == false) {
-                $('.hb_avatar').stop(true).animate({left: offset+hbWidth-avatarOffset}, animSpeed);
+                $('.hb_avatar').stop(true).animate({left: offset+hbWidth-avatarOffset}, this.options.animSpeed);
             }
         }
         
@@ -107,36 +107,6 @@ define(["jquery"], function ($) {
             });
         }
     }
-
-
-
-
-    // A really lightweight plugin wrapper around the constructor,
-    // preventing against multiple instantiations
-    /*$.fn[pluginName] = function ( methodOrOptions ) {
-        
-        //console.log('methods: ', methods);
-        
-        if ( methods[methodOrOptions] ) {
-            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-        } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
-            // Default to "init"
-            //return methods.init.apply( this, arguments );
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin( this, methodOrOptions ));
-            }
-        } else {
-            $.error( 'Method ' +  method + ' does not exist on jQuery.healthbar' );
-        }
-        
-        
-        return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin( this, methodOrOptions ));
-            }
-        });
-                
-    };*/
 
 })( $, window, document );
 });

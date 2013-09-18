@@ -74,6 +74,8 @@ body {	background:#000; overflow: hidden; }
 .shadowfilter { -webkit-filter: drop-shadow(9px 9px 10px rgba(0,0,0,0.7)); }
 
 /* HEALTHBARS */
+#healthbars {text-align: center; position: absolute; top: 10%; left: 25%; width: 100%; height: 1px; overflow: visible; visibility: visible; display: block;
+}
 .healthbar { position: relative; width: 400px; height: 40px; }
 .healthbar .hb_mask { position: absolute; border: 4px solid black; overflow:hidden; width: 100%; height: 100%;  }
 .healthbar .hb_bg { position: absolute; background: #ff1111; background: linear-gradient(to right, #ff1111 0%,#000000 100%); width: 100%; height: 100%;}
