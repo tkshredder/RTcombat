@@ -42,17 +42,26 @@ define(function(){
 
 			currentAction = action;
 			//isAnimating = true;
-			success = true;
+			success = action.success;
 
 			// TO DO: pop out the previous character class
 
 
-			// Remove the current character class on the frames	
-			$('#frame1').removeClass(this.characterName).addClass(action.target+'1');
-			$('#frame2').removeClass(this.characterName).addClass(action.target+'2');
-			$('#characterWrapper').removeClass(this.characterName).addClass(action.target);
+			// Remove the current character class on the frames
+			currentCharacter = action.charactername.toLowerCase().trim();
 
-			this.characterName = action.target;
+			$('#frame1').removeClass(this.characterName+'1').addClass(currentCharacter+'1');
+			$('#frame2').removeClass(this.characterName+'2').addClass(currentCharacter+'2');
+			$('#characterWrapper').removeClass(this.characterName).addClass(currentCharacter);
+			
+			// Update Ship BG:
+			$('#locationBG').removeClass().addClass("abs " + action.shipname);
+
+			// Update action name html:
+
+			$('#action_name').html(action.actionname);
+
+			this.characterName = currentCharacter;
 
 			createjs.Sound.play('attack_melee');
 			

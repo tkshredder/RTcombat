@@ -835,12 +835,17 @@ requirejs(
 				io.sockets.emit('action', data);
 				
 				// Set timer to fire next action, as long as its not the last action
-				var isLastAction = (game.getCommandQueueSize(gameinstanceID).length == 0) ? true : false;
-
+				var isLastAction = (game.getCommandQueueSize(gameinstanceID) == 0) ? true : false;
+				
+				console.log('>>>>>>>>>>>>>> is last action: ' + isLastAction);
+				
 				if (! isLastAction) {
 					timer = setTimeout(function() { executeNextAction(gameinstanceID); }, game.getCommandDelay());
 				} else {
-					timer = setTimeout(function() { startNextTurn(gameinstanceID); }, 5000);
+					timer = setTimeout(function() { 
+						
+						startNextTurn(gameinstanceID); 
+					}, 5000);
 				}
 				
 			}

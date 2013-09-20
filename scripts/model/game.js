@@ -692,6 +692,8 @@ define(
 			
 			getPlayerName: function(playerID){ if (this.players[playerID]) return this.players[playerID].getName() },			
 			setPlayerName: function(playerID, value) { this.players[playerID].setName(value) },
+			getShipName: function(shipID){ if (this.ships[shipID]) return this.ships[shipID].getName() },			
+			setShipName: function(shipID, value) { this.ships[shipID].setName(value) },
 			
 			/*getPlayersCrewActions: function(playerID) {
 				var actions;

@@ -44,7 +44,7 @@ define(["jquery"], function ($) {
             // call them like so: this.yourOtherFunction(this.element, this.options).
             
             this.$el.addClass('healthbar');
-            this.$el.append('<span class="hb_mask"><span class="hb_bg"></span><span class="hb_gauge"></span></span><span class="hb_avatar drowcruiser"></span>');
+            this.$el.append('<span class="hb_mask"><span class="hb_bg"></span><span class="hb_gauge"></span></span><span class="hb_avatar fixed drowcruiser"></span>');
         },
 
         damage: function(amount) {

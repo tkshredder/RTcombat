@@ -29,6 +29,7 @@ define(
 
 		// Start loading audio:
 		sound.loadAudio();
+		createjs.Sound.setMute(true);
 		
 		// TO DO:
 		// Move this?
@@ -476,6 +477,8 @@ define(
 
 			output.hidePanels();
 			output.showPanels('graphics');
+			output.hideCharacters();
+
 
 
 			console.log('Event: action', data);
@@ -487,7 +490,10 @@ define(
 			
 			// Evaluate current action and play sound(s)
 			sound.evaluateActionTypeAndPlay(data);
-		
+			
+			command = data.command;
+			command.success = data.success;
+
 			// Update DOM:
 			var successText = (data.success) ? "success! " : "unsuccessful";
 			var html = '<div class="command"><p>Executed <span class="name">'+ command.actionname +'</span>.... ' + successText+'</p></span>';
@@ -555,10 +561,13 @@ define(
 		
 		playAnimation: function(command) {
 			var anim = {};
-			anim.target = command.charactername.trim().toLowerCase();
+
+			anim.target = command.charactername.replace(" ", "").toLowerCase();
 			//anim.target = "character_" + command.charactername.trim();
 			anim.charactername = command.charactername;
 			anim.actionname = command.actionname;
+			anim.shipname = game.getShipName(command.shipID);
+
 			//anim.results = successText;
 			//animator.addAnimationAndPlay(anim);
 
