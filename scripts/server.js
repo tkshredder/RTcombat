@@ -378,12 +378,12 @@ requirejs(
 				console.log('Event:  action', data);
 				
 				// Update the game on the SERVER.
-				// This returns back if this was successful or not
-				success = game.performAction(data);
+				// This returns back an object with details of the action
+				results = game.performAction(data);
 				
 				// Broadcast action for CLIENTS:
 				data.timeStamp = (new Date()).valueOf();
-				data.success = success;
+				data.results = results;
 				io.sockets.emit('action', data);
 				
 				setTimeout(function() { executeNextAction(data.gameinstanceID); }, game.getCommandDelay());
@@ -827,11 +827,12 @@ requirejs(
 				data.gameinstanceID = gameinstanceID;
 
 				// Perform the action for the game instance on the SERVER:
-				success = game.performAction(data);
+				results = game.performAction(data);
 				
 				// Broadcast action for CLIENTS:
 				data.timeStamp = (new Date()).valueOf();
-				data.success = success;
+				data.results = results;
+				data.success = results.success;
 				io.sockets.emit('action', data);
 				
 				// Set timer to fire next action, as long as its not the last action

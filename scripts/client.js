@@ -427,8 +427,12 @@ define(
 			output.showPanels('startcombat');
 			output.displayCommenceTimer();
 			
+			output.initHealthBars([c.myShipID, c.opponentShipID]);
 			output.updateCommandsAvailable(c.myPlayerID);
 			output.setBoatBG(game.getTeamID(c.myShipID));
+
+
+
 
 		});
 		
@@ -492,23 +496,16 @@ define(
 			sound.evaluateActionTypeAndPlay(data);
 			
 			command = data.command;
-			command.success = data.success;
-
+			
 			// Update DOM:
-			var successText = (data.success) ? "success! " : "unsuccessful";
+			var successText = (data.results.success) ? "success! " : "unsuccessful";
 			var html = '<div class="command"><p>Executed <span class="name">'+ command.actionname +'</span>.... ' + successText+'</p></span>';
 			$("#output").append(html);
 			$('.command').fadeIn("slow");
 			
-			
-			// Evaluate current action success play sound(s)
-			console.log(' --- call to sound.evaluateActionSuccessAndPlay() ');
-			sound.evaluateActionSuccessAndPlay(data, 400);
-			
 			// Add to animator:
-			c.playAnimation(command);
+			c.animateAndUpdate(data);
 			
-
 			// Evaluate current action and play sound(s)
 			//createjs.Sound.play("attack_damage");
 			
@@ -559,20 +556,15 @@ define(
 	
 	Client.prototype = {
 		
-		playAnimation: function(command) {
-			var anim = {};
+		animateAndUpdate: function(data) {
+			
+			data.classname = data.command.charactername.replace(" ", "").toLowerCase();
+			data.shipname = game.getShipName(data.command.shipID);
 
-			anim.target = command.charactername.replace(" ", "").toLowerCase();
-			//anim.target = "character_" + command.charactername.trim();
-			anim.charactername = command.charactername;
-			anim.actionname = command.actionname;
-			anim.shipname = game.getShipName(command.shipID);
+			animator.playAnimationSequence(data);
 
-			//anim.results = successText;
-			//animator.addAnimationAndPlay(anim);
-
-			animator.playAnimationSequence(anim);
-
+			// Maybe add a check to see if this is really damage?
+			animator.updateHealthBar(data.command.targetShipID, data.results.amount);
 		},
 
 		handleGameSelection: function() {

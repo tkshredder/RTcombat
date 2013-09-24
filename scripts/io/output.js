@@ -177,6 +177,26 @@ define(
 				console.log('disabling command rollover');
 				$('#commands').addClass('commandschosen');
 			},
+
+			initHealthBars: function(shipIDs) {
+				
+				//var ships = game.gameInstances[gameinstanceID]
+				var n = 0, currentShip;
+
+				for (var i = 1; i < shipIDs.length + 1; i++) {
+					
+					currentShip = game.getShip(shipIDs[i-1]);
+
+					// Maybe create an init function for the healthbars?
+					$('#player' + i + "healthbar").healthbar('setCurrentHP', currentShip.health);
+					$('#player' + i + "healthbar").healthbar('setMaxHP', currentShip.health);
+					$('#player' + i + "healthbar").addClass(shipIDs[i-1]);
+
+				}
+
+
+
+			},
 			
 			writeCurrentCommands: function (shipID) {
 				

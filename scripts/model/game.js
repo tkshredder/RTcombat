@@ -524,22 +524,22 @@ define(
 				
 				command = data.command;
 				
-				var amount = command.effect.substring(1,0);
-				var success;
+				var results = {};
+				results.amount = command.effect.substring(1,0);
 				
 				if (data.success) {
-					success = data.success;
+					results.success = data.success;
 				} else {
-					success = this.evaluateSuccess(command.successRate);
+					results.success = this.evaluateSuccess(command.successRate);
 				}
 				
-				console.log("success for this action: ", success);
+				console.log("success for this action: ", results.success);
 				
 				switch(command.effect.substring(2)) {
 					case "damage":
-						if (success == true) {
+						if (results.success == true) {
 							console.log('dealing damage to target ' + data.command.targetShipID);
-							this.ships[data.command.targetShipID].damage(amount); 
+							this.ships[data.command.targetShipID].damage(results.amount); 
 						}
 						break;
 				}
@@ -550,7 +550,7 @@ define(
 				// Player performs the Action:
 				this.players[data.command.playerID].performAction(data.command);
 				
-				return success;
+				return results;
 			},
 			
 			// TO DO: expand this out

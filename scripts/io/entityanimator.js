@@ -42,42 +42,51 @@ define(function(){
 
 			currentAction = action;
 			//isAnimating = true;
-			success = action.success;
+			success = action.results.success;
 
 			// TO DO: pop out the previous character class
 
 
 			// Remove the current character class on the frames
-			currentCharacter = action.charactername.toLowerCase().trim();
+			currentClassName = action.classname;
 
-			$('#frame1').removeClass(this.characterName+'1').addClass(currentCharacter+'1');
-			$('#frame2').removeClass(this.characterName+'2').addClass(currentCharacter+'2');
-			$('#characterWrapper').removeClass(this.characterName).addClass(currentCharacter);
+			$('#frame1').removeClass(this.prevClassName+'1').addClass(currentClassName+'1');
+			$('#frame2').removeClass(this.prevClassName+'2').addClass(currentClassName+'2');
+			$('#characterWrapper').removeClass(this.prevClassName).addClass(currentClassName);
 			
 			// Update Ship BG:
 			$('#locationBG').removeClass().addClass("abs " + action.shipname);
 
 			// Update action name html:
-
 			$('#action_name').html(action.actionname);
 
-			this.characterName = currentCharacter;
+			this.prevClassName = currentClassName;
 
+			// TO DO:
+			// Make this dynamic based on the action
 			createjs.Sound.play('attack_melee');
-			
+
+
 			$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1, duration:0});
 			
 			$(document).sequencer('zoom', {element: 'characterWrapper', scalar: 1.2, duration:300})
 				.sequencer('advanceAnimation', {frame: 2})
 				.sequencer('advanceAnimation', {delay:1000, frame: 1})
 				.sequencer('callback', {delay: 1000, callback: function() { 
-					if (success) {
+					if (action.success) {
 						$(document).sequencer('blast', {duration:1000}).sequencer('shakeScreen');
 					} else {
 						console.log('fail!');
 					}
 				}
 			});
+		},
+
+		updateHealthBar: function(healthbarID, amount) {
+
+			$('.'+healthbarID).healthbar('damage', amount);
+			$('.'+healthbarID).healthbar('updateHealthBar');
+
 		},
 
 		play: function() {

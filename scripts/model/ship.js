@@ -63,6 +63,8 @@ define(
 		// Accessor functions:
 		getCrew: function() { return this.crew; },
 		setCrew: function(value) { this.crew = value; },
+		getHealth: function() { return this.health; },
+		setHealth: function(value) { this.health = value; },
 		getName: function(){ return this.name; },
 		setName: function(value) { this.name = value; },
 		getID: function(){ return( this.ID ); },
